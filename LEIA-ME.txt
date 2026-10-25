@@ -1,0 +1,47 @@
+DJEN CONSULTA SIMPLES - PARA VS CODE (SEM XAMPP)
+================================================
+
+COMO ABRIR NO WINDOWS
+1) Extraia o ZIP em qualquer pasta, por exemplo Desktop\DJEN_CONSULTA_VSCODE.
+2) Abra a pasta no Visual Studio Code: Arquivo > Abrir Pasta.
+3) Instale Python 3.9+ se ainda nao tiver; marque Add Python to PATH.
+4) Abra o terminal do VS Code (Ctrl + `) e digite:
+       python servidor.py
+   Se no Windows for necessario:
+       py -3 servidor.py
+5) Abra http://127.0.0.1:8765/ (o navegador tambem abre automaticamente).
+
+ALTERNATIVAS
+- Dois cliques em INICIAR.bat (funciona sem abrir o VS Code).
+- No VS Code, instale a extensao Python da Microsoft e pressione F5.
+- Execute VERIFICAR.bat para confirmar se o Python esta disponivel.
+- Para encerrar, aperte Ctrl+C no terminal / feche a janela do .bat.
+
+NENHUMA DEPENDENCIA EXTERNA
+- Nao precisa XAMPP, PHP, MySQL, pip, venv, Flask, Docker ou Nginx.
+- Python utiliza apenas a biblioteca padrao.
+- Nao use Live Server para esta versao: ele nao executa o backend /api/buscar.
+- O navegador conversa com seu Python local; o Python consulta a API do CNJ.
+- A conexao com o CNJ requer internet e HTTPS de saida.
+
+RECURSOS
+- Filtros livres por numero de processo, palavra no teor, parte, advogado e OAB.
+- Tribunal, datas e meio de publicacao configuraveis na propria tela.
+- OAB vazia por padrao, sem login, cadastro ou base de clientes.
+- Resultado paginado, detalhes completos e copia do teor.
+- Sem armazenamento no servidor e sem prazos automaticos.
+- O navegador pode salvar somente seus filtros, se voce clicar em Salvar.
+
+CONFIGURAR PORTA
+- Padrao: http://127.0.0.1:8765
+- Para alterar, rode: python servidor.py --porta 8766
+- O servidor escuta apenas 127.0.0.1 (localhost); nao abre acesso na rede.
+- Nao compartilhe essa porta via internet sem adicionar autenticacao e protecao.
+
+LIMITES
+- A consulta e feita em tempo real pelo CNJ, sujeita a limites de acesso / HTTP 429.
+- Problemas de rede do CNJ nao significam erro no site local.
+- Campos e paginação dependem do contrato da API publica do CNJ.
+
+API: https://comunicaapi.pje.jus.br/api/v1/comunicacao
+DOCUMENTACAO: https://comunicaapi.pje.jus.br/swagger/index.html
