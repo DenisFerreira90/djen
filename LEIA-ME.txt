@@ -1,47 +1,43 @@
-DJEN CONSULTA SIMPLES - PARA VS CODE (SEM XAMPP)
-================================================
+CONSULTA DJEN SIMPLES - INDEPENDENTE
+===================================
 
-COMO ABRIR NO WINDOWS
-1) Extraia o ZIP em qualquer pasta, por exemplo Desktop\DJEN_CONSULTA_VSCODE.
-2) Abra a pasta no Visual Studio Code: Arquivo > Abrir Pasta.
-3) Instale Python 3.9+ se ainda nao tiver; marque Add Python to PATH.
-4) Abra o terminal do VS Code (Ctrl + `) e digite:
-       python servidor.py
-   Se no Windows for necessario:
-       py -3 servidor.py
-5) Abra http://127.0.0.1:8765/ (o navegador tambem abre automaticamente).
+O que é:
+Site minimalista para consultar publicações do DJEN diretamente na API pública do CNJ.
+Não exige login, cadastro de advogado, OAB fixa, banco MySQL, Python, Docker ou Nginx.
+Não se conecta aos dados, processos ou clientes do site DJEN anterior.
 
-ALTERNATIVAS
-- Dois cliques em INICIAR.bat (funciona sem abrir o VS Code).
-- No VS Code, instale a extensao Python da Microsoft e pressione F5.
-- Execute VERIFICAR.bat para confirmar se o Python esta disponivel.
-- Para encerrar, aperte Ctrl+C no terminal / feche a janela do .bat.
+INSTALAÇÃO (XAMPP / APACHE / HOSPEDAGEM COM PHP)
+1. Crie uma pasta à sua escolha (ex.: /djenconsulta/) dentro do diretório servido pelo Apache.
+2. Copie TODO o conteúdo deste ZIP para dentro dessa pasta (index.html na raiz).
+3. Abra https://SEU-DOMINIO/djenconsulta/.
+4. Informe ao menos UM: número de processo, nome de pessoa, advogado, OAB, tribunal ou termo do teor.
+5. Filtre as datas conforme desejar e clique em Buscar publicações.
 
-NENHUMA DEPENDENCIA EXTERNA
-- Nao precisa XAMPP, PHP, MySQL, pip, venv, Flask, Docker ou Nginx.
-- Python utiliza apenas a biblioteca padrao.
-- Nao use Live Server para esta versao: ele nao executa o backend /api/buscar.
-- O navegador conversa com seu Python local; o Python consulta a API do CNJ.
-- A conexao com o CNJ requer internet e HTTPS de saida.
+REQUISITOS
+- PHP 7.4 ou superior; extensão cURL recomendada (ou allow_url_fopen habilitado).
+- Conexão HTTPS de saída da VPS para comunicaapi.pje.jus.br:443.
+- Sem MySQL e sem dependências externas.
 
-RECURSOS
-- Filtros livres por numero de processo, palavra no teor, parte, advogado e OAB.
-- Tribunal, datas e meio de publicacao configuraveis na propria tela.
-- OAB vazia por padrao, sem login, cadastro ou base de clientes.
-- Resultado paginado, detalhes completos e copia do teor.
-- Sem armazenamento no servidor e sem prazos automaticos.
-- O navegador pode salvar somente seus filtros, se voce clicar em Salvar.
+FUNCIONALIDADES
+- Pesquisa por processo, teor, parte, advogado, OAB + UF opcional, tribunal e período.
+- Tipo de publicação (DJEN, editais ou todos).
+- Exibe 20/50/100 publicações por página. Lotes buscados de 100 no CNJ.
+- Exibe o texto integral da publicação num modal e permite copiar.
+- Link da certidão oficial quando um hash é disponibilizado.
+- Botão opcional de salvar preferências do formulário apenas neste navegador.
+- Todos os tribunais, incluindo RS e SC, podem ser consultados: sem exclusões.
 
-CONFIGURAR PORTA
-- Padrao: http://127.0.0.1:8765
-- Para alterar, rode: python servidor.py --porta 8766
-- O servidor escuta apenas 127.0.0.1 (localhost); nao abre acesso na rede.
-- Nao compartilhe essa porta via internet sem adicionar autenticacao e protecao.
+OBSERVAÇÕES
+- O CNJ impõe limites de requisições, pode retornar HTTP 429 e pode limitar buscas abrangentes a 10 mil resultados.
+- Não tente varrer todos os tribunais em consultas sem filtros: refine datas e tribunal.
+- O período é o da DISPONIBILIZAÇÃO no DJEN, não um cálculo de vencimento.
+- A API do CNJ pode variar a paginação, os campos e o suporte a filtros; testes reais
+  dependem de uma VPS com acesso permitido ao serviço do CNJ.
+- Não calcula prazos, não salva publicações nem controla clientes/contratos.
+- Sem autenticação: se quiser restringir acesso ao público, configure proteção
+  de diretório no servidor Apache.
+- Não armazena resultados no servidor. O navegador mantém até 3 páginas do CNJ
+  apenas em memória durante a navegação.
 
-LIMITES
-- A consulta e feita em tempo real pelo CNJ, sujeita a limites de acesso / HTTP 429.
-- Problemas de rede do CNJ nao significam erro no site local.
-- Campos e paginação dependem do contrato da API publica do CNJ.
-
-API: https://comunicaapi.pje.jus.br/api/v1/comunicacao
-DOCUMENTACAO: https://comunicaapi.pje.jus.br/swagger/index.html
+URL OFICIAL DA API: https://comunicaapi.pje.jus.br/api/v1/comunicacao
+DOCUMENTAÇÃO: https://comunicaapi.pje.jus.br/swagger/index.html

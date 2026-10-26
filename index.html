@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="Consulta simples de publicações do Diário de Justiça Eletrônico Nacional (DJEN), diretamente na API pública do CNJ.">
   <title>Consulta DJEN — Publicações</title>
   <link rel="stylesheet" href="./css/style.css?v=2">
+  <!-- BIBLIOTECA PARA LER EXCEL (NOVO) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="./js/app.js?v=2" defer></script>
 </head>
 <body>
@@ -27,7 +28,27 @@
         <form id="searchForm" novalidate>
           <div class="form-section">
             <h3>O que você procura?</h3>
-            <label for="numeroProcesso">Número do processo</label>
+            <label for="listaProcessos">Meus Processos (Um por linha)</label>
+            <textarea id="listaProcessos" rows="4" style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px; font-family: monospace; font-size: 12px; margin-bottom: 10px;" placeholder="Ex: 5001234-12.2025.8.21.0001&#10;Deixe em branco para não filtrar."></textarea>
+            <div class="form-section">
+            <h3>O que você procura?</h3>
+            <label for="listaProcessos">Meus Processos (Um por linha)</label>
+            <textarea id="listaProcessos" rows="4" style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px; font-family: monospace; font-size: 12px; margin-bottom: 5px;" placeholder="Ex: 5001234-12.2025.8.21.0001"></textarea>
+            
+            <!-- NOVO BOTAO EXCEL -->
+            <label for="importarExcel" style="display: inline-block; background: #2563eb; color: white; padding: 5px 10px; font-size: 12px; border-radius: 4px; cursor: pointer; margin-bottom: 15px;">
+              📁 Importar Planilha Excel
+            </label>
+            <input type="file" id="importarExcel" accept=".xlsx, .xls, .csv" style="display: none;">
+            
+            <label for="numeroProcesso">Número do processo (Avulso)</label>
+            <input id="numeroProcesso" name="numeroProcesso" type="text" placeholder="Ex.: 5001234-12.2025.8.21.0001" autocomplete="off">
+            <label for="texto">Palavra ou frase no teor</label>
+            <input id="texto" name="texto" type="text" placeholder="Ex.: distribuído para" autocomplete="off">
+            <label for="nomeParte">Nome da parte</label>
+            <input id="nomeParte" name="nomeParte" type="text" placeholder="Nome ou parte do nome" autocomplete="off">
+          </div>  
+            <label for="numeroProcesso">Número do processo (Avulso)</label>
             <input id="numeroProcesso" name="numeroProcesso" type="text" placeholder="Ex.: 5001234-12.2025.8.21.0001" autocomplete="off">
             <label for="texto">Palavra ou frase no teor</label>
             <input id="texto" name="texto" type="text" placeholder="Ex.: distribuído para" autocomplete="off">
