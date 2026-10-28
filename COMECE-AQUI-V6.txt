@@ -1,0 +1,82 @@
+ARA JURÍDICO — VERSÃO 6 / PREENCHER A ORIGEM E API LOCAL
+======================================================
+27/10/2026
+
+O PROBLEMA RELATADO
+O processo 5323687-43.2024.8.21.0001 tem dados na coleta original enviada:
+classe, competência, autuação, órgão julgador, juiz, cinco vínculos de partes/
+representantes, 75 eventos visíveis e uma linha na lista de prazos.
+A imagem recebida mostra um cadastro antigo/genérico, só com número e título.
+O ZIP confirma que há dados para extração. Sem acesso à base que está rodando
+no seu computador, não é possível confirmar qual importação deixou esse cadastro
+sem campos; a nova opção diagnostica e reprocessa o que estiver guardado aí.
+
+PARA PREENCHER ESSE PROCESSO SEM COLETAR TUDO DE NOVO
+1. Pare o servidor antigo com Ctrl+C e guarde cópia de dados_juridico e dados_eproc.
+2. Extraia esta versão em outra pasta e copie essas duas pastas para a nova djen.
+3. Execute INICIAR.bat e atualize a página com Ctrl+F5.
+4. Confirme Versão 6 no menu.
+5. Abra Processos, busque o número e clique no número para abrir a ficha.
+6. Clique em Preencher com dados já coletados.
+   O mesmo botão aparece no início do formulário Editar. Salve alterações
+   manuais antes de usá-lo: o formulário será recarregado.
+7. Se a origem não estiver nessa base, o sistema informa isso explicitamente.
+   Nesse caso, abra Coleta eproc -> Recuperar uma coleta anterior e importe
+   o ZIP original. Não é necessário reler os dois mil processos no tribunal.
+8. Em Precisa de atenção, o botão Preencher fichas vazias com a origem guardada
+   permite tratar os demais cadastros antigos em lote, sem rede.
+
+O reprocessamento preenche campos vazios e o título genérico, preserva campos
+manuais já preenchidos e cria vínculos, eventos e prazos de modo idempotente.
+A operação fica na auditoria com usuário, data e alterações. Ela não atualiza
+os dados no tribunal nem significa que a origem antiga foi consultada hoje.
+O diagnóstico distingue data de importação de dados de uma nova consulta.
+
+GRAVAÇÃO PROGRESSIVA NA COLETA
+A lista de prazos é estruturada no banco antes de começar a abertura dos detalhes:
+classe, assunto, código de juízo, partes explicitamente indicadas e vencimentos.
+Cada processo detalhado é estruturado e gravado assim que sua leitura termina.
+O log mostra a quantidade de detalhes gravados. Não precisa esperar o último
+processo do lote para consultar as fichas que já foram preenchidas.
+Checkpoints e exportação continuam disponíveis. Se a gravação falhar, a origem
+preservada pode ser reimportada. Campos indisponíveis não são inventados.
+
+CONSULTAS COMPLEMENTARES DO HTML ENVIADO
+Na ficha, o botão Consultar listagens adicionais deste processo inicia uma
+consulta individual autenticada, com seleção do perfil e acompanhamento do log.
+O coletor só usa links efetivamente encontrados na página da sessão atual,
+com o número do mesmo processo. Não reutiliza hashes copiados da conversa.
+A lista restrita de consultas nesta versão é:
+- audiencia_listar
+- exame_listar
+- arvore_documento_listar
+- alvara_eletronico_listar
+- processo_conta_custas_listar
+- guias_deposito_judicial_listar
+Depois da coleta, o botão Listagens complementares permite ver o texto lido.
+Há registro de link indisponível e falha, sem repetir agressivamente os acessos.
+Esse fluxo está em validação com a sessão real. Ainda não transforma todos os
+layouts dessas abas em campos específicos de agenda/financeiro. Não baixa os
+arquivos da árvore de documentos nem preenche horários de perícia por suposição.
+
+Agravo, Movimentar/Peticionar, Incluir Endereço, Incluir intimados, gerar
+certidões e outros comandos não fazem parte dessa lista de leitura. Nada é
+protocolado, nenhuma ciência é confirmada e nenhum dado processual é alterado.
+Os links fornecidos como exemplo são de 5004310-40.2026.8.21.0018; eles não
+podem preencher 5323687-43.2024.8.21.0001. A validação do número previne essa troca.
+
+API
+Existe uma API local autenticada do nosso sistema. Ela fornece os dados
+estruturados, o diagnóstico, o reprocessamento e o início da coleta individual.
+Veja API-LOCAL.md. Criar essa API não cria uma API oficial do tribunal, não
+elimina o login/autenticação adicional e não garante dados de páginas que
+não tenham sido efetivamente lidas. Acesso remoto não foi implantado.
+
+VALIDAÇÃO
+O reprocessamento do número relatado foi testado com a página real desse
+processo presente no ZIP, partindo de uma ficha só com número/título. Os campos
+foram preenchidos, uma nota manual foi preservada e a repetição não duplicou
+partes/eventos. Testes de regras e API acompanham o pacote.
+O login e as listagens complementares ainda precisam ser testados na sessão
+real do eproc. A interface também exige conferência no computador do usuário.
+A validação local não substitui a conferência das informações e datas na origem.

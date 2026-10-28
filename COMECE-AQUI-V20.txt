@@ -1,0 +1,34 @@
+ConectaAdv — Versão 20 — Chat ajustável, preferências e presença
+
+ATUALIZAR
+Faça backup, encerre coletas e pare o servidor. Extraia numa pasta nova e copie dados_juridico e dados_eproc para djen. Execute INICIAR_CHAT_LOCAL.bat para testar, ou siga o roteiro da versão 19 para o piloto LAN/VPN. Atualize o navegador com Ctrl+F5. Mudar a pasta pode exigir reconfiguração da tarefa Windows, proxy e e-mail.
+
+PAINEL E CONVERSAS FIXADAS
+Na página Comunicação interna, use Abrir painel lateral. Nas outras telas, use a bolha de conversas.
+Fixar ao lado reserva espaço e reduz a área de trabalho do ConectaAdv, em janelas a partir de 1000 pixels. Não cria uma barra nativa do Chrome nem afeta outros sites.
+Arraste a borda esquerda para ajustar a largura. No painel solto, arraste o cabeçalho para mover e o canto inferior esquerdo para ajustar largura e altura. Na borda lateral também pode usar as setas do teclado.
+Recolher fecha o painel com animação e mantém a bolha. Acessibilidade: animações são desativadas com a preferência de movimento reduzido do navegador.
+Cada conversa tem Fixar/Desfixar. Essa seleção é privada por usuário e fica no servidor.
+A largura, altura, tema e preferência de painel fixado também ficam no servidor. A posição solta arrastada não é sincronizada. Em telas pequenas o painel sobrepõe o conteúdo; a fixação ao lado só é disponibilizada em janelas maiores.
+
+MEU PERFIL E APARÊNCIA
+Disponível dentro do chat, inclusive quando o histórico está oculto.
+Pode escolher padrão azul do sistema ou tema escuro; foto PNG/JPG/WebP de até 1 MB; ocultar a bolha; ocultar visualmente o histórico; presença manual; fixação do painel.
+Ao ocultar o histórico, a tela exige Mostrar nesta sessão para exibir conversas e mensagens. Ao perder o foco ou recolher o painel, a proteção volta. Mensagens não são apagadas e a auditoria administrativa continua disponível. Não é bloqueio por senha nem impede capturas feitas enquanto o conteúdo estiver visível.
+Se ocultar a bolha, entre pelo menu Comunicação interna para reabrir/configurar.
+Histórico e preferências acompanham a conta ao usar OUTRO COMPUTADOR CONECTADO AO MESMO SERVIDOR. Instalações independentes, com bancos diferentes, não se sincronizam sozinhas. Backups continuam necessários.
+As fotos ficam no banco e no backup. A mudança do nome e ramal continua restrita aos administradores.
+
+PRESENÇA
+Automático: disponível enquanto há interação recente neste sistema; após cinco minutos sem interação no ConectaAdv, ausente.
+Disponível, ausente, ocupado, em reunião, ao telefone e invisível podem ser escolhidos manualmente. Estados manuais têm prioridade sobre o automático.
+Invisível aparece como offline para colegas. Não oculta mensagens, acessos autorizados ou a auditoria administrativa.
+O navegador envia um sinal a cada aproximadamente 25 segundos. Sem sinal por 90 segundos, o usuário aparece offline. Fechar a aba/conexão é detectado por essa expiração; logout remove a presença da sessão informada.
+Atividade em uma das sessões ativas da mesma conta mantém disponível no modo automático. Estados manuais e preferências são compartilhados pela conta.
+A presença considera eventos deste navegador/sistema. Não monitora outros programas nem a atividade global do computador. Limitações do navegador em segundo plano ou suspensão podem fazer aparecer offline. É um indicador aproximado para comunicação, não comprovação de trabalho ou presença física.
+Os estados aparecem no diretório, nos participantes e na conversa individual. A lista atualiza aproximadamente a cada 25 segundos.
+
+VALIDAÇÃO
+101 testes automatizados passaram: preferências isoladas/persistentes, presença online/ausente/offline, múltiplas sessões, invisível, fixação e proteção de foto, além dos testes anteriores.
+Sintaxe JavaScript verificada. Arraste, redimensionamento, encaixe, tema escuro, comportamento em celulares e mídia ainda precisam de conferência visual no navegador real. Não houve teste visual de navegador nesta execução.
+Esta entrega não altera a cobertura do eproc, não implementa cache de documentos nem finaliza o módulo de RH. Os limites de acesso LAN/VPN e de uso em produção da versão 19 continuam valendo.

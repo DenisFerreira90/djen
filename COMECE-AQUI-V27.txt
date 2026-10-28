@@ -1,0 +1,16 @@
+CONECTAADV — VERSÃO 27 — TESTE ASSISTIDO TJSC
+
+Faça backup antes de atualizar. Espere a coleta atual terminar e encerre os servidores antes de trocar os arquivos. Preserve dados_juridico, dados_eproc e dados_chat. Esta versão inclui as correções de contraste do chat da versão 26.
+
+1. Inicie INICIAR.bat e pressione Ctrl+F5 no navegador.
+2. Abra Coleta eproc e selecione TJSC — Santa Catarina (teste assistido).
+3. Para o primeiro teste, escolha Releitura dos processos da listagem. Os relatórios extras ficam desmarcados ao selecionar TJSC. Mantenha áreas complementares desmarcadas nesta primeira medição; depois compare uma coleta detalhada do mesmo conjunto.
+4. Inicie a coleta. Faça login e eventual 2FA na janela aberta pelo robô. Se houver seleção de perfil, escolha ADVOGADO-TITULAR. Volte ao ConectaAdv e clique Continuar após login.
+5. Acompanhe as primeiras leituras e o total de intimações anunciado. No HTML fornecido há 59 intimações e 50 processos distintos, sem controle de próxima página. Os totais podem mudar na consulta real.
+6. Compare alguns processos com a fonte: partes, prazos, data/hora e sequência de eventos. Histórico parcial permanece pendente. Um teste terminado não comprova cobertura integral de todos os tipos de dados.
+
+A sessão TJRS existente permanece em dados_eproc/sessao. A sessão TJSC fica em dados_eproc/sessao_tjsc. Não reutilizamos o endereço SSO com nonce/state nem hashes enviados. O login inicia pela entrada fixa de cada tribunal. Variáveis EPROC_USUARIO/EPROC_SENHA continuam exclusivas do TJRS; TJSC usa EPROC_TJSC_USUARIO/EPROC_TJSC_SENHA, se forem configuradas localmente. Não é necessário configurá-las para o teste manual.
+
+A rotina automática existente permanece no TJRS; selecionar TJSC na tela não altera o agendamento. A primeira validação TJSC é assistida. Login vencido ou 2FA podem exigir intervenção.
+
+Limites: esta é a lista de processos com prazo em aberto da conta, não todo o acervo. Não baixa PDFs nem protocola, confirma ciência ou movimenta processos. As áreas adicionais só são lidas quando há link de consulta reconhecido. Ainda falta validar uma tela de detalhes TJSC e executar o teste autenticado no computador do usuário. Não há promessa de duração máxima ou detalhamento integral antes dessa conferência.

@@ -1,0 +1,80 @@
+ConectaAdv — Versão 23 — Relatórios e expansão das movimentações
+
+PARA A COLETA DESTA NOITE
+1. Faça backup e pare a coleta/servidor anterior antes de atualizar.
+2. Extraia em pasta nova e copie dados_juridico e dados_eproc. Se já separou o chat,
+   copie também dados_chat. NÃO execute novamente MIGRAR_CHAT.bat se já existe a base.
+3. Execute INICIAR.bat e abra http://127.0.0.1:8765/. Use Ctrl+F5.
+4. Coleta eproc > Releitura dos processos da listagem.
+5. Deixe marcado o relatório de prazos a encerrar. Agravos distribuídos é opcional:
+   o exemplo recebido tem 7.289 registros em 146 páginas. Incluí-lo amplia a leitura
+   e pode acrescentar muitos processos à fila. Desmarque para uma rodada menor.
+6. Para audiências, perícias, listagens de documentos, alvarás, custas e depósitos,
+   marque Incluir áreas complementares. Isso aumenta bastante o tempo.
+7. Inicie, faça login na janela do robô e selecione ADVOGADO-TITULAR.
+   Finalize eventual 2FA. Antes de Continuar, pode abrir os dois relatórios em abas
+   dessa MESMA janela do eproc; a coleta também busca links disponíveis no menu.
+8. Se não localizados, cancele preservando os dados. Na próxima tentativa, use
+   Links dos relatórios nesta sessão e cole os endereços obtidos na janela do robô.
+   Um link de outro navegador/sessão pode não funcionar. Os hashes não são fixados
+   no código, gravados em preferências ou incluídos nas exportações.
+9. Acompanhe a confirmação das primeiras páginas e dos primeiros detalhes gravados.
+   Só depois deixe rodando. Mantenha computador e internet ligados, sem suspensão,
+   e a janela do servidor aberta. Evite outra coleta ou agendamento simultâneo.
+10. Pela manhã, confira falhas, históricos pendentes e cobertura dos relatórios.
+
+O QUE ESTA VERSÃO ACRESCENTA
+- Leitura do relatório de prazos a encerrar, com os cabeçalhos observados no anexo.
+- Leitura opcional de agravos distribuídos: processo de origem, número do agravo
+  e data de distribuição. O recurso não é confundido com um prazo.
+- Paginação por controles encontrados na página, incluindo o botão cuja imagem
+  indica Próxima página. Nunca fabrica URLs com hashes.
+- Confere total de registros por relatório. Total de registros não é quantidade
+  de processos únicos: um processo pode aparecer em várias linhas.
+- Processos do relatório de prazos recebem prioridade na fila de detalhes.
+- Os relatórios são guardados em Processos > ficha > Listagens complementares.
+  Preserva linhas e colunas sem criar prazos oficiais duplicados automaticamente.
+  Esses prazos ainda precisam de conferência/vinculação; não conte com eles como
+  uma nova agenda automática ou alerta de data fatal.
+- A leitura dos detalhes tenta carregar as páginas adicionais do histórico usando
+  o carregador encontrado no próprio eproc. Não dispara ciência ou peticionamento.
+- Registra páginas esperadas/lidas, eventos e sequência. Só confirma esse histórico
+  quando o contador de páginas terminou e os números dos eventos formam sequência
+  contínua desde 1 até o maior número observado. É uma verificação conservadora:
+  lacunas legítimas, sigilo ou layout diferente podem resultar em pendência.
+- Histórico não confirmado não conclui a fila nem é marcado como leitura completa
+  pelo controle incremental. Dados parciais continuam preservados para conferência.
+- Eventos mantêm suas datas e horas e a visualização exibe segundos quando presentes.
+
+COBERTURA E LIMITES
+As fontes são prazos abertos mais os relatórios selecionados e acessíveis na sessão.
+Não é descoberta de todo o acervo de todos os tribunais. Só abre os links de detalhes
+permitidos encontrados nessas fontes. Sem link, o processo permanece pendente.
+Paginação, login e carregamento podem falhar; falhas não viram confirmação de cobertura.
+Não há promessa de concluir em uma hora nem de terminar tudo até de manhã.
+Não baixa todos os PDFs, não atualiza dados no tribunal e não protocola documentos.
+Releitura preserva novas evidências e eventos, mas ainda não substitui automaticamente
+campos antigos preenchidos incorretamente nem resolve todas as divergências de partes.
+O relatório de agravos tem mais registros do que a lista de prazos abertos; revise os
+filtros da tela do tribunal para garantir o escopo desejado antes de coletar.
+Nos agendamentos existentes, agravos não é habilitado automaticamente; a seleção desta
+rodada fica no formulário manual. Prazos a encerrar é tentado por padrão.
+Se o tribunal exigir login/2FA, ainda pode ser necessária intervenção humana.
+
+CHAT E BANCO
+Mantém as melhorias da versão 22. Chat separado usa dados_chat/chat.sqlite3 e porta
+8766; coleta e sistema jurídico usam dados_juridico e porta 8765. Parar a janela
+jurídica não precisa parar a janela do chat. Contas continuam administradas nas duas
+bases após a cópia inicial. Não faça nova migração de chat a cada atualização.
+Se ainda não separou o chat, veja COMECE-AQUI-V22.txt antes de mudar essa estrutura.
+
+VERIFICAÇÃO
+122 testes Python passaram, incluindo paginação simulada dos relatórios, vínculo do
+agravo ao processo originário, importação sem criar prazos duplicados, expansão de
+eventos, detecção de lacunas e fila pendente para histórico parcial.
+Os dois anexos foram analisados: o extrator reconheceu 100 linhas da página de prazos
+(total 264) e 50 linhas da página de agravos (total 7.289).
+Sintaxe JavaScript e os 3 cenários anteriores de seleção de alertas foram conferidos.
+Não foi executada coleta autenticada no tribunal nem validação visual em navegador
+real. A paginação de eventos foi implementada conforme o HTML enviado e testada por
+simulação; precisa da confirmação inicial no seu eproc antes de uso sem acompanhamento.

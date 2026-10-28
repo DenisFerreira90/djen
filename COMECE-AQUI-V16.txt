@@ -1,0 +1,39 @@
+ConectaAdv — Versão 16 — Coleta diária e tarefa às 6h
+
+ATUALIZAR
+Aguarde a coleta atual terminar ou use Cancelar e preservar dados. Não substitua arquivos com o servidor em execução.
+Faça backup, pare o servidor, extraia em pasta nova e copie dados_juridico e dados_eproc antigos para djen. Execute INICIAR.bat e Ctrl+F5.
+Preserve as duas pastas para manter o histórico incremental e o perfil de navegador que lembra o acesso.
+
+ATUALIZAÇÃO MANUAL MAIS LEVE
+Em Coleta eproc, use Novos, alterados e revisão periódica. Deixe Coleta detalhada desmarcada.
+A listagem é conferida; processos novos, alterados, prioritários, com falhas, sem marcador comparável ou com revisão periódica vencida podem ter os detalhes relidos.
+Audiências, perícias, documentos, alvarás, custas e depósitos ficam para a opção Coleta detalhada, que continua disponível.
+Nenhuma pausa protetora foi retirada. A melhoria reduz consultas extras, sem prometer prazo fixo para completar a execução.
+Falha de gravação local deixa o processo pendente de nova tentativa, mesmo se a página foi lida.
+
+INSTALAR TAREFA DIÁRIA DAS 6H
+1. Execute AGENDAR_COLETA_6H.bat no Windows.
+2. Digite login e senha de ADMINISTRADOR DO CONECTAADV, não as credenciais do tribunal.
+3. O assistente instala a tarefa ConectaAdv-Coleta-6h no Agendador do Windows, para o usuário atual.
+4. Confira em Coleta eproc o estado do agendamento e a data da primeira execução.
+5. Antes da primeira manhã, confirme uma coleta manual e a sessão do eproc nesta instalação.
+O primeiro agendamento após as 6h começa no dia seguinte; não dispara imediatamente ao configurar.
+
+COMO EXECUTA
+A tarefa inicia o serviço local caso ele não responda. Com serviço já aberto, sua rotina interna verifica o horário a cada 30 segundos.
+Executa uma tentativa por dia, incremental e sem consultas complementares, em navegador oculto usando o perfil dados_eproc/sessao.
+Seleciona ADVOGADO-TITULAR quando reconhecido pelo coletor existente.
+Não salva novas senhas do tribunal nem remove autenticação adicional.
+Se a sessão pedir login/2FA/CAPTCHA, encerra com estado requer_login. Faça coleta manual para renovar o acesso. Não há e-mail automático de falha do agendamento nesta entrega; confira o status/log em Coleta eproc.
+O computador precisa estar ligado ou poder despertar, ter internet e o mesmo usuário Windows conectado. A tela pode estar bloqueada. Não há garantia de execução no horário com computador desligado; o Agendador usa execução posterior quando disponível.
+Não inicia outra coleta enquanto a mesma instância do coletor estiver ativa. Não execute duas instalações simultâneas usando o mesmo perfil do navegador.
+Para desativar, execute DESATIVAR_COLETA_6H.bat e autentique o administrador do ConectaAdv.
+Apenas desabilitar a tarefa Windows não desliga o agendamento do serviço já aberto; use o assistente de desativação.
+
+COBERTURA E VALIDAÇÃO
+A origem atual continua sendo a listagem de citações/intimações com prazo aberto. Não é uma garantia de consultar todo o acervo, processos ausentes dessa lista ou todos os documentos judiciais.
+A leitura da página e a importação não dispensam conferência jurídica dos prazos.
+88 testes passaram, incluindo execução única por dia, horário, prevenção de sobreposição, pausa de autenticação e falha de gravação.
+A instalação da tarefa no Windows e a sessão eproc em modo oculto ainda precisam ser validadas no computador do usuário. Não foram testadas ao vivo nesta execução.
+Os recursos das versões anteriores permanecem incluídos.

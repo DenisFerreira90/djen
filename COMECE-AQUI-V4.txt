@@ -1,0 +1,91 @@
+ARA JURÍDICO — VERSÃO 4 / COLETA REAL ESTRUTURADA
+================================================
+27/10/2026
+
+IMPORTAR O ZIP QUE VOCÊ ENVIOU
+1. Pare a versão anterior (Ctrl+C) e faça backup das pastas dados_juridico e
+   dados_eproc. Mantenha o ZIP original da coleta guardado.
+2. Extraia esta versão em outra pasta.
+3. Copie as pastas dados_juridico e dados_eproc para a nova pasta djen para
+   continuar com os mesmos usuários, cadastros e histórico.
+4. Execute INICIAR.bat. Entre no sistema e atualize com Ctrl+F5.
+5. Abra Coleta eproc. Em "Recuperar uma coleta anterior", envie novamente:
+   eproc-20261026-205455-3d0b0cc7.zip
+6. Clique em Importar para o sistema. Essa nova versão estrutura o conteúdo
+   mesmo que o arquivo já tenha sido importado pela versão anterior.
+7. Aguarde o término. Não é necessário consultar o tribunal novamente para
+   aproveitar os dados que já existem nesse ZIP.
+8. Abra Processos e a ficha de uma amostra de processos. Use Eventos do eproc,
+   Linha do tempo, Partes e Prazos para conferir os dados.
+9. Na aba Importar / Excel, use Exportar Excel organizado.
+
+CONFERÊNCIA DO ARQUIVO REAL
+- 2.203 linhas na lista de citações/intimações pendentes.
+- 2.071 números de processos únicos. A diferença de 132 são ocorrências
+  adicionais desses mesmos processos, não prova de processos faltando.
+- 2.066 páginas de detalhes confirmam seu número principal de processo.
+- Cinco processos tiveram falha na leitura dos detalhes.
+- 131.401 registros de eventos estavam visíveis nas páginas coletadas.
+- 25.305 blocos de prazos apareceram nesses eventos, incluindo os encerrados
+  e aqueles de outras partes. Não são 25.305 tarefas abertas do escritório.
+- Todas as 2.203 linhas da lista têm vencimento. Não precisam receber a meta
+  interna de cinco dias por ausência de data.
+
+O EXTRATOR AGORA IDENTIFICA
+Número, classe, competência, autuação, situação na origem, órgão julgador,
+juiz, assunto/código de juízo quando disponíveis; partes e representantes
+pelos cabeçalhos e células da tabela; registro profissional/OAB/DPE quando
+explicitamente presente; vínculo do representante à parte da mesma célula;
+eventos, data/hora, descrição, usuário na origem e referências de documentos.
+Os prazos dos eventos preservam destinatário, situação na origem, quantidade
+de dias e datas iniciais/finais explícitas. Publicação/disponibilização são
+associadas à intimação apenas quando o evento faz referência explícita.
+Segundos das datas/horários são preservados.
+Não identifica cliente do escritório só por estar no polo autor.
+Não presume dias úteis, não recalcula datas e não deduz representação entre
+células diferentes. Nomes e documentos não criam contas de acesso ao sistema.
+
+AGENDA DA CONTA X HISTÓRICO DE TODAS AS PARTES
+As 2.203 intimações da lista da conta ficam no escopo lista_da_conta.
+Os prazos identificados nos eventos de todos os participantes ficam no escopo
+todas_as_partes, separados da agenda principal, inclusive os encerrados.
+O estado FECHADO vira encerrado_na_origem, não uma tarefa cumprida pelo escritório.
+Prazos da lista não são associados artificialmente a um evento quando esse
+identificador não foi exposto pela coleta. Linhas idênticas são preservadas
+como ocorrências distintas, pois podem representar intimações diferentes.
+No filtro da Agenda, é possível incluir o histórico de todas as partes.
+O número do painel é comparado às linhas da lista, não aos processos únicos;
+isso evita marcar essa coleta como incompleta só pela diferença 2.203/2.071.
+Não foram criados valores para campos ausentes; originais ficam na ficha.
+
+EXCEL ORGANIZADO
+As abas Processos, Partes, Prazos, Pessoas e demais cadastros permanecem.
+A aba Prazos contém a agenda da conta e os prazos cadastrados pela equipe.
+Historico prazos guarda os blocos de todas as partes dos eventos coletados.
+Eventos eproc contém os registros de eventos, vinculados pelo número do processo.
+A aba Auditoria é disponibilizada apenas ao administrador.
+É uma exportação potencialmente grande; aguarde sua geração.
+Os documentos são referências do eproc, não cópias dos anexos.
+Para restaurar integralmente os vínculos e o histórico, use o backup
+restaurável do banco. Reimportar abas soltas do Excel não é uma restauração.
+
+ATUALIZAÇÃO INCREMENTAL
+As leituras bem-sucedidas e as falhas do ZIP alimentam o controle incremental.
+Após importar o arquivo nesta versão, o modo Pendências/falhas pode tentar os
+cinco processos pendentes sem reabrir os 2.066 já concluídos; ainda precisa
+percorrer a lista para obter os links da sessão atual. Novos processos também
+são lidos. Mudanças na lista/revisão periódica seguem a regra da versão 3.
+Processos que saem da lista não são automaticamente considerados cumpridos:
+a ausência deve ser conferida na fonte.
+
+LIMITES
+A validação foi feita com o ZIP fornecido, não com uma nova sessão autenticada
+no TJRS. Somente eventos que estavam visíveis foram coletados; processos
+com mais eventos ou outras páginas de histórico podem ter informação adicional.
+Campos não reconhecidos e referências originais permanecem disponíveis.
+A interface ainda exige conferência de uso real, especialmente antes de usar
+as datas no acompanhamento do escritório. A extração não é validação jurídica.
+Guarde o ZIP original e confira uma amostra com a fonte.
+
+O guia COMECE-AQUI-V3.txt detalha importação XLSX/CSV, backup, contas,
+agenda, revisão interna de cinco dias e modos de coleta.

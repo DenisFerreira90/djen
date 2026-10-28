@@ -1,0 +1,26 @@
+ConectaAdv — Versão 9 — Triagem indicativa de mandados
+
+ATUALIZAR
+1. Pare o servidor antigo (Ctrl+C) e faça backup.
+2. Extraia este ZIP em uma nova pasta.
+3. Copie dados_juridico e dados_eproc antigos para dentro da nova pasta djen.
+4. Execute INICIAR.bat e atualize o navegador com Ctrl+F5.
+5. Abra Mandados e veículos; use Varrer eventos agora.
+
+FUNCIONAMENTO
+A cada minuto, com servidor ligado, examina novos eventos já importados.
+Persiste alertas, evita duplicação e registra revisão por usuário.
+A tela e o contador do menu atualizam a cada 30 segundos com sessão aberta.
+São indícios por texto: expedição, possível cumprimento, negativas e alterações.
+Inclui mandados em geral; nem todo alerta diz respeito a veículo.
+Confira o documento: a triagem não lê todos os documentos e não confirma situação jurídica.
+Ausência de alerta não significa ausência de mandado.
+
+LIMITES DE ACOMPANHAMENTO
+Esta rotina NÃO faz uma nova consulta periódica ao tribunal.
+Execute Coleta eproc para trazer novidades com sessão válida.
+Varredura local e atualização da fonte são operações diferentes.
+E-mail e WhatsApp NÃO estão conectados nesta versão.
+Para habilitar envio externo, é necessário configurar o serviço e os destinatários da equipe.
+Não há envio automático ao cliente nem peticionamento.
+Sem servidor ligado, não há varredura.

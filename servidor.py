@@ -7,6 +7,8 @@ Não armazena os resultados e não requer contas/credenciais.
 from __future__ import annotations
 
 import argparse
+import eproc
+import juridico_http
 import datetime as dt
 from html.parser import HTMLParser
 import json
@@ -27,7 +29,7 @@ API_URL = 'https://comunicaapi.pje.jus.br/api/v1/comunicacao'
 USER_AGENT = 'DJEN-Consulta-VSCode/1.0'
 MAX_REMOTE_BYTES = 24 * 1024 * 1024
 BATCH_SIZE = 100
-ALLOWED_STATIC = {'/', '/index.html', '/css/style.css', '/js/app.js'}
+ALLOWED_STATIC = {'/', '/index.html', '/css/style.css', '/js/app.js', '/js/eproc.js', '/consulta.html', '/css/juridico.css', '/js/juridico.js', '/js/organizacao.js', '/js/mandados.js', '/js/chat.js', '/js/chat-alertas.js', '/js/chat-visualizacao.js', '/js/chat-escritorio.js', '/img/chat-icon.svg', '/js/painel-operacional.js', '/js/calendario.js', '/js/servico-coleta.js', '/js/dados.js'}
 FIELD_LIMITS = {
     'numeroOab': 32, 'ufOab': 2, 'nomeAdvogado': 140,
     'numeroProcesso': 32, 'nomeParte': 140, 'siglaTribunal': 12,
@@ -227,8 +229,51 @@ def query_cnj(filters: dict, page: int) -> dict:
 class Handler(BaseHTTPRequestHandler):
     server_version = 'DJENConsulta/1.0'
 
+    def setup(self):
+        super().setup()
+        self.connection.settimeout(30)
+
+    def end_headers(self):
+        self.send_header('Referrer-Policy','no-referrer')
+        self.send_header('X-Frame-Options','DENY')
+        self.send_header('X-Content-Type-Options','nosniff')
+        super().end_headers()
+
+    def check_access(self,method):
+        import rede_piloto,juridico
+        try:rede_piloto.check(self,method);return True
+        except juridico.AppError as e:self.send_json(e.code,{'ok':False,'erro':str(e)});return False
+
     def do_GET(self):
+        if not self.check_access('GET'):return
+        if juridico_http.handle(self, 'GET'):
+            return
         path = urllib.parse.urlsplit(self.path)
+        if path.path.startswith('/api/eproc/'):
+            allowed_hosts = ('127.0.0.1:' + str(self.server.server_address[1]),
+                             'localhost:' + str(self.server.server_address[1]))
+            if self.headers.get('Host') not in allowed_hosts:
+                return self.send_json(403, {'ok': False, 'erro': 'Host não permitido.'})
+        if path.path == '/api/eproc/status':
+            return self.send_json(200, eproc.collector.status())
+        if path.path == '/api/eproc/exportar':
+            params = urllib.parse.parse_qs(path.query)
+            run = params.get('id', [''])[0]
+            if not re.fullmatch(r'\d{8}-\d{6}-[a-f0-9]{8}', run):
+                return self.send_json(400, {'ok': False, 'erro': 'Exportação inválida.'})
+            file = eproc.collector.data / run / 'exportacao.zip'
+            if not file.is_file():
+                return self.send_json(404, {'ok': False, 'erro': 'Exportação ainda não disponível.'})
+            content = file.read_bytes()
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/zip')
+            self.send_header('Content-Disposition', 'attachment; filename="eproc-' + run + '.zip"')
+            self.send_header('Content-Length', str(len(content)))
+            self.send_header('Cache-Control', 'private, no-store')
+            self.send_header('X-Content-Type-Options', 'nosniff')
+            self.end_headers()
+            self.wfile.write(content)
+            return
         if path.path == '/api/buscar':
             try:
                 filters, page = validate_query(path.query)
@@ -246,7 +291,7 @@ class Handler(BaseHTTPRequestHandler):
                 raise
             return
         if path.path == '/api/health':
-            return self.send_json(200, {'ok': True, 'servidor': 'Python', 'api': 'CNJ'})
+            return self.send_json(200, {'ok': True, 'servidor': 'Python', 'api': 'CNJ', 'versao':'8.0'})
         if path.path not in ALLOWED_STATIC:
             return self.send_json(404, {'ok': False, 'erro': 'Arquivo não encontrado.'})
         item = 'index.html' if path.path == '/' else path.path.lstrip('/')
@@ -267,6 +312,32 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(content)
 
+    def do_POST(self):
+        if not self.check_access('POST'):return
+        if juridico_http.handle(self, 'POST'):
+            return
+        path = urllib.parse.urlsplit(self.path).path
+        if path not in ('/api/eproc/iniciar', '/api/eproc/continuar', '/api/eproc/cancelar'):
+            return self.send_json(404, {'ok': False, 'erro': 'Rota não encontrada.'})
+        # Local-only mutations; disallow cross-origin forms and DNS rebinding.
+        expected_host = '127.0.0.1:' + str(self.server.server_address[1])
+        host = self.headers.get('Host', '')
+        origin = self.headers.get('Origin')
+        if (host not in (expected_host, expected_host.replace('127.0.0.1', 'localhost'))
+                or (origin and origin != 'http://' + host)
+                or self.headers.get('Content-Type') != 'application/json'):
+            return self.send_json(403, {'ok': False, 'erro': 'Acesso permitido apenas pela aplicação local.'})
+        try:
+            size = int(self.headers.get('Content-Length', '0'))
+            if size < 0 or size > 100:
+                raise ValueError('Requisição inválida.')
+            self.rfile.read(size)
+            action = path.rsplit('/', 1)[-1]
+            output = eproc.collector.start() if action == 'iniciar' else eproc.collector.action(action)
+            self.send_json(200, output)
+        except ValueError as exc:
+            self.send_json(400, {'ok': False, 'erro': str(exc)})
+
     def send_json(self, status: int, payload: dict, extra_headers: dict | None = None):
         body = json.dumps(payload, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
         self.send_response(status)
@@ -281,30 +352,57 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def log_message(self, fmt, *args):
+        if self.command == 'GET' and urllib.parse.urlsplit(self.path).path == '/api/eproc/status' and len(args) > 1 and str(args[1]) == '200':
+            return
         print('[DJEN] %s: %s' % (self.address_string(), fmt % args))
 
 
 def main():
     parser = argparse.ArgumentParser(description='Consulta DJEN local (VS Code / Python)')
-    parser.add_argument('--porta', type=int, default=int(os.environ.get('DJEN_PORT', '8765')))
+    parser.add_argument('--porta', type=int, default=None)
     parser.add_argument('--sem-navegador', action='store_true', help='Não abrir navegador automaticamente')
+    parser.add_argument('--rede',help='Arquivo de configuração do proxy HTTPS LAN/VPN')
+    parser.add_argument('--piloto-chat',action='store_true',help='Disponibilizar somente chat, usuários e auditoria')
+    parser.add_argument('--chat-independente',action='store_true',help='Chat em banco exclusivo dados_chat/chat.sqlite3 e porta 8766')
     args = parser.parse_args()
+    import juridico
+    if args.chat_independente:
+        import chat_servico
+        args.piloto_chat=True
+        juridico.store=juridico.Store(chat_servico.CHAT_PATH)
+        if not chat_servico.CHAT_PATH.is_file():parser.error('Execute MIGRAR_CHAT.bat primeiro. Nenhum banco do chat foi criado.')
+    if args.porta is None:args.porta=8766 if args.chat_independente else int(os.environ.get('DJEN_PORT','8765'))
+    policy=None
+    if args.rede:
+        if not args.piloto_chat:parser.error('O acesso de rede está liberado apenas para o piloto de chat.')
+        import rede_piloto,juridico
+        try:policy=rede_piloto.load(args.rede)
+        except (ValueError,OSError,KeyError):parser.error('Configuração de rede inválida. Use CONFIGURAR_PILOTO_REDE.bat.')
+        if juridico.store.setup_needed():parser.error('Crie primeiro a conta administradora com INICIAR.bat no modo local.')
     if not 1024 <= args.porta <= 65535:
         parser.error('Escolha uma porta entre 1024 e 65535.')
     try:
         server = ThreadingHTTPServer(('127.0.0.1', args.porta), Handler)
     except OSError as exc:
         parser.error('Não foi possível abrir a porta %d: %s' % (args.porta, exc))
-    url = 'http://127.0.0.1:%d/' % args.porta
+    server.rede_piloto=policy;server.chat_only=args.piloto_chat;server.chat_independente=args.chat_independente
+    import chat_servico
+    server.chat_externo=not args.chat_independente and chat_servico.CHAT_PATH.is_file()
+    url = policy['origem']+'/' if policy else 'http://127.0.0.1:%d/' % args.porta
     print('\n' + '=' * 60)
-    print(' DJEN CONSULTA SIMPLES — VSCODE / PYTHON')
+    print(' ConectaAdv — Chat independente' if args.chat_independente else ' ConectaAdv — Gestão jurídica e eproc')
     print(' Acesse: ' + url)
     print(' Sem XAMPP, PHP, Docker, MySQL ou ambiente virtual')
-    print(' Para encerrar: Ctrl+C')
+    print(' Para encerrar apenas este serviço: Ctrl+C')
     print('=' * 60 + '\n')
     if not args.sem_navegador:
         threading.Timer(0.8, lambda: webbrowser.open(url, new=2)).start()
     try:
+        import mandados, juridico
+        if not args.piloto_chat:
+            mandados.start(juridico.store)
+            import agendamento,eproc
+            agendamento.start(juridico.store,eproc.collector)
         server.serve_forever(poll_interval=0.2)
     except KeyboardInterrupt:
         print('\nEncerrando DJEN Consulta...')

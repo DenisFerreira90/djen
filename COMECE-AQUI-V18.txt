@@ -1,0 +1,36 @@
+ConectaAdv — Versão 18 — Organização por proximidade
+
+ATENÇÃO ANTES DE DEIXAR COLETANDO
+Esta versão reorganiza a interface. NÃO acrescenta paginação integral dos eventos, coleta de todos os documentos ou cobertura de todos os processos. A coleta atual continua limitada ao fluxo/listagem documentados nas versões anteriores. Não há garantia de amanhecer com o acervo inteiro completo.
+O módulo de RH ainda não existe. A versão anterior trouxe calendários, delegação entre setores e guia de evolução para RH.
+
+ATUALIZAÇÃO
+Aguarde a coleta terminar ou use Cancelar e preservar. Faça backup, pare o servidor e extraia em pasta nova. Copie dados_juridico e dados_eproc para djen; execute INICIAR.bat e Ctrl+F5. Mudança de pasta pode exigir reconfigurar e-mail e a tarefa Windows.
+
+MENU AGRUPADO
+Rotina: visão geral, calendários da equipe, agenda de prazos, tarefas e comunicação.
+Jurídico: processos, pessoas/clientes, cadastro de prazos, mandados e documentos.
+Controladoria: pendências e recuperação de fichas.
+Dados e atualização: coleta manual, serviço de atualização e central de dados.
+Administração: financeiro, contas/acessos e auditoria, mantendo as permissões anteriores.
+As seções podem ser abertas ou recolhidas. A seção da tela atual é aberta ao navegar.
+
+CENTRAL DE DADOS
+Importar planilha: arquivo, escolha de colunas, prévia e confirmação.
+Recuperar coleta: ZIP de coleta ou processos.json.
+Exportar dados: Excel e, para administradores, JSON.
+Backup e restauração: cópia restaurável e restauração ficam juntas. Restauração aparece recolhida e exige confirmação. Restrito ao administrador.
+Os controles de backup antes presentes na importação de Excel foram movidos para cá. Exportações foram retiradas da tela de coleta para não duplicar caminhos.
+
+OUTRAS TELAS
+Coleta: controles e progresso em primeiro plano; log técnico e execuções anteriores recolhidos. Agendamento fica na tela de serviço.
+Dashboard: indicadores agrupados por prazos/conferência, trabalho/urgências, qualidade do cadastro/consultas e financeiro. O financeiro mantém a restrição do novo dashboard. Não há salto automático para a lista ao abrir a página.
+Ficha do processo: andamento e conferência próximos; atualização individual e origem/evidências ficam em seções recolhidas. Auditoria do cadastro recebeu nome explícito, sem confundir com o histórico do tribunal.
+Importação de Excel: atualizações de prévia passam pela renderização principal, evitando empilhar cópias do formulário.
+
+LIMITES DE VALIDAÇÃO
+Sintaxe dos scripts e estrutura da navegação verificadas. A revisão visual no navegador do usuário continua necessária.
+Nenhuma mudança nas regras jurídicas, na autenticação, na capacidade do coletor ou nas permissões das APIs antigas.
+Consulte os guias anteriores para os limites de coleta, chat, agenda e uso em rede.
+
+A suíte existente de 94 testes passou após a reorganização. Esses testes não substituem a conferência visual das telas no navegador.

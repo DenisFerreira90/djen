@@ -1,0 +1,42 @@
+ConectaAdv — Versão 17 — Calendários delegados e fila de atualização
+
+ATUALIZAR
+Faça backup, encerre a coleta e pare o servidor. Extraia em pasta nova e copie dados_juridico e dados_eproc para djen. Execute INICIAR.bat e Ctrl+F5. Atualizar em outra pasta pode exigir reconfigurar Gmail e reinstalar a tarefa Windows.
+
+EXEMPLO: CONSIGNADOS MARCA PARA CONTRATAÇÃO
+1. Cadastre os usuários em Usuários e crie o grupo de setor Consignados no chat, como administrador.
+2. Abra Calendários compartilhados. Cada usuário ativo terá sua agenda pessoal.
+3. Selecione a agenda da pessoa da Contratação, ou crie um calendário compartilhado Contratação.
+4. Em Delegar acesso, conceda ao setor Consignados o papel Agendar. Conceda Ver ou Agendar aos integrantes da Contratação que precisam acompanhar. O responsável escolhido deve ter acesso ao calendário.
+5. Consignados entra na própria conta, escolhe esse calendário, marca cliente, responsável, início/fim, contato e local.
+6. A pessoa de Contratação abre o mesmo calendário e vê o compromisso. Na agenda pessoal, o próprio titular já tem acesso de gestão.
+
+PERMISSÕES E LIMITES DA AGENDA
+Ver: consulta os compromissos do calendário. Agendar: cria e altera compromissos. Gerenciar: também delega acesso.
+Administradores gerenciam todas as agendas; titulares gerenciam a própria agenda. Demais acessos precisam ser concedidos diretamente ou por grupo de setor.
+A delegação por setor acompanha a composição do grupo do chat. Leitor continua apenas leitura, mesmo com delegação de edição.
+Compromissos podem ser marcados, confirmados, realizados ou cancelados. Histórico das mudanças fica na auditoria administrativa.
+Bloqueia sobreposição de compromissos ativos do mesmo responsável, inclusive em calendários diferentes, e edição sobre versão antiga. Compromissos cancelados não bloqueiam horário.
+Visualização de sete dias a partir da data escolhida, em horário de Brasília. Não há sincronização com Google Agenda, recorrência, lembretes por e-mail nem convite externo nesta versão.
+Pessoas com acesso a uma agenda veem seus compromissos completos. Não há eventos privados dentro de um calendário compartilhado. Use calendários separados para acesso restrito.
+Não use esta agenda para armazenar prontuários, documentos médicos ou salários. RH confidencial exige módulo próprio.
+Essa agenda de atendimento não calcula nem altera prazos judiciais.
+
+SERVIÇO DE ATUALIZAÇÃO
+Administradores: abra Serviço de atualização.
+Escolha diariamente às 6h, manhã às 6h/tarde às 13h ou a cada hora. Defina orçamento entre 10 e 55 minutos e escolha se inclui consultas complementares.
+Ative e salve. Não inicia imediatamente: aguarda a próxima janela elegível.
+O servidor precisa permanecer ligado. A tarefa Windows pode continuar iniciando o serviço pela manhã, mas não substitui o servidor durante as outras janelas.
+A rotina usa a sessão eproc salva e não cria novo mecanismo de armazenamento de senha/2FA. Se o tribunal pedir autenticação, continua exigindo intervenção.
+A fila persiste processos pendentes, em leitura, para retentar ou concluídos. URLs e hashes não são gravados na fila.
+Processos interrompidos voltam à fila na próxima rodada em que aparecerem na listagem. Falhas têm intervalo de retentativa de 30 minutos.
+Consulta detalhada pode recolocar na fila processos sem registro das consultas complementares, mesmo quando os detalhes básicos já foram lidos.
+O orçamento é cooperativo: uma chamada de rede, importação ou gravação em andamento pode ultrapassá-lo. Não é garantia de terminar em uma hora nem de cobrir todo o acervo.
+A fonte ainda é a listagem de prazos abertos; não inclui descoberta geral por CPF/CNPJ ou todas as áreas/documentos do tribunal. Processos ausentes não são excluídos nem marcados como concluídos pela fila.
+Não peticiona nem altera registros do tribunal.
+
+VALIDAÇÃO
+Testes de agenda cobrem delegação entre setores, retirada de acesso, conflitos de horário, versões e permissões. Testes de fila cobrem retomada e proteção de hashes.
+A integração eproc ao vivo, o orçamento com chamadas reais e o layout do calendário ainda precisam de conferência no computador do usuário.
+A instalação continua local; uso simultâneo por computadores diferentes requer servidor central com HTTPS e revisão de segurança.
+Consulte GUIA-EVOLUCAO-ESCRITORIO.md para prioridades de RH, permissões e prevenção de falhas.

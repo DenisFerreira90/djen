@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const {chatVisibleEnough:visible,chatReceiptLabel:label}=require('../js/chat-visualizacao.js');
+assert.equal(visible({top:20,bottom:80},{top:0,bottom:100}),true);
+assert.equal(visible({top:120,bottom:200},{top:0,bottom:100}),false);
+assert.equal(visible({top:95,bottom:195},{top:0,bottom:100}),false);
+assert.equal(visible({top:-200,bottom:300},{top:0,bottom:100}),true);
+assert.equal(label(null),'');
+assert.equal(label({estado:'visualizada'}),'✓✓ Visualizada');
+assert.equal(label({estado:'recebida'}),'✓✓ Recebida');
+assert.equal(label({estado:'enviada',visualizadas:1,total:3}),'✓ Enviada · 1/3 visualizaram');
+console.log('8 cenários de visualização e rótulos aprovados.');

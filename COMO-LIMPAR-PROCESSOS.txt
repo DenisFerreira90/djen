@@ -1,0 +1,37 @@
+Limpeza dos processos importados — complemento para ConectaAdv v23
+
+1. Extraia estes três arquivos dentro da mesma pasta djen que contém servidor.py.
+2. Pare a coleta e feche a janela do servidor jurídico (INICIAR.bat). Pause tarefas
+   agendadas/serviço de coleta para não iniciar durante a manutenção.
+   O chat independente pode continuar aberto: ele usa outro banco.
+3. Execute LIMPAR_PROCESSOS_IMPORTADOS.bat.
+4. Confira a prévia, informe sua conta administradora do sistema jurídico e digite
+   LIMPAR PROCESSOS. O backup é criado ANTES da exclusão; se falhar, não apaga dados.
+5. Abra INICIAR.bat e inicie a coleta nova da versão 23.
+
+Escopo: processos criados pelas importações e seus registros importados vinculados,
+como partes, prazos, anotações e revisões automáticas. Dados coletados de eventos,
+relatórios, evidências, alertas de mandados e fila incremental desses processos são
+removidos do banco ativo para permitir a releitura.
+
+Preserva usuários, chat, pessoas/clientes, calendários, lista de acompanhamento,
+auditoria, backups, configurações e a sessão de login do eproc. Processos criados
+manualmente não são removidos. Registros vinculados criados/alterados manualmente
+e lançamentos financeiros são preservados, mas perdem o vínculo ao processo removido,
+com uma observação de origem. Não é um apagamento completo de dados pessoais.
+
+Não apaga as pastas das execuções antigas, seus ZIPs, logs ou sua lista de execuções
+anteriores. O original ainda pode existir nesses arquivos e na auditoria. Não os
+reimporte se quer começar a coleta do zero. A limpeza não afeta o tribunal.
+
+O backup completo do banco jurídico fica em dados_juridico/backups, com nome
+antes-limpar-processos-...sqlite3. Para recuperar tudo: pare o servidor, guarde uma
+cópia do banco atual, copie o backup sobre dados_juridico/juridico.sqlite3 e reinicie.
+Esse procedimento reverte a base jurídica inteira ao momento anterior à limpeza.
+Não substitua dados_chat/chat.sqlite3 nem apague dados_eproc/sessao.
+
+Para apenas visualizar a prévia sem modificar dados, execute:
+python limpar_processos.py
+
+Passaram seis testes com bancos temporários: escopo, backup, preservação de trabalho
+manual/chat, falha de backup, vínculos inesperados e reutilização de identificadores. Não foi executada no seu computador.

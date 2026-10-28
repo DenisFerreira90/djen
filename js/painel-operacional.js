@@ -1,0 +1,14 @@
+'use strict';
+window.PainelOperacional={async render(){
+ const {api,head,card,el,button,table,showDetail,userName,day,S}=window.Juridico;
+ head('Prioridades do escritório','Prazos, urgências e pendências que precisam de ação.');
+ const d=await api('painel-operacional'),intro=card();intro.append(el('p','',d.escopo+' · '+day(d.data)),el('p','callout warn','Fatais usam as datas cadastradas, sem recalcular calendário judicial. Prazos sem conferência exigem revisão. Falta de checagem não significa falta de movimentação.'));
+ const labels={fatais_vencidos:'Fatais vencidos',fatais_hoje:'Fatais de hoje',fatais_amanha:'Fatais de amanhã',fatais_7_dias:'Fatais em 7 dias',prazos_sem_conferencia:'Prazos sem conferência',tarefas_urgentes:'Tarefas urgentes',tarefas_atrasadas:'Tarefas atrasadas',documentos_em_revisao:'Documentos em revisão',processos_sem_responsavel:'Processos sem responsável',processos_sem_checagem:'Sem registro de checagem',processos_desatualizados:'Sem checagem hoje',prazos_sem_data:'Prazos sem data',mandados_pendentes:'Mandados aguardando revisão',falhas_consulta:'Falhas de consulta',financeiro_vencido:'Financeiro vencido'};
+ const groups=[['Prazos e conferência',['fatais_vencidos','fatais_hoje','fatais_amanha','fatais_7_dias','prazos_sem_conferencia','prazos_sem_data']],['Trabalho e urgências',['tarefas_urgentes','tarefas_atrasadas','mandados_pendentes','documentos_em_revisao']],['Qualidade dos cadastros e consultas',['processos_sem_responsavel','processos_sem_checagem','processos_desatualizados','falhas_consulta']],['Financeiro',['financeiro_vencido']]];
+ const grids={};for(const [title,keys] of groups){const available=keys.filter(k=>k in d.contagens);if(!available.length)continue;const section=el('details','dashboard-group');section.open=title==='Prazos e conferência';section.append(el('summary','',title));const grid=el('div','stats');section.append(grid);document.getElementById('content').append(section);for(const key of available)grids[key]=grid;}
+ const details=card();
+ function show(key,scroll=true){details.replaceChildren();details.append(el('h2','',labels[key]),el('p','',`${d.contagens[key]} registros · mostra até ${d.limite_lista}.`));table(['Registro','Vencimento','Responsável'],d.listas[key].map(r=>[button(r.titulo,()=>showDetail(r.id),'link'),day(r.vencimento),userName(r.responsavel_id)]),details);if(scroll)details.scrollIntoView({block:'nearest',behavior:'smooth'});}
+ for(const [key,value] of Object.entries(d.contagens)){const item=el('div','stat');item.append(el('span','',labels[key]),el('strong','',value),button('Ver pendências',()=>show(key),'link'));grids[key].append(item);}
+ show('fatais_hoje',false);
+ const messages=await api('chat/conversas'),unread=messages.reduce((n,c)=>n+c.nao_lidas,0),communication=card();communication.append(el('h2','',`Comunicação · ${unread} mensagens não lidas`),button('Abrir chat interno',()=>window.Juridico.go('chat'),'primary'));
+}};

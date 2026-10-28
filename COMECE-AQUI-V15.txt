@@ -1,0 +1,25 @@
+ConectaAdv — Versão 15 — Setores, ramais e painel lateral
+
+Faça backup e pare o servidor. Extraia numa pasta nova; copie dados_juridico e dados_eproc para djen. Execute INICIAR.bat e Ctrl+F5. Mudança de pasta pode exigir reconfigurar Gmail.
+
+GRUPOS DE SETOR
+Somente contas com perfil administrador criam e renomeiam grupos ou alteram integrantes, inclusive grupos antigos. Se houver outros administradores, também terão essa permissão.
+Em Comunicação interna, Nova conversa / setor > Grupo de setor, informe nome e selecione integrantes.
+O setor é organizado pelo grupo; não há vínculo automático com cargos ou permissões de acesso aos processos.
+A equipe pode conversar dentro de seus grupos e abrir conversa individual com qualquer colega de outro setor. Não acessa conversas de grupos dos quais não participa.
+Perfil leitor mantém apenas leitura.
+
+COLEGAS E RAMAIS
+Abra Colegas e ramais — todos os setores. O administrador pode alterar nome e ramal; ramal é opcional.
+Ao abrir um grupo, Participantes mostra seus integrantes e ramais.
+
+PAINEL LATERAL
+Um botão Conversas aparece no canto inferior direito nas outras telas, após a primeira verificação de até cinco segundos.
+O contador avisa mensagens não lidas. Clique para abrir o painel lateral; escolha pessoa ou grupo e converse sem sair da tela principal.
+O painel permanece ao navegar, pode ser fechado e encerra no logout. Mensagens não abrem automaticamente e não há notificações push com o navegador fechado.
+Acesso administrativo aos históricos mantém motivo e auditoria, conforme versão 14.
+
+VALIDAÇÃO E LIMITES
+84 testes automatizados passaram. Sintaxe JavaScript verificada. Painel lateral, microfone e layout ainda precisam de conferência no navegador real.
+A instalação continua local. O uso simultâneo entre computadores exige servidor central com HTTPS e revisão das permissões de rede. Esta entrega não expõe o servidor na rede.
+Leia COMECE-AQUI-V14.txt para demais limites do chat e do dashboard.

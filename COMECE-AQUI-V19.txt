@@ -1,0 +1,54 @@
+ConectaAdv — Versão 19 — Preparação do piloto de chat na LAN/VPN
+
+O QUE FOI ENTREGUE
+Modo opcional que disponibiliza somente chat, contas, auditoria e backup administrativo, com bloqueio dos outros endpoints no servidor. Preparação de origem HTTPS, cookies Secure e restrição de redes via proxy local.
+A rede, a VPN, o certificado e o firewall do usuário NÃO foram alterados por esta entrega. Não é implantação concluída nem homologação de produção.
+
+TESTAR AGORA EM CASA
+1. Faça backup, encerre a coleta e pare o servidor anterior.
+2. Extraia o ZIP em pasta nova. Copie dados_juridico e dados_eproc para djen, se quiser manter os dados.
+3. Execute INICIAR_CHAT_LOCAL.bat.
+4. Entre como administrador; crie uma conta individual de equipe em Contas e acessos.
+5. Abra uma janela anônima ou outro navegador e entre com essa segunda conta.
+6. Teste conversa individual, grupo de setor, texto, foto, arquivo, áudio e leitura.
+7. Apenas administradores criam grupos e gerenciam nomes/ramais. Leitor permanece apenas leitura.
+8. Confira que a conta de equipe não vê conversas alheias nem consegue alterar grupos.
+9. Use Baixar backup do banco, no chat administrativo, para a cópia restaurável.
+O modo de chat não inicia coleta eproc, organização automática nem envios automáticos de e-mail. INICIAR.bat continua disponível para o modo local completo, em outra execução, nunca simultaneamente sobre o mesmo perfil.
+
+PREPARAR O ESCRITÓRIO COM O TI
+Escolha um computador dedicado, com IP privado fixo, disco e backup suficientes, conectado por cabo e que não durma durante o uso.
+Precisamos do IP do servidor, faixa CIDR da LAN, faixa CIDR da VPN e endereço HTTPS interno. O TI pode usar um nome resolvido pelo DNS interno/VPN ou o IP privado. Não é necessário publicar um site na internet para esse piloto.
+Acesso de fora deve ocorrer apenas depois de conectar a VPN do escritório.
+
+1. Instale Python e as dependências que o sistema já exige. Crie primeiro a conta administradora pelo modo local. A porta padrão interna da aplicação é 8765, presa a 127.0.0.1.
+2. Instale Caddy oficial no computador servidor, no PATH: https://caddyserver.com/download . O executável não está incluído no pacote.
+3. Execute CONFIGURAR_PILOTO_REDE.bat. Informe o endereço HTTPS interno, IP privado fixo e as redes LAN/VPN autorizadas. O assistente gera piloto-rede.json e Caddyfile; não altera firewall, DNS ou roteador.
+4. O TI deve revisar Caddyfile, configurar o DNS/VPN quando houver nome interno e liberar apenas a porta HTTPS escolhida para as faixas autorizadas, no firewall do computador. Não encaminhe essa porta publicamente no roteador. Não exponha a porta 8765.
+5. O Caddyfile usa tls internal: a autoridade certificadora interna deve ser confiada nos computadores e celulares da equipe, pelo TI. Distribua apenas o certificado público da autoridade, nunca sua chave privada. Não ignore avisos de certificado. Consulte https://caddyserver.com/docs/automatic-https .
+6. Pare a instalação local anterior. Execute INICIAR_CHAT_ESCRITORIO.bat e INICIAR_PROXY_HTTPS.bat no servidor. Os dois processos devem permanecer abertos durante o piloto. O segundo comando valida o Caddyfile antes de iniciar.
+7. A equipe abre o endereço HTTPS configurado e entra com contas individuais. O navegador não acessa o arquivo SQLite diretamente. O banco permanece no computador servidor.
+8. Não execute simultaneamente a tarefa Windows de coleta dessa mesma instalação: o piloto desliga os coletores e não deve ser usado junto de outro servidor apontando para o mesmo banco/perfil. Desative o agendamento antigo antes do piloto dedicado.
+Não há instalação de serviço Windows com reinício automático nesta entrega. O TI deve definir esse passo após validar o piloto.
+
+ROTEIRO DE ACEITE ANTES DA EQUIPE
+- Duas contas em dois computadores da LAN trocam mensagens e arquivos.
+- A conta de equipe não cria/renomeia grupos nem muda ramais.
+- Um usuário fora do grupo não lê mensagens nem baixa anexos dele.
+- Ao remover alguém do grupo, seu próximo acesso é negado. Arquivos já baixados não são apagados do dispositivo.
+- Acesso administrativo a conversas alheias exige motivo e gera auditoria.
+- Da rede externa sem VPN o serviço não é acessível; com VPN autorizada o chat abre.
+- Certificado aparece confiável; a gravação de áudio pede permissão de microfone e funciona no HTTPS escolhido.
+- Logout, usuário desativado e sessão expirada bloqueiam novo acesso.
+- Em modo piloto, processos, eproc, financeiro e calendários são negados pela API, não só escondidos no menu.
+- Backup é baixado por administrador e restaurado em uma cópia local separada para conferir mensagens e anexos.
+
+DOCUMENTOS DOS PROCESSOS
+A proposta permanece: catálogo permanente e cópias temporárias sob demanda, com proteção contra exclusão de documentos escolhidos para guarda. Ainda NÃO foi implementado o download autenticado, cache, limite de espaço ou limpeza automática dos documentos do eproc. Nada é excluído no tribunal.
+Os anexos do CHAT continuam persistidos no banco e no backup; não são apagados automaticamente por uma política de cache de documentos judiciais.
+
+VALIDAÇÃO
+96 testes automatizados passaram, incluindo origem, rede autorizada, cookies Secure, bloqueio de APIs fora do piloto e permissões de chat.
+Os testes de proxy usam cabeçalhos simulados no servidor local. Não substituem validação real do Caddy, certificados, firewall, VPN, mídia e vários computadores.
+A interface e o uso real com múltiplos navegadores precisam de conferência. Não houve teste de carga nem auditoria de segurança independente. O servidor Python atual deve ser tratado como piloto restrito, não como plataforma pronta para exposição pública.
+Antes de liberar todos os módulos em rede, é necessário concluir a revisão de permissões das APIs antigas.

@@ -1,0 +1,93 @@
+ConectaAdv — Versão 25 — Grupos, unidades e avisos direcionados
+
+ATUALIZAR
+Se uma coleta estiver em execução, aguarde encerrar antes de trocar a versão/copiar dados.
+Faça backup e feche os servidores. Extraia em pasta nova. Copie dados_juridico,
+dados_eproc e, quando existir, dados_chat da instalação anterior. Não repita a migração
+do chat se a base independente já existe. Inicie pelos mesmos atalhos e use Ctrl+F5.
+As tabelas novas são acrescentadas automaticamente; o histórico existente é preservado.
+Mantém a coleta da versão 23 e as configurações de visualização da versão 24.
+
+O QUE APARECE NA LATERAL
+Conversas, grupos de setores e avisos, com busca e filtros Todas / Pessoas / Grupos / Avisos.
+Um filtro adicional mostra a unidade atribuída à pessoa/grupo. O Geral permanece visível
+para todas as unidades, porque é do escritório inteiro.
+Cada usuário acessa as conversas de que participa. Ver o diretório dos colegas não libera
+histórico de outros setores. O proprietário conserva a auditoria com justificativa.
+Grupos existentes continuam presentes; cadastrar uma unidade não cria grupos nem
+atribui pessoas automaticamente. Ainda é necessário informar os nomes reais dos setores.
+
+ABRIR, MINIMIZAR E FECHAR
+Ao abrir conversas, aparecem pequenas abas no alto. Uma conversa é exibida por vez;
+as demais permanecem acessíveis nas abas, sem criar várias janelas sobre o trabalho.
+- — no cabeçalho da conversa: minimiza só ela e volta à lista.
+- ×: fecha a aba, sem apagar mensagens nem sair do grupo.
+- ⋯ junto das abas: Minimizar todas ou Fechar todas.
+- Alfinete: mantém o painel aberto ou fixa uma conversa na lista, conforme o local.
+As abas abertas pertencem à sessão atual do navegador. Históricos, grupos e preferências
+continuam no servidor e podem ser acessados em outro computador.
+Fechar uma aba não silencia o grupo; para isso use Silenciar conversa.
+
+DUAS UNIDADES JÁ CADASTRADAS
+Principal — 805
+Endereço: Ramiro Barcelos, 805. Atendimento a clientes: SIM.
+Casa 2 — 787
+Endereço: Ramiro Barcelos, 787. Atendimento a clientes: NÃO.
+São cadastros internos de organização. Não alteram agenda de atendimento, rede ou VPN.
+Nenhuma pessoa, inclusive a conta proprietária, foi atribuída a uma unidade por suposição.
+
+CONFIGURAR A EQUIPE — SOMENTE PROPRIETÁRIO
+Engrenagem > Configurações > Unidades e setores.
+1. Em Pessoas por unidade, selecione a unidade de cada pessoa e clique Salvar.
+2. Crie os grupos reais dos setores em Nova conversa / setor e adicione os integrantes.
+3. Em Grupos que representam setores, marque quais grupos são setores e sua unidade.
+   Um setor entre unidades pode ficar sem unidade específica.
+4. Nomes, endereços e indicação de atendimento das duas unidades podem ser ajustados.
+Administrador delegado do chat não pode reorganizar unidades/setores nessa configuração.
+A classificação de um grupo como setor não altera seus integrantes automaticamente.
+A unidade de uma pessoa também não concede acesso a todos os grupos daquela unidade.
+
+COMUNICADO OU ALERTA
+Opções e administração > Novo comunicado / alerta.
+Disponível ao proprietário e a quem possui permissão de publicação no Geral; perfil
+leitor não publica. A permissão continua em Configurações > Permissões.
+Escolha apenas uma categoria de destinatários por publicação:
+- Escritório inteiro: publica no Geral e inclui contas ativas ainda sem unidade.
+- Unidades: uma ou mais unidades; destinatários são pessoas ativas vinculadas a elas.
+- Setores: um ou mais grupos classificados como setores; usa seus integrantes ativos.
+- Pessoas específicas: somente as pessoas marcadas.
+O remetente acompanha a publicação e não entra no número de destinatários exibido.
+Use Conferir destinatários para ver quantidade e nomes. Depois publique.
+Se a distribuição mudou desde a prévia, o servidor recusa o envio e exige nova conferência.
+Aceita até um arquivo de 10 MB. O tipo Alerta é destacado na conversa, sem burlar
+silenciamento ou a permissão de notificações do navegador. Não envia WhatsApp ou e-mail.
+
+PRIVACIDADE DO AVISO DIRECIONADO
+Uma seleção parcial cria um canal de comunicado restrito aos destinatários conferidos
+mais o remetente. Não publica esse conteúdo no Geral.
+Os destinatários desse canal ficam fixos no envio. Mudanças posteriores em unidade ou
+setor não acrescentam pessoas aos avisos antigos. Também não removem o acesso histórico
+que destinatários originais já possuíam. Desativar uma conta continua bloqueando seu login.
+Não é permitido editar integrantes de um canal gerado por esse envio: publique um novo
+aviso para uma nova seleção. Novas mensagens no canal antigo seguem a audiência antiga.
+Pessoas autorizadas a publicar comunicados e que participem do canal podem publicar nele.
+O proprietário conserva a supervisão administrativa auditada dos históricos.
+Fixados em canais restritos são visíveis só aos participantes daquele canal; o texto
+agora diz Fixados nesta conversa para evitar confundir com uma publicação para todo escritório.
+Idempotência impede duplicar o mesmo envio em tentativas repetidas com o mesmo identificador.
+
+PRIMEIRO USO RECOMENDADO
+Cadastre a unidade das pessoas e classifique os grupos de setor. Faça um aviso para
+uma pessoa de teste e confirme com outra conta que ela não consegue abrir o conteúdo.
+Depois use os envios por unidade/setor. Pessoas sem unidade não recebem avisos dessa
+categoria, mas continuam no Geral e podem ser selecionadas individualmente.
+O botão de fechar conversas é apenas organização visual, nunca exclusão do histórico.
+
+VERIFICAÇÃO
+150 testes Python passaram, incluindo destinatários por unidade/setor/pessoa,
+prévia inválida após mudança, autorização, envio repetido, audiência fixa,
+publicação no Geral e bloqueio de anexo para quem ficou fora do envio.
+23 cenários JavaScript passaram: alertas, leitura, montagem das configurações e
+categorias/abas de conversas. Sintaxe JavaScript foi conferida.
+Não houve validação visual em navegador real nem configuração no seu computador.
+A imagem enviada foi utilizada para manter o painel compacto e o padrão azul existente.

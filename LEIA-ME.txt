@@ -1,43 +1,122 @@
-CONSULTA DJEN SIMPLES - INDEPENDENTE
-===================================
+ARA — GESTÃO JURÍDICA LOCAL + COLETA EPROC / CONSULTA DJEN
+=======================================================
+Versão: 6, 27/10/2026. Reprocessamento local, gravação progressiva e API.
+LEIA PRIMEIRO COMECE-AQUI-V8.txt.
 
-O que é:
-Site minimalista para consultar publicações do DJEN diretamente na API pública do CNJ.
-Não exige login, cadastro de advogado, OAB fixa, banco MySQL, Python, Docker ou Nginx.
-Não se conecta aos dados, processos ou clientes do site DJEN anterior.
+COMEÇAR NO WINDOWS
+1. Extraia o ZIP em uma pasta NOVA. Mantenha a versão antiga e os dados guardados.
+2. É necessário Python 3.10 ou superior.
+3. Execute INICIAR.bat. Não abra index.html por duplo clique.
+4. Acesse http://127.0.0.1:8765/ se a página não abrir automaticamente.
+5. Na primeira abertura, crie o administrador: nome, login e senha (10+ caracteres).
+6. Essa é a conta do NOSSO sistema, independente da conta do eproc.
+7. O administrador pode criar contas da equipe em Usuários.
+8. Mantenha a janela do terminal aberta. Ctrl+C encerra o servidor.
 
-INSTALAÇÃO (XAMPP / APACHE / HOSPEDAGEM COM PHP)
-1. Crie uma pasta à sua escolha (ex.: /djenconsulta/) dentro do diretório servido pelo Apache.
-2. Copie TODO o conteúdo deste ZIP para dentro dessa pasta (index.html na raiz).
-3. Abra https://SEU-DOMINIO/djenconsulta/.
-4. Informe ao menos UM: número de processo, nome de pessoa, advogado, OAB, tribunal ou termo do teor.
-5. Filtre as datas conforme desejar e clique em Buscar publicações.
+Não precisa instalar MySQL, PHP, XAMPP ou pacotes para os cadastros locais.
+Para a coleta eproc, execute INSTALAR_EPROC.bat uma vez para instalar o navegador.
+O acesso com eproc já aberto não reutiliza automaticamente o seu Chrome pessoal:
+a coleta usa uma janela e um perfil próprios.
 
-REQUISITOS
-- PHP 7.4 ou superior; extensão cURL recomendada (ou allow_url_fopen habilitado).
-- Conexão HTTPS de saída da VPS para comunicaapi.pje.jus.br:443.
-- Sem MySQL e sem dependências externas.
+REAPROVEITAR A COLETA ANTIGA (INCLUSIVE CANCELADA)
+Entre no novo sistema, abra "Coleta eproc" e envie o ZIP de exportação antigo
+ou o arquivo processos.json. Clique em "Importar para o sistema".
+A importação usa os processos das linhas já coletadas, mesmo sem detalhes.
+Se a versão antiga tiver sua pasta dados_eproc, você também pode copiá-la,
+com o servidor parado, para a pasta deste sistema. As execuções aparecerão
+no histórico e poderão ser importadas pelo botão "Importar processos".
+Não remova a única cópia dos seus arquivos. Checkpoints ficam nas pastas
+individuais de execução e também podem ser importados como arquivo JSON.
 
-FUNCIONALIDADES
-- Pesquisa por processo, teor, parte, advogado, OAB + UF opcional, tribunal e período.
-- Tipo de publicação (DJEN, editais ou todos).
-- Exibe 20/50/100 publicações por página. Lotes buscados de 100 no CNJ.
-- Exibe o texto integral da publicação num modal e permite copiar.
-- Link da certidão oficial quando um hash é disponibilizado.
-- Botão opcional de salvar preferências do formulário apenas neste navegador.
-- Todos os tribunais, incluindo RS e SC, podem ser consultados: sem exclusões.
+Os números CNJ ficam únicos no acervo. Reenviar a mesma coleta não duplica.
+Uma nova coleta adiciona evidências; não sobrescreve seus campos manuais.
+Cada processo importado novo é marcado para conferência.
+Coletas novas autenticadas no sistema também são importadas ao término,
+inclusive quando parciais, desde que contenham linhas identificáveis.
 
-OBSERVAÇÕES
-- O CNJ impõe limites de requisições, pode retornar HTTP 429 e pode limitar buscas abrangentes a 10 mil resultados.
-- Não tente varrer todos os tribunais em consultas sem filtros: refine datas e tribunal.
-- O período é o da DISPONIBILIZAÇÃO no DJEN, não um cálculo de vencimento.
-- A API do CNJ pode variar a paginação, os campos e o suporte a filtros; testes reais
-  dependem de uma VPS com acesso permitido ao serviço do CNJ.
-- Não calcula prazos, não salva publicações nem controla clientes/contratos.
-- Sem autenticação: se quiser restringir acesso ao público, configure proteção
-  de diretório no servidor Apache.
-- Não armazena resultados no servidor. O navegador mantém até 3 páginas do CNJ
-  apenas em memória durante a navegação.
+MÓDULOS IMPLEMENTADOS
+- Visão geral com contagens e agenda de pendências cadastradas.
+- Processos: número CNJ, título, órgão, tribunal, classe, área, situação,
+  responsável, observações e marca de conferência.
+- Pessoas e clientes: nome, tipo, documento, e-mail, telefone e endereço.
+- Ficha do processo: partes, autores, réus, advogados, defensores e outros
+  papéis explicitamente cadastrados. Representantes podem ser vinculados
+  pelo ID à parte representada no mesmo processo. Pessoa vinculada é opcional.
+- Prazos: data inicial, vencimento, data fatal da fonte, responsável,
+  situação e marca de conferência. Não calcula prazos judiciais.
+- Tarefas: processo opcional, responsável, prioridade, vencimento e situação.
+- Anotações por processo.
+- Financeiro básico: contas a receber/pagar, centavos exatos, categoria,
+  vencimento, pessoa e processo opcionais, situação e responsável.
+  Não inclui pagamentos bancários, boletos, emissão fiscal ou contabilidade.
+- Referências de documentos: título, categoria, caminho/referência, situação,
+  observações e responsável. Não há upload ou armazenamento de anexos.
+- Busca e paginação dos cadastros.
+- Consulta pública DJEN separada, acessível pelo menu.
+- Contas individuais e controle por perfil.
+- Auditoria com usuário, data/hora UTC-3, ação, registro e antes/depois.
+- Exportação JSON de registros, auditoria e evidências; não inclui senhas.
 
-URL OFICIAL DA API: https://comunicaapi.pje.jus.br/api/v1/comunicacao
-DOCUMENTAÇÃO: https://comunicaapi.pje.jus.br/swagger/index.html
+USUÁRIOS E AUDITORIA
+Administrador: todos os cadastros, usuários, auditoria e exportação integral.
+Equipe: consulta, coleta, importação, criação e alteração dos cadastros.
+Leitor: apenas consulta; não altera nem inicia coleta/importação.
+Todos os perfis têm acesso ao acervo do escritório: não há sigilo por processo.
+Não compartilhe uma conta entre pessoas se precisar identificar o autor.
+Sessões expiram em 8 horas. Senhas são guardadas como hashes com sal.
+Trocar perfil/senha ou desativar uma conta revoga suas sessões.
+O último administrador ativo não pode ser desativado pela interface.
+Tentativas de login inválidas são registradas e há limite de tentativas.
+Edições simultâneas são verificadas por versão: uma edição antiga não
+sobrescreve uma alteração mais recente de outro usuário.
+Ações de criação, alteração, importação, coleta, exportação e login/logout
+ficam registradas. Consultas comuns não geram um evento a cada atualização.
+A auditoria não pode ser alterada/excluída pela interface e tem proteção
+contra UPDATE/DELETE no SQLite. Não é um serviço de auditoria inviolável:
+um administrador do computador com acesso físico ao banco pode modificá-lo.
+
+COLETOR EPROC E O TIMEOUT OBSERVADO
+Timeout significa que uma operação excedeu o tempo previsto, não prova
+bloqueio de IP. A causa real depende da página e da resposta do servidor.
+A versão anterior encerrava a execução se o botão seguinte não respondesse.
+Agora essa falha preserva a lista e segue com os detalhes já identificados,
+marcando a paginação como não confirmada. Cada página gera checkpoint atômico.
+O log identifica a etapa de paginação ou leitura de detalhes.
+Foram adicionadas pausas de 2 segundos entre páginas e processos.
+Respostas HTTP 403/429 em documentos/XHR do eproc são registradas e interrompem
+a coleta; não há rotação de IP, evasão de bloqueios ou repetição agressiva.
+Login manual e autenticação adicional podem ser concluídos sem tempo limite.
+
+LIMITAÇÕES QUE CONTINUAM PENDENTES
+O navegador autenticado do TJRS e seu layout interno NÃO foram validados
+neste ambiente. Seletores e completude da navegação ainda exigem teste real.
+Não é possível inferir a causa do timeout original só pelo log enviado.
+Autor/réu/advogado/defensor e prazos NÃO são preenchidos automaticamente por
+suposição de texto: esta versão preserva as linhas de origem e oferece a
+estrutura de cadastro para conferência e preenchimento pela equipe.
+Anexos, documentos do tribunal e abas fechadas não são lidos pelo coletor.
+Não inicia ciência, petições, protocolo ou alteração processual.
+Não inclui assinatura digital, e-mail, notificações externas, sincronização
+de calendários, acesso remoto multiestação, autenticação em dois fatores
+no nosso sistema, criptografia integral do banco ou controle de permissões por processo.
+É uma base local funcional em desenvolvimento, não uma suíte jurídica completa
+homologada para uso em produção. Não há validação visual automatizada da UI
+neste ambiente; a validação executada cobre o backend HTTP, regras e JavaScript.
+
+DADOS E BACKUP
+Tudo fica neste computador, nas pastas:
+- dados_juridico/juridico.sqlite3: cadastros, contas, sessões e auditoria.
+- dados_eproc: coletas, logs, checkpoints e perfil do navegador do eproc.
+Mantenha essas pastas privadas. Não envie a GitHub nem coloque em pasta pública.
+Para backup completo: pare o servidor com Ctrl+C e copie as duas pastas.
+Para restaurar manualmente: com o programa parado, restaure ambas as pastas
+na instalação correspondente. Preserve uma cópia anterior antes de substituir.
+O JSON exportado é uma cópia consultável dos dados. Para restaurar pela
+interface use o ZIP do botão Backup restaurável, não o JSON nem o ZIP da coleta.
+Não compartilhe a exportação do escritório com quem não tem autorização.
+O servidor escuta SOMENTE em 127.0.0.1. Não expor na internet ou rede pública.
+Para várias pessoas em computadores diferentes é necessário preparar uma
+implantação de servidor com HTTPS, backup e controles adicionais.
+
+TESTAR
+  py -3 -m unittest discover -s tests -v

@@ -1,0 +1,31 @@
+ConectaAdv — Versão 12 — Alertas por Gmail
+
+INSTALAR
+1. Pare o servidor antigo com Ctrl+C e faça backup.
+2. Extraia o ZIP em pasta nova.
+3. Copie dados_juridico e dados_eproc da instalação anterior para djen.
+4. Execute INICIAR.bat; atualize o navegador com Ctrl+F5.
+
+CONFIGURAR E TESTAR
+1. Entre como administrador e abra Mandados e veículos.
+2. Em Alertas por Gmail, confira remetente e destinatário.
+   Padrão: denis.da.rosa.ferreira@gmail.com nos dois campos.
+3. Cole a senha de app do Google no campo de senha. Não use a senha normal da conta.
+4. Clique Salvar configuração, depois Enviar teste.
+5. Confira caixa de entrada, spam e Enviados. Aceito pelo Gmail não confirma entrega final.
+
+AUTOMÁTICO
+Marque Enviar automaticamente novos alertas após ativar e salve.
+Com servidor aberto, a rotina agrupa até 20 novos alertas por rodada de um minuto.
+Respeita a lista prioritária quando ativa e não envia alertas já revisados.
+Alertas anteriores à ativação não são enviados. Não há reenvio automático de falhas ou resultados incertos; confira o histórico e Enviados antes de qualquer tentativa manual.
+Desmarque e salve para interromper os próximos envios; envio já em andamento termina antes da alteração.
+O conteúdo inclui número do processo, evento e categoria indicativa. Confira documentos antes de orientar o cliente.
+
+SEGURANÇA E LIMITES
+Senha protegida pelo Windows (DPAPI), fora do banco e do backup restaurável.
+Precisa do mesmo usuário Windows; reinstalação em outra pasta pode exigir reconfiguração.
+Configuração e teste restritos ao administrador.
+Esta versão exige Windows para guardar a credencial. A suíte automatizada usa SMTP simulado; o teste real do Gmail e a proteção nativa devem ser conferidos no computador do usuário.
+Enviar e-mail não ativa consulta recorrente ao tribunal. A rotina analisa novos eventos importados, sem ler todos os documentos. A coleta eproc autenticada continua separada.
+Nenhum e-mail real foi enviado durante o desenvolvimento.

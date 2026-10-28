@@ -1,0 +1,77 @@
+ARA JURÍDICO — VERSÃO 5 / XLS NATIVO DO EPROC
+============================================
+27/10/2026
+
+O QUE FOI CONFIRMADO NO ARQUIVO REAL
+citacaoIntimacao-2026-10-27-2-6-36.xls é um XLS binário BIFF5, não XLSX nem HTML.
+O cabeçalho está na segunda linha. A primeira é um título com data de geração.
+As partes estão reunidas numa célula com papéis, nomes e documentos separados
+por quebras de linha. As datas são valores de data do Excel, não textos.
+O leitor anterior não suportava diretamente esse formato .xls.
+
+O arquivo contém 73 intimações de 70 processos únicos, todas com vencimento
+em 27/10/2026 23:59:59. Foram identificadas 146 ocorrências de partes; em uma
+base nova, elas geram 140 vínculos distintos, pois há processos repetidos.
+Há também classe, assunto, código do juízo, descrição da intimação, envio e
+início do prazo. Esses dados são importados sem precisar abrir o tribunal.
+A planilha não contém o detalhamento completo de advogados/representantes
+ou os agendamentos da lista de perícias. O ZIP anterior complementa detalhes.
+
+COMO ATUALIZAR
+1. Pare o servidor anterior com Ctrl+C. Guarde cópia de dados_juridico e
+   dados_eproc antes de substituir qualquer arquivo.
+2. Extraia o pacote em uma pasta nova.
+3. Copie as pastas dados_juridico e dados_eproc da instalação anterior para
+   dentro da nova pasta djen, preservando seus cadastros e usuários.
+4. Execute INICIAR.bat e atualize a página com Ctrl+F5.
+5. Confirme "Versão 5 · XLS nativo" no menu lateral.
+   Se não aparecer, a página/servidor antigo ainda está aberto.
+
+IMPORTAR A PLANILHA DE VENCIMENTOS
+1. Abra Importar / Excel.
+2. Selecione o próprio .xls do eproc e clique em Ler arquivo.
+3. O sistema sugere a segunda linha como cabeçalho e identifica as colunas.
+4. Confira o mapeamento, especialmente Partes (célula do eproc), Código do
+   juízo, Classe, Assunto, Descrição do prazo, Início e Vencimento oficial.
+5. Clique em Validar e visualizar importação.
+   Para o arquivo fornecido: 73 linhas válidas, 70 processos únicos, zero erros.
+6. Clique em Confirmar importação.
+7. Abra Processos: os nomes das partes agora também aparecem na lista,
+   junto de classe, juízo e próxima ação. Na ficha ficam as partes vinculadas.
+8. Abra Agenda por datas e filtre Hoje para acompanhar os 73 vencimentos.
+9. A exportação XLSX organizada permanece disponível em Importar / Excel.
+
+Se o ZIP anterior já foi importado, os registros equivalentes da planilha
+são vinculados aos já existentes, quando coincidem processo, descrição,
+vencimento e ocorrência. No teste real, as 73 intimações foram reconciliadas:
+a base continuou com 2.071 processos e 2.203 registros da lista da conta.
+Campos manuais não são sobrescritos. Divergências exigem conferência.
+A mesma planilha não duplica registros ao ser reenviada.
+Não é necessário instalar pacotes adicionais para ler XLS nesta versão:
+o leitor xlrd 2.0.1 está incluído, com sua licença, em vendor/xlrd.
+Macros e fórmulas não são executadas; apenas valores armazenados são lidos.
+
+COMPLEMENTAR COM O ZIP
+Em Coleta eproc -> Recuperar uma coleta anterior, envie o ZIP original.
+A versão 5 usa um novo identificador de extração para reconhecer também
+"Status do Prazo: ABERTO" sem duração e publicações que referenciam vários
+eventos, como "Refer. aos Eventos: 9, 11".
+Isso não recalcula datas nem transforma um prazo do perito em compromisso.
+Depois, confira uma amostra na ficha, na agenda e na fonte original.
+
+PERÍCIAS
+A imagem fornecida é de uma lista específica de perícias futuras. A data/hora,
+local, periciado e especialidade dessa lista não estão na planilha de prazos.
+Um "Data final" de intimação do perito é um vencimento processual; não é o
+horário da perícia. Essa lista requer coleta/importação própria, ainda não
+implementada. Não foram criadas perícias por suposição a partir dos prazos.
+O PDF foi usado como referência de estrutura; esta versão não importa PDF.
+
+VALIDAÇÃO
+- Importação do XLS real validada em base nova.
+- Combinação do XLS com o ZIP real validada sem duplicar processos/intimações.
+- Testes de leitura, cabeçalho, datas, partes, reconciliação e API acompanham
+  o pacote. Execute py -3 -m unittest discover -s tests -v.
+- Ainda é necessário validar a interface no computador do usuário e uma nova
+  sessão do eproc. Esses testes locais não garantem a operação do tribunal.
+Consulte os guias V3 e V4 para backup, agenda e demais funções.

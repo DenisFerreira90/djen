@@ -1,0 +1,45 @@
+ConectaAdv — Versão 8 — Controladoria
+
+Esta versão acrescenta controle operacional e preenchimento local em segundo plano.
+Não é uma implementação completa de todos os módulos de um escritório.
+
+ATUALIZAR
+1. Pare o servidor antigo com Ctrl+C e faça uma cópia de segurança da pasta inteira.
+2. Extraia o ZIP em uma nova pasta.
+3. Copie dados_juridico e dados_eproc da pasta antiga para dentro de djen na nova pasta.
+4. Execute INICIAR.bat e use Ctrl+F5. Confira Versão 8 no menu.
+5. Entre com sua conta e abra Controladoria.
+
+PREENCHIMENTO AUTOMÁTICO
+No primeiro acesso com perfil administrador/equipe desta versão, o ConectaAdv inicia
+um lote de fichas vazias ou com título genérico usando a origem já armazenada.
+Não precisa abrir cada processo. O servidor deve permanecer em execução.
+Pode fechar a aba após iniciar, mas desligar o computador encerra o processamento.
+Na próxima abertura e acesso autorizado, um lote interrompido retoma os pendentes.
+Uma pausa voluntária é respeitada; clique Preencher fichas / retomar lote para seguir.
+Se o usuário que iniciou for desativado ou virar leitor, a fila pausa.
+
+As fichas são salvas individualmente. Repetição é idempotente para as estruturas
+já reconhecidas. Campos preenchidos manualmente são preservados e alterações têm
+auditoria. Um formulário aberto antes do preenchimento pode precisar ser reaberto.
+
+RESULTADOS
+preenchido: havia detalhes válidos e eles foram reprocessados; confira a ficha.
+parcial: havia somente linhas da lista; detalhes ainda podem estar faltando.
+sem_origem: não há dados guardados. Importe o ZIP original em Coleta eproc.
+erro: a ficha falhou; as demais continuam. Consulte e tente um novo lote.
+Concluído significa que a fila terminou, não que todos os campos existem na origem.
+Um novo lote inclui fichas ainda incompletas; importações novas já estruturam dados.
+
+CONTROLADORIA
+Indicadores do cadastro local: processos, fichas incompletas, processos sem
+responsável, prazos vencidos/hoje/próximos sete dias, revisões internas e tarefas
+atrasadas. Distribuição por responsável. Prazos de histórico de todos os polos
+não entram na fila operacional da conta. Cinco dias continuam sendo revisão
+interna, nunca prazo judicial inventado. Agenda e prazos exigem conferência.
+Até 100 falhas/sem origem aparecem na tela; resultados completos ficam no banco.
+
+LIMITES
+Não envia petições, não coleta em seu computador sem servidor aberto e não cria
+informação ausente. O coletor eproc continua dependendo do login e da validação
+das consultas. A navegação autenticada não foi testada neste ambiente.

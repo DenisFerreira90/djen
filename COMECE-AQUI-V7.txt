@@ -1,0 +1,30 @@
+ConectaAdv — Versão 7 — azul-marinho
+
+ATUALIZAR
+1. Pare o servidor antigo (Ctrl+C) e copie sua pasta inteira como backup.
+2. Extraia este ZIP em uma nova pasta.
+3. Copie dados_juridico e dados_eproc da pasta antiga para dentro de djen na nova pasta.
+4. Execute INICIAR.bat. No navegador use Ctrl+F5 e confira Versão 7.
+
+COLETA
+Em Coleta eproc, a opção Descobrir e ler consultas disponíveis vem marcada.
+Ela acompanha os processos escolhidos pelo modo incremental/completo/falhas.
+Para um processo já dispensado pelo incremental, abra sua ficha e use
+Consultar listagens adicionais deste processo. Termine o login e clique Continuar.
+A coleta individual ainda precisa localizar o processo na lista de prazos em aberto.
+
+Na ficha, Listagens complementares mostra o mapa das ações e as tabelas adaptáveis.
+As colunas seguem a origem; o primeiro registro é um cabeçalho inferido e deve ser
+conferido. O texto e as linhas originais continuam disponíveis. Não há criação
+automática de compromissos ou lançamentos financeiros a partir destas tabelas.
+
+LIMITES
+Consulta automática: audiências, perícias, árvore documental, alvarás, custas e depósitos.
+Cada área usa um link observado da sessão, validado para o processo e ação.
+As ações encontradas fora desse mapa são registradas sem execução.
+Não envia petições, não abre agravos e não aciona formulários ou botões Continuar.
+Hashes/URLs autenticadas não são gravados no mapa ou exportados: são temporários.
+Não baixa anexos, não percorre toda paginação interna das listagens complementares,
+não segue links arbitrários nem altera o código do sistema com conteúdo do tribunal.
+Falhas e links indisponíveis ficam explícitos; a ficha principal é preservada.
+Navegação autenticada real ainda precisa de validação no computador do usuário.

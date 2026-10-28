@@ -1,0 +1,89 @@
+ConectaAdv — Versão 21 — Interações e controle do chat
+
+ATUALIZAÇÃO
+1. Pare o servidor e a coleta. Faça backup.
+2. Extraia esta versão em uma pasta nova.
+3. Copie dados_juridico e dados_eproc da instalação anterior para a nova pasta djen.
+   Não substitua esses diretórios pelos de outra instalação.
+4. Com o servidor parado, execute CONFIGURAR_DONO_CHAT.bat. Informe SEU login e
+   SUA senha do ConectaAdv e confirme o nome exibido. Não é a senha do eproc.
+5. Inicie pelo mesmo modo local / escritório já utilizado. Atualize com Ctrl+F5.
+   Configuração de rede, certificados e Gmail continua conforme as versões anteriores.
+
+QUEM CONTROLA
+O nome do proprietário aparece no topo do chat. A migração usa inicialmente a conta
+que criou a instalação (primeiro usuário). Execute o configurador para escolher sua
+conta correta antes de liberar a equipe. Não envie senhas por mensagem.
+Só o proprietário concede e retira administração do chat e publicação no Geral,
+em Chat > Permissões do chat. Administração do sistema e do chat são separadas.
+Outros administradores antigos do sistema não ganham administração do chat.
+Administradores delegados do chat podem criar/organizar setores, gerenciar membros,
+alterar nomes/ramais e fixar avisos no Geral. Não podem delegar permissões.
+O proprietário pode supervisionar outras conversas com justificativa auditada;
+a administração delegada não recebe essa supervisão.
+O proprietário mantém sua conta ativa e administradora; outro administrador não pode
+redefinir sua senha pelo cadastro. A ferramenta local de escolha de proprietário é
+uma operação de manutenção: restrinja acesso à pasta e ao servidor.
+O administrador técnico com acesso ao banco ou a backups continua tendo acesso aos
+arquivos. Isso não constitui criptografia de ponta a ponta.
+
+GERAL DO ESCRITÓRIO
+Criado automaticamente, reúne todas as contas ativas, sem limite artificial de 100.
+Proprietário e administradores delegados podem publicar. O proprietário também pode
+permitir ou retirar publicação de uma pessoa sem torná-la administradora.
+Demais participantes podem acompanhar, reagir e votar. Perfil leitor não publica.
+Permissões são verificadas pelo servidor em cada envio; revogação vale mesmo com
+uma janela já aberta. A janela pode precisar de atualização para refletir botões.
+O Geral não permite alterar manualmente sua lista de integrantes.
+Comunicados antigos também respeitam a autorização de publicação.
+
+RESPONDER, COPIAR E ENCAMINHAR
+Clique com o botão direito em uma mensagem ou no botão de três pontos.
+Escolha Responder, Copiar texto, Encaminhar sem nome original ou uma reação.
+Também pode arrastar uma mensagem para a direita (mais de 65px, movimento horizontal)
+para iniciar uma resposta. Em tela sensível ao toque, preserve o movimento vertical
+para rolar. O funcionamento do gesto depende da interação do navegador/dispositivo;
+o botão de ações permanece disponível.
+A resposta mostra trecho e nome da mensagem respondida. Clique na prévia acima do
+campo de escrita para cancelar a resposta.
+Encaminhamento é interno para uma conversa da qual você participa. Envia o texto e
+uma cópia do anexo com seu nome de remetente atual e o rótulo Encaminhada, sem carregar
+nome/identificador original, resposta, votos ou reações. Nomes escritos dentro do
+próprio texto ou do arquivo não são removidos. O arquivo encaminhado também ocupa
+espaço no banco. Cada anexo continua limitado a 10 MB.
+Copiar usa a área de transferência do navegador; normalmente exige localhost/HTTPS.
+
+REAÇÕES E ENQUETES
+Uma reação por pessoa e mensagem. Escolher outra substitui; escolher a mesma remove.
+Passe o mouse sobre a reação para ver os nomes. Reações permitidas:
+👍 ❤️ 😂 😮 😢 🙏 ✅ ⚠️
+Criar enquete fica no campo de escrita. Informe pergunta e 2 a 12 opções diferentes.
+Voto único por pessoa; é possível mudar o voto até o encerramento. Nomes dos votantes
+ficam visíveis. Não é votação anônima. Autor ou administrador do chat pode encerrar.
+No Geral, criar enquetes exige a mesma permissão de publicar mensagens.
+
+SILENCIAR
+Abra a conversa e clique em Silenciar conversa (funciona no Geral e em setores).
+Não perde mensagens nem histórico. O contador de novas mensagens continua na lista,
+mas aquela conversa não soma ao contador da bolha. Preferência individual fica no
+servidor e acompanha sua conta em outro computador conectado ao mesmo servidor.
+Esta versão não acrescenta som, notificação do sistema, push, e-mail ou WhatsApp.
+
+AVISOS FIXADOS PARA TODOS
+No Geral, administração do chat usa o menu da mensagem > Fixar aviso para todos.
+Escolha título e ordem numérica. Pode manter vários avisos. Eles aparecem em um
+quadro acima das mensagens, inclusive quando a mensagem original é antiga.
+Ordens menores aparecem primeiro; empates usam o identificador da mensagem.
+Pode alterar título/ordem ou desfixar. Não apaga a mensagem original.
+O quadro exibe texto; anexos continuam na mensagem original.
+Isso é diferente de Fixar conversa, que organiza apenas sua própria lista.
+Avisos são internos ao chat, sem envio externo automático.
+
+DADOS E VERIFICAÇÃO
+Todas as tabelas novas integram o mesmo SQLite e seus backups. Históricos anteriores
+são mantidos. Preferências, votos, reações e permissões persistem no servidor.
+Atualização por consulta a cada cinco segundos; não é conexão WebSocket.
+Gestos, layout, teclado, leitores de tela e uso simultâneo devem ser aceitos com duas
+contas e dois navegadores antes de disponibilizar para toda a equipe.
+Nesta entrega foram executados testes automatizados de backend e sintaxe JavaScript;
+não houve validação visual em navegador real nem instalação no seu computador.

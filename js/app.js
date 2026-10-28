@@ -3,7 +3,7 @@ const $ = id => document.getElementById(id);
 const form = $('searchForm');
 const BATCH_SIZE = 100;
 const STORAGE_KEY = 'djen-consulta-simples-filtros-v1';
-const API_URL = 'https://comunicaapi.pje.jus.br/api/v1/comunicacao';
+const API_URL = fetch('./api/health').then(async r => r.ok && (await r.json()).servidor === 'Python' ? './api/buscar?' : './api/buscar.php?').catch(() => './api/buscar.php?');
 
 const state = {filters:null, page:1, perPage:20, total:null, cache:new Map(), controller:null, currentItem:null, running:false, serial:0, processList:[]};
 const searchable = ['numeroOab','nomeAdvogado','numeroProcesso','nomeParte','siglaTribunal','texto'];
@@ -70,14 +70,15 @@ async function fetchBatch(page){
     state.controller=new AbortController();
     
     const params=new URLSearchParams({...state.filters, pagina:String(page), itensPorPagina: '100'});
-    const response=await fetch(API_URL + '?' + params.toString(),{
+    const response=await fetch((await API_URL) + params.toString(),{
         signal: state.controller.signal,
         headers: { 'Accept': 'application/json' }
     });
     
     if(!response.ok) throw new Error('O CNJ limitou o acesso ou está fora do ar.');
     const data = await response.json();
-    let itens = (data.items || []).map(normalizeCnjItem);
+    if (!data.ok) throw new Error(data.erro || 'Falha na consulta.');
+    let itens = data.itens || [];
 
     // Triagem Local: Filtra pelos processos da lista, se houver
     if (state.processList.length > 0) {
@@ -121,12 +122,12 @@ function itemCard(item,index){
     
     if(item.orgao||item.classe){
         const org = node('p','pub-origin');
-        org.innerHTML = `<strong>Órgão:</strong> ${item.orgao||'-'} | <strong>Classe:</strong> ${item.classe||'-'}`;
+        org.textContent = `Órgão: ${item.orgao||'-'} | Classe: ${item.classe||'-'}`;
         article.append(org);
     }
     if(item.partes&&item.partes.length){
         const part = node('p','pub-parties');
-        part.innerHTML = `<strong>Partes/Advogados:</strong> ${item.partes.join(' · ')}`;
+        part.textContent = `Partes/Advogados: ${item.partes.join(' · ')}`;
         article.append(part);
     }
     
@@ -174,7 +175,7 @@ form.addEventListener('submit',event=>{
     event.preventDefault();
     if(isMonitoring) return alert("Pare o monitoramento antes de realizar busca manual.");
     
-    const rawList = $('listaProcessos').value;
+    const rawList = '';
     state.processList = rawList.split('\n').map(p => p.replace(/\D/g, '')).filter(p => p.length > 0);
     
     const filters = formFilters();
@@ -216,7 +217,7 @@ btnMonitor.addEventListener('click', async () => {
     } else {
         await checarPermissaoNotificacao();
         
-        const rawList = $('listaProcessos').value;
+        const rawList = '';
         state.processList = rawList.split('\n').map(p => p.replace(/\D/g, '')).filter(p => p.length > 0);
         state.filters = formFilters();
         

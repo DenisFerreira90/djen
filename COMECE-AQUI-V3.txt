@@ -1,0 +1,128 @@
+ARA JURÍDICO — VERSÃO 3, 27/10/2026
+==================================
+
+ESTA VERSÃO NÃO CONTÉM SUA BASE OU UMA PLANILHA JÁ PREENCHIDA.
+Nenhuma planilha real foi anexada ao pedido desta versão. A importação permite
+escolher as colunas para adaptar seu arquivo, sem adivinhar seus dados.
+
+ATUALIZAR SEM PERDER DADOS
+1. Pare o servidor antigo com Ctrl+C.
+2. Guarde uma cópia das pastas dados_juridico e dados_eproc.
+3. Extraia este pacote em outra pasta.
+4. Para continuar com seus cadastros/usuários, copie as pastas dados_juridico
+   e dados_eproc da versão anterior para dentro da nova pasta djen.
+5. Execute INICIAR.bat e entre na conta já criada. Se não houver base anterior,
+   cadastre o administrador. Essa conta é independente do login do eproc.
+6. Atualize a página com Ctrl+F5.
+7. Na fila "Precisa de atenção", clique em Criar revisões internas faltantes
+   para organizar os processos que já estavam cadastrados na versão anterior.
+
+IMPORTAR EXCEL OU CSV
+1. Menu "Importar / Excel".
+2. Selecione .xlsx ou .csv e clique em Ler arquivo.
+3. Escolha a aba e o número da linha que contém os cabeçalhos.
+4. Confira a amostra e selecione as colunas de cada informação.
+5. O número CNJ é obrigatório, com máscara ou 20 dígitos em TEXTO.
+6. Nome de autor/reu/advogado/defensor só é utilizado por coluna explicitamente
+   identificada. Não se presume a relação de representação entre essas pessoas.
+   Vários nomes podem ser separados por ponto e vírgula ou quebra de linha.
+7. Clique em Validar e visualizar importação. São mostrados números de linhas
+   e erros. Se existir linha inválida, a confirmação fica bloqueada.
+8. Confira a amostra e clique em Confirmar importação.
+9. Abra Processos, Agenda por datas e Precisa de atenção.
+
+Aceita até 32 MB por arquivo, 20 mil linhas por aba, primeiras 200 colunas.
+O .xls antigo precisa ser salvo como .xlsx no Excel antes do envio.
+Fórmulas/macros não são executadas. Somente valores salvos são lidos.
+Números longos guardados como números pelo Excel podem ter perdido precisão.
+Essas células são recusadas como CNJ. Recupere o número original em texto;
+simplesmente mudar a formatação não recupera dígitos que já foram perdidos.
+Data pode ser ISO, dd/mm/aaaa com horário opcional ou data serial do Excel.
+O modelo em branco está disponível no botão Baixar modelo.
+
+COMO OS DADOS SÃO GRAVADOS
+- Um cadastro por número CNJ, com ID estável.
+- Uma pessoa por papel explicitamente importado no processo.
+- Uma intimação/prazo por identificador de evento, quando esse campo existe;
+  na ausência dele, registros idênticos são comparados por conteúdo/datas.
+- Campos manuais não são sobrescritos. Campos vazios podem receber os valores
+  explicitamente mapeados na importação.
+- Reenviar a mesma planilha com o mesmo mapeamento não duplica os registros.
+- Cada linha original permanece ligada ao processo como evidência da importação.
+- Campos e prazos importados aguardam conferência. Não calcula prazo judicial.
+- Se um mesmo evento vier com vencimento diferente numa planilha posterior,
+  a evidência nova é preservada, mas o prazo anterior não é sobrescrito. A equipe
+  deve conferir a alteração na origem e corrigir o cadastro com auditoria.
+
+REGRA DOS CINCO DIAS
+Sem prazo oficial pendente, cria uma TAREFA DE REVISÃO INTERNA para cinco dias
+corridos depois do primeiro cadastro do processo. Não é uma data fatal presumida.
+A data é preservada em reimportações, inclusive quando já está vencida.
+Quando um prazo oficial pendente é cadastrado, a tarefa automática aberta é
+cancelada com justificativa e preservada no histórico.
+Concluir uma revisão não cria outra automaticamente: a decisão de novo
+acompanhamento deve ser registrada pela equipe em uma nova tarefa.
+
+TELAS E FLUXOS NOVOS
+- Dashboard: indicadores separados de prazos oficiais e revisões internas.
+- Agenda: filtrar datas, responsável, origem e situação; ordenação por vencimento.
+- Precisa de atenção: dados a conferir, processos sem responsável/sem prazo;
+  também mostra falhas de leitura registradas pelo controle incremental.
+- Quadro da equipe: A fazer, Em andamento, Aguardando, Concluído.
+  Apresenta até 50 tarefas da página atual; use a paginação para as demais.
+- Situação do trabalho do escritório separada da situação processual.
+- Conclusão de tarefa/prazo exige descrever a providência, com data e usuário.
+- Linha do tempo na ficha do processo: importações e alterações, antes/depois.
+- Comparação textual das duas últimas importações na ficha (até 1.000 linhas);
+  mudanças de ordem/formato também podem aparecer e exigem interpretação.
+- Botão Atualizar apenas este processo na ficha.
+- Exportar Excel organizado: abas Processos, Partes, Prazos, Tarefas, Pessoas,
+  Financeiro, Documentos e Auditoria (a última, só para administrador).
+  IDs e número do processo relacionam as abas. Datas são células de data, CNJ
+  é texto. As abas Processos, Partes e Prazos podem ser escolhidas e mapeadas
+  separadamente na importação. As demais são exportadas para consulta.
+  Isso não equivale à restauração integral do banco. Use o backup para isso.
+  Detalhes muito longos e as evidências completas permanecem no banco/JSON;
+  células do Excel têm o limite de 32.767 caracteres.
+
+COLETA INCREMENTAL E RETOMADA
+Modos: incremental, completa, pendências/falhas e individual.
+Incremental compara o conteúdo das linhas da lista com a última leitura.
+Se a linha não mudou e o detalhe foi lido há menos de sete dias, dispensa a
+abertura dos detalhes. Novo processo, linha alterada ou falha anterior é lido.
+Após sete dias, uma nova leitura dos detalhes é feita mesmo com linha igual.
+Isso é necessário porque a lista pode não refletir uma alteração interna.
+Não há garantia de detecção imediata de mudanças que não aparecem na lista.
+O modo Pendências/falhas dispensa processos com leitura anterior concluída,
+mas lê os novos e os que falharam. O modo Completa relê todos os localizados.
+A consulta individual percorre a lista de prazos até localizar o número e
+abre apenas esse processo. Se o processo não estiver nessa lista, informa
+que não foi localizado; não faz busca geral no tribunal.
+A lista pode precisar ser percorrida novamente; os detalhes já concluídos
+ficam registrados mesmo quando a execução é interrompida.
+Coletas antigas com detalhes válidos e data de leitura são usadas para iniciar
+o controle incremental quando importadas. Sem essas informações, uma primeira
+leitura de detalhes será necessária.
+O coletor continua dependendo de validação na sessão real do TJRS.
+Não inclui documentos anexos/abas fechadas e não aciona ciência ou protocolo.
+
+BACKUP E RESTAURAÇÃO PELA INTERFACE
+Administrador: menu Importar / Excel, seção Backup e recuperação.
+Baixe o backup restaurável em ZIP. Inclui banco, usuários, auditoria, evidências
+importadas e estado incremental; sessões locais são removidas da cópia.
+Não inclui dados_eproc, perfil autenticado do navegador ou arquivos de coletas.
+Guarde também uma cópia dessa pasta separadamente, com o servidor parado.
+Para restaurar, selecione um backup gerado pelo sistema e digite RESTAURAR.
+Isso substitui a base atual e encerra as sessões. Uma cópia anterior é gravada
+em dados_juridico/backups. Não restaure durante uma coleta em andamento.
+Depois da restauração, use uma conta existente naquele backup para entrar.
+O ZIP da coleta eproc NÃO é o backup do escritório.
+
+VALIDAÇÃO E LIMITES
+Testes de regras, importação, XLSX, autenticação, auditoria, sincronização e
+restauração acompanham o pacote. Execute:
+  py -3 -m unittest discover -s tests -v
+A interface e o coletor autenticado ainda exigem validação de uso real.
+O sistema é local (127.0.0.1), sem implantação para vários computadores.
+Não há portal de clientes, envio de mensagens, assinatura digital, gestão de
+anexos ou cálculo automático de prazos com calendários judiciais.

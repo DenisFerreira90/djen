@@ -1,0 +1,5 @@
+EPROC — versão 2
+================
+Consulte LEIA-ME.txt para a instalação, contas individuais, importação das
+coletas anteriores, limites do coletor e backup. O sistema agora utiliza
+banco SQLite e auditoria de alterações; a conta local é independente do eproc.

@@ -1,0 +1,93 @@
+ConectaAdv — Versão 22 — Chat organizado, notificações e execução independente
+
+O QUE MUDOU
+- Painel estreito mostra a lista de conversas ou a conversa aberta. Use ← Conversas
+  para voltar. Não empilha mais a administração inteira sobre as mensagens.
+- Perfil, permissões, backup e auditoria ficam em Opções e administração.
+- Novo alfinete vetorial no topo fixa o painel; alfinete junto de uma conversa fixa
+  apenas aquela conversa na sua lista. Estado ativo fica destacado em azul.
+- Anexos, emojis, áudio e enquete ficam em um menu do campo de escrita.
+- Bolha com contador vermelho, contador na aba e no menu, aviso interno, som próprio
+  e notificação do computador após autorização. Conversas silenciadas são respeitadas.
+- Corrigida a leitura automática em aba minimizada: só marca lida com foco na página.
+- Corrigida a separação de opções de enquete por quebra de linha.
+
+ATUALIZAR SEM PERDER OS DADOS
+1. Faça backup. Encerre o servidor, a coleta e eventuais tarefas agendadas em execução.
+2. Extraia a versão 22 em uma pasta nova. Copie dados_juridico e dados_eproc da pasta
+   anterior. Se JÁ usa chat independente de versão 22, copie também dados_chat.
+3. Na PRIMEIRA separação, execute MIGRAR_CHAT.bat. Ele cria dados_chat/chat.sqlite3.
+   Copia contas, senhas protegidas, conversas, mensagens, anexos, fotos, votos,
+   preferências, permissões e auditoria do chat. Não copia processos, documentos do
+   eproc nem sessões de login. O banco original permanece intacto.
+   Se já existe banco de destino, o migrador recusa sobrescrever ou mesclar.
+4. Inicie INICIAR_CHAT_LOCAL.bat e entre no chat em http://127.0.0.1:8766/.
+   Use o mesmo login e senha que tinha no momento da migração. O nome do proprietário
+   é preservado. Para escolher outra conta, com o chat parado, use
+   CONFIGURAR_DONO_CHAT.bat (seleciona a base independente quando ela existe).
+5. Inicie INICIAR.bat para o sistema jurídico/eproc em http://127.0.0.1:8765/.
+   Ou use INICIAR_CHAT_E_SISTEMA.bat para abrir as duas janelas separadas.
+6. Atualize com Ctrl+F5. O módulo Chat do sistema jurídico passa a oferecer o endereço
+   próprio do chat. Utilize uma aba/janela do chat enquanto trabalha no sistema.
+
+COMO PARAR O EPROC SEM PARAR O CHAT
+Mantenha a janela ConectaAdv — Chat independente aberta.
+Pode encerrar/reiniciar a janela do sistema jurídico/eproc (porta 8765).
+O chat (porta 8766) tem processo, banco e cookie de sessão próprios. Não inicia
+trabalhadores de coleta ou de e-mail. As APIs do eproc ficam bloqueadas nele.
+Parar a máquina inteira, a rede, a VPN ou o processo do chat interrompe o chat.
+Ainda não instala serviço Windows nem reinício automático: as duas janelas são
+execuções manuais independentes. Não inicie duas cópias do mesmo serviço.
+O painel fixado reserva espaço dentro da página do chat, não em outra aba do navegador.
+Nesta versão, o sistema jurídico abre o endereço separado; não há integração por iframe.
+
+CONTAS E BACKUPS APÓS A SEPARAÇÃO
+A cópia de contas ocorre uma única vez. Alterar senha, cadastrar ou desativar usuário
+no sistema jurídico não replica a mudança no chat. Faça a administração necessária
+nas duas bases, inclusive ao desligar alguém do escritório. Não há SSO/sincronização
+contínua de usuários nesta versão. Cookies diferentes evitam derrubar um login ao
+entrar no outro serviço no mesmo computador.
+Faça backup próprio do chat (menu do chat > Backup do banco), além do backup jurídico.
+Para mudança de computador servidor, pare os serviços e leve dados_chat,
+dados_juridico e dados_eproc. O chat não precisa de dados_eproc para suas conversas.
+O original jurídico mantém o histórico antigo como referência, mas não recebe novas
+mensagens após a migração. Não misture as bases nem execute migração novamente para
+atualização. Guarde os arquivos de backup em local protegido.
+
+ATIVAR NOTIFICAÇÕES
+No chat, clique no sino do cabeçalho do painel ou em Meu perfil e aparência > Ativar
+notificações e som neste navegador. Autorize no navegador; depois use Testar notificação.
+- Exige localhost ou HTTPS confiável e permissão neste computador/navegador.
+- Windows/navegador podem bloquear som ou avisos pelo modo Não perturbe.
+- O som usa sinal próprio do ConectaAdv, sem arquivos externos. Precisa de interação
+  inicial com a página para o navegador liberar áudio.
+- Novas mensagens são verificadas a cada 2,5 segundos. Não é garantia de entrega
+  imediata; aba em segundo plano, suspensão do computador e falhas de rede atrasam.
+- Com ConectaAdv aberto, pode trocar de aba ou minimizar. Com todas as abas/janelas
+  do ConectaAdv fechadas, não há push de novas mensagens nesta versão.
+- Conversa já visível com foco não dispara aviso repetido.
+- A bolha tem contador vermelho. O título e favicon da aba também mostram pendências.
+  Badge do aplicativo é solicitado quando o navegador oferece essa API; não garante
+  o mesmo ícone do WhatsApp na barra de tarefas do Windows.
+- Não mostra texto das mensagens nas notificações. Mostra só nome da conversa;
+  com Ocultar histórico, também esconde esse nome e usa um aviso genérico.
+- O sistema evita duplicação entre abas usando Web Locks quando disponível.
+  Sem esse recurso, múltiplas abas podem repetir avisos.
+- Não encaminha e-mails nem mensagens por WhatsApp.
+
+ESCRITÓRIO / VPN
+Execute novamente CONFIGURAR_PILOTO_REDE.bat: o proxy agora aponta para a porta 8766.
+Guarde uma cópia do Caddyfile antigo antes de regenerar, caso tenha ajustes do TI.
+Depois use INICIAR_CHAT_ESCRITORIO.bat e INICIAR_PROXY_HTTPS.bat.
+Certificado HTTPS, IP fixo, firewall e redes permitidas precisam da configuração
+local já descrita na versão 19. Não abra a porta 8766 diretamente para a internet.
+O IP 127.0.0.1 só vale no próprio servidor; os demais computadores usam o endereço
+HTTPS interno definido com o TI. Não volte a usar o proxy antigo apontado para 8765.
+
+VERIFICAÇÃO DA ENTREGA
+114 testes Python passaram, incluindo migração e dois processos HTTP reais:
+o servidor jurídico foi encerrado e o envio/consulta no chat continuou funcionando.
+3 cenários Node de seleção de alertas passaram e sintaxe JavaScript foi verificada.
+Não houve validação visual em navegador real, teste de som/avisos no seu Windows,
+instalação no escritório nem teste da sua VPN. Faça aceitação com duas contas antes
+de liberar para a equipe. Todas as funções anteriores do chat continuam disponíveis.

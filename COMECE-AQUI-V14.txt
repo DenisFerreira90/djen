@@ -1,0 +1,42 @@
+ConectaAdv — Versão 14 — Painel operacional e comunicação interna
+
+ATUALIZAÇÃO
+1. Faça backup restaurável e pare o servidor antigo (Ctrl+C).
+2. Extraia o ZIP em pasta nova e copie dados_juridico e dados_eproc antigos para djen.
+3. Execute INICIAR.bat e Ctrl+F5. Se mudar a pasta, talvez seja necessário configurar novamente o Gmail.
+4. Use Visão geral para as prioridades e Comunicação interna para o chat.
+
+PAINEL
+Indicadores de fatais vencidos, hoje, amanhã e próximos sete dias; prazos sem conferência/data; tarefas urgentes/atrasadas; documentos em revisão; processos sem responsável/checagem; falta de consulta hoje; falhas e mandados aguardando revisão.
+Clique em Ver pendências para abrir até 100 registros daquele indicador.
+O painel usa datas cadastradas e não calcula calendário judicial. Não confirma que toda publicação foi coletada.
+Administrador: indicadores de todo o escritório e financeiro vencido.
+Equipe/leitor: indicadores de registros atribuídos ao próprio usuário.
+Essa restrição refere-se ao novo painel. As telas e APIs antigas de cadastros mantêm as permissões anteriores; não há segregação por setor ou por carteira de clientes em todo o sistema nesta versão.
+
+CHAT
+Crie contas individuais em Usuários e escolha Nova conversa / grupo.
+- Conversas individuais, grupos e gerenciamento de integrantes pelo criador ou administrador.
+- Comunicados em massa para até 100 destinatários: somente administradores criam/publicam. É um canal interno compartilhado, não disparo externo de WhatsApp/e-mail.
+- Texto, emoji, arquivos, fotos, vídeos, envio e gravação de áudio conforme suporte do navegador.
+- Figurinhas enviadas como arquivos PNG/JPG/GIF/WebP; não importa automaticamente coleções ou contas do WhatsApp.
+- Um arquivo de até 10 MB por mensagem; busca textual no histórico; 100 mensagens por página com carregamento de anteriores.
+- Atualização por consulta a cada cinco segundos enquanto a conversa está aberta. Sem push fora do sistema.
+- Confirmação de leitura pela conversa aberta; sem chamadas de voz/vídeo nem transcrição automática.
+- Leitor: pode ler suas conversas, não criar nem enviar.
+- Integrantes novos podem acessar todo o histórico da conversa; removidos perdem acesso pelo sistema. Arquivos já baixados não são apagados remotamente.
+
+ADMINISTRAÇÃO
+Aviso de supervisão visível aos usuários. Não há criptografia de ponta a ponta.
+Administrador acessa Auditoria: todas as conversas. Para abrir uma conversa da qual não participa, deve informar motivo; a consulta e os downloads são auditados.
+Apenas administrador exporta páginas do histórico em JSON. São até 100 mensagens por exportação; o histórico completo é acessível por páginas, não exportado silenciosamente só em parte.
+Mensagens e anexos persistem no banco e no backup restaurável. Não há exclusão/edição de mensagens pela interface.
+Perfis comuns só acessam conversas e anexos das quais participam. Não há painel oculto de monitoramento.
+Não existe antivírus de anexos integrado. Faça download apenas de arquivos confiáveis.
+
+ESTADO DA ENTREGA
+83 testes automatizados passaram, incluindo acesso HTTP, permissões, anexos, auditoria, paginação, duplicação e escopo dos indicadores.
+Sintaxe dos scripts verificada. Layout, microfone e reprodução de mídia precisam de validação no navegador real; não foram validados em navegador nesta execução.
+A instalação permanece local em 127.0.0.1. Para computadores diferentes conversarem entre si é necessário um servidor central com HTTPS, configuração de rede e revisão dos acessos. Esta versão não muda o servidor para expor dados na rede ou na internet.
+Não há auditoria criptograficamente imutável contra quem tenha acesso direto ao banco, regras de retenção, busca no conteúdo de anexos ou testes de carga em produção.
+Os recursos de coleta eproc oculta e agendamento automático de consultas ao tribunal não foram acrescentados nesta entrega.

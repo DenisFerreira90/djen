@@ -1,0 +1,12 @@
+ConectaAdv — Versão 13 — Organização de Mandados e veículos
+
+Faça backup e pare o servidor antigo. Extraia numa pasta nova e copie dados_juridico e dados_eproc para djen. Execute INICIAR.bat e Ctrl+F5.
+Se mudar a pasta da instalação, pode ser necessário preencher novamente a senha de app de e-mail.
+
+A tela agora tem três abas fixas no topo:
+- Alertas: busca e navegação com 20 alertas por página, dentro dos 200 carregados pela consulta atual.
+- Lista prioritária: planilha e edição manual, separadas dos alertas.
+- Canais de aviso: configuração e teste do Gmail para administradores; WhatsApp manual fica recolhido.
+A tela não recarrega automaticamente enquanto você estiver nas abas de lista ou canais, preservando o preenchimento.
+
+Nenhuma mudança na coleta do tribunal ou nas regras de envio. A atualização ao vivo do layout ainda precisa de conferência no seu navegador. Verificação de sintaxe JavaScript concluída.

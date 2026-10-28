@@ -1,0 +1,15 @@
+ConectaAdv — Versão 11
+Faça backup; extraia em pasta nova; copie dados_juridico e dados_eproc antigos para djen; execute INICIAR.bat e Ctrl+F5.
+
+LISTA PRIORITÁRIA
+Em Mandados e veículos, carregue a planilha. Escolha adicionar à lista atual ou substituir pela planilha atualizada. Confira números e clique Salvar lista prioritária.
+Para adicionar ou retirar manualmente, edite as linhas e salve.
+Dados numéricos longos arredondados pelo Excel ficam pendentes de correção.
+Na próxima coleta eproc, processos prioritários encontrados na listagem serão reconsultados primeiro, mesmo se lidos anteriormente. Os demais seguem o modo escolhido. Processos ausentes da listagem não são localizados automaticamente por este recurso.
+A lista filtra os alertas locais; não apaga registros históricos.
+A coleta autenticada precisa ser iniciada em Coleta eproc; não há agendamento de consultas ao tribunal nesta versão.
+
+WHATSAPP
+Botões abrem mensagens prontas para +55 51 98658-3348. Não enviam automaticamente.
+Para envio automático, falta conectar um remetente e configurar a API. Nenhum teste foi enviado.
+A configuração inicial oficial pode ser feita pelo Meta for Developers > WhatsApp > Get Started/API Setup. Não cole tokens de acesso na conversa.

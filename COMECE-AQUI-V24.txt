@@ -1,0 +1,105 @@
+ConectaAdv — Versão 24 — Painel retrátil, prévias e controle de visualização
+
+ATUALIZAR
+Se há coleta em execução, aguarde terminar antes de trocar a versão ou copiar os dados.
+Faça backup e feche os servidores. Extraia em pasta nova. Copie dados_juridico,
+dados_eproc e, quando já existir, dados_chat da instalação anterior.
+NÃO execute novamente MIGRAR_CHAT.bat para uma base de chat já separada.
+Inicie pelos mesmos atalhos usados na versão 23 e atualize o navegador com Ctrl+F5.
+As tabelas novas são acrescentadas automaticamente ao banco em uso.
+A versão mantém o coletor da versão 23 e a separação do chat na porta 8766.
+
+UM LUGAR PARA AJUSTAR
+Abra o chat > engrenagem > Configurações. Na tela principal, o mesmo acesso está em
+Opções e administração > Configurações.
+As opções de notificações também estão nesse local, sem atalho que as habilite fora
+anteriormente. O alfinete e o botão Recolher continuam como ações rápidas do painel.
+
+Aba MEU CHAT (para cada pessoa)
+- Foto, tema azul ou escuro, presença e privacidade do histórico.
+- Recolher automaticamente na lateral ou usar a bolha tradicional.
+- Mostrar ou ocultar prévias, confirmações nas próprias mensagens e horários.
+- Fixar painel aberto, ocultar o acesso flutuante, som e avisos do computador.
+As opções bloqueadas pelo proprietário aparecem indisponíveis. A pessoa só consegue
+ocultar para si um recurso permitido; não consegue ultrapassar a regra do escritório.
+Ocultar confirmações na própria tela não impede os outros de receberem suas leituras:
+quem compartilha a própria visualização é controlado pelo proprietário em Permissões.
+
+Aba PERMISSÕES (somente proprietário)
+Escolha usuário por usuário:
+- Administração delegada para grupos e avisos e publicação no Geral.
+- Uso do painel retrátil e das prévias.
+- Consulta de confirmações nas próprias mensagens e dos horários permitidos.
+- Compartilhamento da própria visualização com os remetentes.
+Salvar este usuário grava os acessos selecionados. Se houver falha em alguma requisição,
+confira os valores antes de seguir; administração/publicação e regras de visualização
+são operações separadas.
+Administrador delegado do chat NÃO pode alterar essas regras nem conceder permissões.
+A conta proprietária continua identificada pelo cadastro da instalação, não pelo nome.
+
+Aba RECURSOS DO ESCRITÓRIO (somente proprietário)
+Liga/desliga cada recurso para todos. Bloqueio geral prevalece sobre permissão individual.
+Também permite interromper o registro de horários das novas visualizações.
+Desativar visualização de horários impede que esses campos sejam devolvidos pela API.
+Desativar confirmações impede a consulta de confirmações pela API, não só pelo botão.
+Desativar compartilhamento de leitura oculta as confirmações já compartilhadas enquanto
+essa regra permanecer desativada. Leituras realizadas sem compartilhar NÃO passam a
+ser divulgadas quando o compartilhamento for habilitado depois.
+Regras novas são verificadas no servidor em cada consulta/gravação. As telas abertas
+refletem mudanças nas consultas periódicas, normalmente até cinco segundos. Informação
+que alguém já viu, copiou ou baixou antes da alteração não pode ser recolhida.
+
+PAINEL NA BORDA
+Com Recolher automaticamente ativado e permitido, o acesso vira uma pequena aba azul
+na borda direita. Passar o mouse/focar pelo teclado mostra até cinco mensagens novas,
+com texto resumido. Clique numa prévia ou na aba para abrir o chat completo.
+A prévia é apenas leitura: não chama a confirmação de visualização.
+Ela pode confirmar RECEBIMENTO no navegador, como ocorre com os avisos de mensagens.
+Conversas silenciadas e mensagens antigas já lidas não entram nessas prévias.
+Com histórico oculto ou prévias proibidas, não mostra o conteúdo das mensagens.
+Com o painel aberto e desafixado, sair dele pode recolhê-lo depois de um breve intervalo.
+Não recolhe automaticamente durante gravação de áudio, edição com foco ou um diálogo.
+Clique fora do painel desafixado para recolher. O alfinete mantém aberto e reserva
+espaço dentro da página do chat em janelas de computador compatíveis.
+Quando Recolher automaticamente está desativado, permanece a bolha anterior.
+Tudo ocorre dentro da página do chat; não cria um painel nativo em outros sites/apps.
+
+CONFIRMAÇÕES E HORÁRIOS
+- ✓ Enviada: salva no servidor; ainda sem confirmação suficiente dos destinatários.
+- ✓✓ Recebida: navegador confirmou o recebimento. Não significa que foi lida.
+- ✓✓ Visualizada (azul): a visualização foi compartilhada pelos destinatários ativos.
+Nos grupos, também informa quantos participantes compartilharam a visualização.
+O total considera os participantes atualmente ativos no grupo.
+O remetente pode clicar na confirmação da PRÓPRIA mensagem para consultar pessoas,
+status e, se permitido, data/hora de recebimento e primeira visualização registrada.
+Não permite consultar recibos de mensagens alheias por simplesmente ser administrador.
+A supervisão administrativa de conversas segue o mecanismo auditado anterior.
+Sem compartilhamento da leitura, o destinatário pode continuar como Recebida; isso
+não deve ser interpretado como prova de que não abriu a conversa.
+
+QUANDO CONTA COMO VISUALIZAÇÃO
+A conversa precisa estar aberta, a aba/janela ativa e a mensagem na parte visível do
+histórico (pelo menos metade do menor entre altura da mensagem e altura da área).
+Rolagem confirma apenas as mensagens efetivamente visíveis, sem marcar automaticamente
+as que ficaram escondidas entre elas. Não confirma com um diálogo de configuração
+sobre o chat, por passar o mouse na aba lateral ou por receber notificação.
+O horário é gerado pelo servidor na primeira confirmação, com segundos e fuso de Brasília.
+É confirmação da interface, não prova de leitura humana nem comprovação de ciência.
+Conexão e consultas periódicas podem causar atraso de atualização.
+
+HISTÓRICO ANTERIOR
+As leituras conhecidas pela versão anterior são preservadas como status legado,
+sem inventar hora de visualização ou de recebimento. Reabrir uma mensagem antiga não
+substitui a hora desconhecida pela hora atual.
+Se o registro de horários estava desligado quando a leitura ocorreu, habilitar depois
+não preenche horários retroativamente. Desligar a exibição não apaga dados anteriores
+no banco, na auditoria ou em backups. Todos os registros novos integram o backup do chat.
+
+VALIDAÇÃO
+140 testes Python passaram, incluindo autorização real por HTTP, limites por usuário,
+privacidade das prévias, recibos explícitos, lacunas não lidas, horário imutável,
+compatibilidade com leituras antigas e ocultação de horários/compartilhamento na API.
+13 cenários JavaScript passaram: 3 de alertas, 8 de geometria/rótulos e 2 de montagem
+do modal (proprietário/equipe) em DOM simulado. Sintaxe JavaScript foi conferida.
+Não houve validação visual em navegador real, instalação no seu computador nem teste
+com duas pessoas do escritório. Faça essa conferência antes de liberar para a equipe.

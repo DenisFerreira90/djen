@@ -1,0 +1,14 @@
+ConectaAdv — Versão 10
+Atualize em pasta nova, após backup. Copie dados_juridico e dados_eproc antigos para dentro de djen. Execute INICIAR.bat e pressione Ctrl+F5.
+
+Em Mandados e veículos:
+- Digite processos, um por linha, ou carregue planilha XLS/XLSX/CSV.
+- Confira a prévia e as linhas inválidas. Clique Salvar e acompanhar somente estes.
+- A lista substitui a seleção anterior. Não apaga cadastros nem alertas históricos.
+- Voltar a acompanhar todos remove o filtro.
+- Processos sem cadastro precisam ser importados pela coleta; a lista não consulta o tribunal.
+- Números longos arredondados pelo Excel não são aceitos. Confira os números na fonte e salve a coluna como TEXTO. Apenas mudar a formatação não recupera dígitos perdidos.
+- Status da planilha não comprova situação atual de mandado no tribunal.
+
+WhatsApp: botão abre mensagem pronta para +55 51 98658-3348. Confirme o envio no WhatsApp. Nenhuma mensagem foi enviada automaticamente. Não há WhatsApp API configurada.
+A triagem continua apenas sobre eventos importados, com servidor ligado. Não consulta automaticamente novidades do tribunal nem lê todos os documentos.

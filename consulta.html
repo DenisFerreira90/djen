@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Consulta DJEN — Publicações</title>
+  <link rel="stylesheet" href="./css/style.css?v=2">
+  <script src="./js/app.js?v=3" defer></script>
+  <script src="./js/eproc.js?v=1" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon" aria-hidden="true">§</span><span>DJEN <strong>Consulta</strong></span></div>
+    <div class="source-tag"><span class="source-dot"></span> API pública do CNJ <a href="https://comunicaapi.pje.jus.br/swagger/index.html" target="_blank" rel="noopener noreferrer" aria-label="Documentação oficial da API (nova aba)">↗</a></div>
+  </header>
+  <div class="shell">
+    <section class="intro" aria-labelledby="titulo">
+      <div class="intro-eyebrow">CONSULTA DE PUBLICAÇÕES JUDICIAIS</div>
+      <h1 id="titulo">Encontre publicações <span>no DJEN.</span></h1>
+      <p>Pesquise por processo, pessoa, advogado, OAB ou palavras do teor. Sem cadastro, sem OAB pré-configurada e sem banco de dados.</p>
+    </section>
+
+    <section class="eproc-panel" aria-labelledby="eprocTitle">
+      <span class="eyebrow">COLETA LOCAL • EPROC TJRS 1º GRAU</span>
+      <h2 id="eprocTitle">Coletar e exportar processos</h2>
+      <p>Abra a sessão do eproc, selecione o perfil titular e acompanhe a leitura. Cada execução gera um arquivo datado e um log. Não é necessário importar uma lista.</p>
+      <p class="notice">Integração em validação: coleta o texto e as tabelas visíveis. A organização automática por autor, réu, advogado, defensor e prazo depende da conferência do layout interno. Anexos e abas fechadas não são lidos.</p>
+      <div class="eproc-actions">
+        <button type="button" id="eprocStart">Iniciar coleta</button>
+        <button type="button" id="eprocContinue" hidden>Continuar após login / seleção</button>
+        <button type="button" id="eprocCancel" hidden>Cancelar e exportar o que foi lido</button>
+      </div>
+      <p id="eprocStatus" role="status" aria-live="polite">Verificando servidor local…</p>
+      <h3>Log da execução</h3><pre id="eprocLog" class="eproc-log">Nenhuma execução nesta sessão.</pre>
+      <h3>Histórico de exportações</h3>
+      <div class="eproc-history"><table><thead><tr><th>Início</th><th>Fim</th><th>Situação</th><th>Lidos / encontrados</th><th>Arquivo</th></tr></thead><tbody id="eprocHistory"></tbody></table></div>
+    </section>
+
+    <div class="workspace">
+      <aside class="filter-panel" aria-labelledby="filtros-titulo">
+        <div class="panel-title"><div><span class="eyebrow">PERSONALIZE SUA CONSULTA</span><h2 id="filtros-titulo">Filtros</h2></div><span class="tiny-chip">Tudo opcional*</span></div>
+        <form id="searchForm" novalidate>
+          <div class="form-section">
+            <h3>O que você procura?</h3>
+            <label for="numeroProcesso">Número do processo</label>
+            <input id="numeroProcesso" name="numeroProcesso" type="text" placeholder="Ex.: 5001234-12.2025.8.21.0001" autocomplete="off">
+            <label for="texto">Palavra ou frase no teor</label>
+            <input id="texto" name="texto" type="text" autocomplete="off">
+            <label for="nomeParte">Nome da parte</label>
+            <input id="nomeParte" name="nomeParte" type="text" autocomplete="off">
+            <label for="nomeAdvogado">Nome do advogado</label>
+            <input id="nomeAdvogado" name="nomeAdvogado" type="text" placeholder="Sem advogado padrão" autocomplete="off">
+          </div>
+          <div class="form-section">
+            <h3>OAB <span class="section-note">opcional</span></h3>
+            <div class="form-grid compact">
+              <div><label for="numeroOab">Número da OAB</label><input id="numeroOab" name="numeroOab" type="text" placeholder="Não obrigatório" autocomplete="off"></div>
+              <div><label for="ufOab">UF</label><select id="ufOab" name="ufOab"><option value="">Todas</option><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option><option>SE</option><option>TO</option></select></div>
+            </div>
+          </div>
+          <div class="form-section">
+            <h3>Origem e período</h3>
+            <label for="siglaTribunal">Tribunal</label>
+            <input id="siglaTribunal" name="siglaTribunal" list="tribunais" placeholder="Ex.: TJRS, TJSC, TRF4" autocomplete="off" maxlength="12">
+            <datalist id="tribunais">
+              <option value="TJRS"></option><option value="TJSC"></option><option value="TJPR"></option><option value="TJSP"></option><option value="TJMG"></option><option value="TJRJ"></option><option value="TJDFT"></option><option value="TJBA"></option><option value="TJPE"></option><option value="TJGO"></option><option value="TJCE"></option><option value="TJPA"></option><option value="TJAM"></option><option value="TJMT"></option><option value="TJMS"></option><option value="TJES"></option><option value="TJAL"></option><option value="TJPB"></option><option value="TJPI"></option><option value="TJRN"></option><option value="TJRO"></option><option value="TJRR"></option><option value="TJSE"></option><option value="TJTO"></option><option value="TJAC"></option><option value="TJAP"></option><option value="TJMA"></option><option value="TRF1"></option><option value="TRF2"></option><option value="TRF3"></option><option value="TRF4"></option><option value="TRF5"></option><option value="TRF6"></option><option value="TST"></option><option value="STJ"></option><option value="STF"></option>
+            </datalist>
+            <label for="meio">Tipo de publicação</label>
+            <select id="meio" name="meio"><option value="D" selected>DJEN — Diário de Justiça</option><option value="">Todos os meios</option><option value="E">Editais</option></select>
+            <div class="form-grid dates">
+              <div><label for="dataDisponibilizacaoInicio">De</label><input id="dataDisponibilizacaoInicio" name="dataDisponibilizacaoInicio" type="date"></div>
+              <div><label for="dataDisponibilizacaoFim">Até</label><input id="dataDisponibilizacaoFim" name="dataDisponibilizacaoFim" type="date"></div>
+            </div>
+            <div class="quick-dates" aria-label="Período rápido"><button type="button" data-days="0">Hoje</button><button type="button" data-days="7">7 dias</button><button type="button" data-days="30">30 dias</button><button type="button" id="clearDates">Sem datas</button></div>
+          </div>
+          <div class="action-group">
+            <button class="search-btn" type="submit" id="searchButton"><span aria-hidden="true">⌕</span> Buscar publicações</button>
+            <div class="secondary-actions"><button type="button" id="clearFilters">Limpar filtros</button><button type="button" id="saveFilters">Salvar meus filtros</button></div>
+          </div>
+          <p class="footnote">* Informe pelo menos um critério entre tribunal, processo, nome, OAB ou teor. As datas usam a <strong>disponibilização</strong> no DJEN.</p>
+        </form>
+      </aside>
+
+      <main class="results-panel" aria-labelledby="resultados-titulo">
+        <div class="results-header">
+          <div><span class="eyebrow">RESULTADO DA PESQUISA</span><h2 id="resultados-titulo">Publicações encontradas</h2><p id="summary" class="muted">Preencha os filtros e clique em “Buscar publicações”.</p></div>
+          <div class="batch-setting"><label for="perPage">Exibir</label><select id="perPage"><option value="20" selected>20</option><option value="50">50</option><option value="100">100</option></select></div>
+        </div>
+        <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+        <div id="results" class="results-list" aria-live="polite">
+          <div class="empty-state"><div class="empty-icon" aria-hidden="true">⌕</div><h3>Pronto para pesquisar</h3><p>Os resultados da API do CNJ aparecerão aqui, com o texto completo de cada publicação.</p><div class="example">Experimente buscar <strong>“distribuído para”</strong> no campo <strong>Teor</strong>.</div></div>
+        </div>
+        <nav id="pager" class="pager" aria-label="Paginação" hidden>
+          <button type="button" id="prevPage">← Anterior</button><span id="pageInfo"></span><button type="button" id="nextPage">Próxima →</button>
+        </nav>
+        <p class="disclaimer">Fonte: Conselho Nacional de Justiça. Os registros são consultados em tempo real e não são armazenados neste site. Confirme informações e prazos nas fontes oficiais.</p>
+      </main>
+    </div>
+  </div>
+  <dialog id="details" aria-labelledby="dialogTitle">
+    <div class="dialog-head"><div><span class="eyebrow">PUBLICAÇÃO COMPLETA</span><h2 id="dialogTitle">Teor da publicação</h2></div><button type="button" id="closeDetails" class="icon-button" aria-label="Fechar detalhes">×</button></div>
+    <p id="dialogMeta" class="dialog-meta"></p>
+    <pre id="dialogText" class="full-text"></pre>
+    <div class="dialog-actions"><a id="certificateLink" target="_blank" rel="noopener noreferrer" hidden>Ver certidão no CNJ ↗</a><button type="button" id="copyText">Copiar teor</button><button type="button" id="doneDetails">Fechar</button></div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
