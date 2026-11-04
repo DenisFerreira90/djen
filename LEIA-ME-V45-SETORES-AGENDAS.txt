@@ -1,0 +1,91 @@
+ConectaAdv V45 — Organização, setores e agendas do Relacionamento
+
+ATUALIZAR
+Faça backup da pasta atual. Aguarde ou encerre uma coleta antes de fechar o
+servidor e substitua os arquivos do programa pelo pacote. Não apague bancos,
+sessões ou dados. Inicie com INICIAR.bat e pressione F5 se houver menu em cache.
+Os setores, grupos e agenda inicial são preparados no primeiro acesso autenticado.
+Os dados existentes são preservados; a preparação é repetível sem duplicação.
+
+MENU REORGANIZADO
+Início: Visão geral.
+Atendimento e equipe: Calendários e atendimentos; Pessoas e clientes; Comunicação.
+Jurídico: Processos; Mandados e veículos; Prazos e agenda; Documentos.
+Controladoria: Precisa de atenção; Tarefas da equipe; Recuperação de fichas.
+Consultas e monitoramento: uma única entrada, Central de consultas.
+Dentro dela: Coletas e processos, JUSDOWN, Tribunais, Operação da coleta,
+Rotinas automáticas (administrador), Notificações, Dados e importações.
+Administração: Setores e permissões, RH, Financeiro, Contas e acessos, Auditoria.
+A visibilidade prévia do RH e as permissões existentes continuam sendo respeitadas.
+Prazos e agenda reúne Agenda de prazos e Cadastro de prazos em abas próximas.
+Recarregar a página mantém a seção salva. Navegar não interrompe a coleta.
+
+15 SETORES PREDEFINIDOS
+Contratação, Arquivo, Acordos, Financeiro, Cobrança, Previdenciário,
+Controladoria, Consignados, Bancário, Cível, Relacionamento, Secretarias,
+RH, Gerência e TI.
+Cada setor recebe um grupo privado no chat. Se já existir um grupo com nome
+equivalente, ele é reutilizado, sem substituir integrantes ou histórico.
+Grupos novos começam somente com o proprietário do chat, evitando colocar
+toda a equipe em conversas restritas. Nenhuma mensagem é disparada pela atualização.
+As duas unidades existentes continuam cadastradas; não foram adivinhados endereços
+ou locais de trabalho dos setores e funcionários.
+
+ASSOCIAR PESSOAS AOS SETORES
+Entre com a conta proprietária do chat.
+Administração > Setores e permissões > Integrantes dos grupos de setor.
+Escolha um setor, marque os integrantes e clique Salvar integrantes.
+O proprietário do grupo permanece participante. A associação do setor acompanha
+as permissões de agenda concedidas a ele. Um funcionário pode estar em mais
+de um setor. RH, Gerência e TI não recebem integrantes automaticamente.
+A governança já existente do chat permanece disponível na configuração do chat.
+
+PERMISSÃO DE SECRETARIA
+Como administrador: Administração > Setores e permissões > Permissão de secretaria.
+Marque Secretaria para o usuário de perfil Equipe e clique Salvar na linha dele.
+Administradores já podem criar agendas. Leitores permanecem somente em leitura,
+mesmo que algum cadastro antigo contenha a marca de secretaria.
+Essa permissão autoriza criar agendas do Relacionamento e agendar nelas;
+não concede acesso ao módulo RH, a conversas privadas ou a calendários de
+outros setores. Não é uma troca do perfil geral do usuário.
+Retirar a marca bloqueia novas criações e o acesso dinâmico de agendamento.
+Delegações individuais ou de grupo já concedidas em cada agenda continuam
+valendo até serem removidas em Delegar acesso a pessoas / setores.
+A permissão e suas alterações ficam registradas na auditoria.
+
+AGENDA DO RELACIONAMENTO
+A agenda inicial chama-se Relacionamento — Agendamentos.
+O setor Relacionamento começa com permissão de visualizar essa agenda.
+O grupo Secretarias começa com permissão de agendar nela. Associe as pessoas
+corretas aos grupos para ativar essas permissões de setor.
+Quem recebe a permissão explícita de secretaria pode agendar nas agendas do
+Relacionamento, mesmo sem participar do grupo Secretarias.
+Calendários e atendimentos > Agenda do Relacionamento abre o atalho.
+Criar agenda do Relacionamento cria outra agenda de atendimento desse setor.
+Quem cria recebe gerenciamento da agenda criada. O setor recebe visualização.
+O criador pode delegar ver, agendar ou gerenciar para pessoas ou grupos.
+O botão Criar outra agenda de setor continua exclusivo de administradores.
+
+O atendimento tem título, início, fim, responsável, cliente, contato, processo,
+local/link, observações e situação. A tela organiza a semana por data e horário
+de Brasília. O responsável precisa ter acesso à agenda. A lista de responsáveis
+mostra somente pessoas ativas com acesso a ela. Agendamentos sobrepostos do
+mesmo responsável são bloqueados, inclusive entre agendas diferentes.
+Alterações concorrentes exigem reabrir o compromisso para evitar sobrescrita.
+As mudanças de compromissos e delegações são auditadas.
+
+CHAT INDEPENDENTE (SE ESTIVER ATIVADO)
+O serviço independente prepara os mesmos 15 grupos ao primeiro acesso nele.
+Os integrantes dos grupos e contas de seu banco continuam independentes dos
+grupos usados pelas agendas do sistema principal. Associe os integrantes também
+nas configurações do chat independente. A tela principal avisa essa situação.
+A atualização não mescla bancos, senhas ou históricos de serviços diferentes.
+
+VALIDAÇÃO
+282 testes Python aprovados, incluindo preparação sem duplicação, grupos
+privados, preservação de integrantes, permissão de secretaria, bloqueio de
+leitores, acesso às agendas e conflito de horários. Novas telas e navegação
+verificadas em DOM simulado, incluindo os controles por perfil. Não foi feita
+uma conferência visual em navegador real ou teste na instalação Windows do usuário.
+JUSDOWN e sua rotina 08:00/12:30 continuam com as regras da V44, descritas no
+leia-me correspondente incluído. A busca autenticada de processos permanece TJRS.

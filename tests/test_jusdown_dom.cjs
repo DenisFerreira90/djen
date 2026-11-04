@@ -5,6 +5,7 @@ const all=e=>[e,...e.children.flatMap(n=>n&&typeof n==='object'?all(n):[])];
 const el=(tag,cls,text)=>{const n=new E(tag);n.className=cls;if(text!==undefined)n.textContent=text;return n;};
 const option=class extends E{constructor(t,v){super('option');this.textContent=t;this.value=v;}};
 const rows=[{id:'TJRS-1',tribunal:'TJRS',nome:'Tribunal de Justiça Rio Grande do Sul',ramo:'Estadual',uf:'RS',grau:'1',sistema:'eproc',url:'https://eproc1g.tjrs.jus.br/eproc/',cor:'verde',manutencoes:[]},{id:'TJRS-2',tribunal:'TJRS',nome:'Tribunal de Justiça Rio Grande do Sul',ramo:'Estadual',uf:'RS',grau:'2',sistema:'eproc',url:'https://eproc2g.tjrs.jus.br/eproc/',cor:'vermelho',manutencoes:[]},{id:'TJSC-1',tribunal:'TJSC',nome:'Tribunal de Justiça Santa Catarina',ramo:'Estadual',uf:'SC',grau:'1',sistema:'eproc',url:null,cor:'cinza',manutencoes:[],ativo:false}];
+for(const row of rows)row.familia=row.grau==='2'?'PJe':'eproc';
 const courts=[{id:'TJRS',nome:'Rio Grande do Sul',ramo:'Estadual',portal:'https://www.tjrs.jus.br/'},{id:'TJSC',nome:'Santa Catarina',ramo:'Estadual',portal:'https://www.tjsc.jus.br/',ativo:false}];
 async function test(role){const root=new E('main'),calls=[],tables=[];
 const data={resumo:{verde:1,amarelo:0,vermelho:1,cinza:1,tribunais:2,enderecos:2,instancias:3,pendentes:1},ativo:true,tribunais:courts,itens:rows,alertas:[],comunicados:[],lembretes:[]};
@@ -15,7 +16,7 @@ const window={Juridico:{S:{user:{id:1,role}},api,el,button,head(){},card(){const
 const c={window,console,Option:option};vm.createContext(c);vm.runInContext(fs.readFileSync(require.resolve('../js/jusdown.js'),'utf8'),c);await window.Jusdown.render();
 const selects=all(root).filter(e=>e.tagName==='SELECT');const court=selects.find(e=>e.attributes['aria-label']==='Tribunal'),mode=selects.find(e=>e.attributes['aria-label']==='Situação');
 const visibleRows=()=>all(root).filter(e=>e.tagName==='TABLE'&&e.headers[0]==='Portal / grau').reduce((n,t)=>n+t.rows.length,0);
-assert.equal(visibleRows(),2);mode.value='vermelho';mode.onchange();assert.equal(visibleRows(),1);
+assert.equal(visibleRows(),2);const system=selects.find(e=>e.attributes['aria-label']==='Sistema judicial');assert(system);system.value='PJe';system.onchange();assert.equal(visibleRows(),1);system.value='';system.onchange();assert.equal(visibleRows(),2);mode.value='vermelho';mode.onchange();assert.equal(visibleRows(),1);
 mode.value='todos';mode.onchange();court.value='TJSC';court.onchange();assert.equal(visibleRows(),role==='administrador'?1:0);
 if(role==='administrador'){const activation=selects.find(e=>e.attributes['aria-label']==='Ativação do tribunal');activation.value='ativos';activation.onchange();}
 const search=all(root).find(e=>e.attributes['aria-label']==='Pesquisar tribunal');court.value='';court.onchange();search.value='rio grande';search.oninput();assert.equal(visibleRows(),2);

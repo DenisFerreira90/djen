@@ -1,0 +1,77 @@
+ConectaAdv V46 — JUSDOWN por sistema, TJAL e PDPJ
+
+ATUALIZAR
+Aguarde/encerre uma coleta antes de fechar o servidor. Faça backup da pasta e
+substitua os arquivos do programa. Não apague bancos nem sessões.
+Inicie normalmente e use F5 se o menu estiver em cache. A versão aparece como 46.
+A organização, os 15 setores, grupos e agendas da V45 permanecem no pacote.
+O JUSDOWN mantém as rodadas diárias 08:00 e 12:30 e o banco separado.
+
+SISTEMAS
+O filtro Sistema judicial permite eproc, e-SAJ, PJe, PDPJ e Outros.
+A classificação é separada do nome do portal, tribunal e grau.
+O filtro vale para a lista e para o relatório selecionado.
+Os favoritos anteriores são preservados, incluindo Projudi e CPE em Outros;
+eles podem ser removidos ou inativados pela administração, como antes.
+Esta mudança é do monitor de portais públicos. Não instala coletores de
+processos autenticados de e-SAJ/PJe/PDPJ; a coleta de processos segue TJRS.
+
+TJAL
+1. eproc 1º grau: https://eproc1g.tjal.jus.br/
+2. Página pública do eproc: https://www.tjal.jus.br/eproc
+3. eproc 2º grau: Em implantação, conforme aviso da captura enviada em 04/11/2026.
+   Sem endereço de acesso presumido, sem requisição de monitoramento e sem
+   classificação como fora do ar. O link de referência leva ao portal oficial.
+   O aviso é uma referência fornecida pelo usuário, não uma confirmação ao vivo
+   de que o cronograma permanece igual. Confira a fonte antes de ativar.
+4. Portal e-SAJ separado: https://www2.tjal.jus.br/esaj/
+   Sua resposta não é apresentada como teste separado do 1º e do 2º grau.
+
+O cadastro inicial passa a ter 39 entradas: 38 endereços e 1 implantação.
+O total de fontes inclui 24 tribunais da lista anterior e um serviço nacional.
+A entrada do 1º grau do TJAL mantém seu identificador. A fonte inicial genérica
+é atualizada para /eproc uma vez, apenas se não tiver sido personalizada.
+Registros removidos e inativações continuam respeitados, sem reaparecer na lista.
+Novas entradas ficam sob a inativação já existente de seu respectivo tribunal.
+
+PDPJ
+Entrada nacional Portal de Serviços / Jus.br:
+https://portaldeservicos.pdpj.jus.br/
+Informações/certidões da PDPJ:
+https://www.cnj.jus.br/tecnologia-da-informacao-e-comunicacao/justica-4-0/relatorios-de-indisponibilidade/
+A PDPJ é classificada como Serviço nacional, sem criar 1º/2º grau fictícios.
+Resposta do portal não comprova funcionamento de todos os serviços integrados
+nem de todos os PJe dos tribunais. Bloqueio, 403/429 ou exigência de autenticação
+continua sendo Sem confirmação, sem contorno de login ou 2FA.
+
+ADICIONAR / CORRIGIR
+Como administrador, abra Central de consultas > JUSDOWN > Adicionar portal.
+Escolha família, nome, tribunal/serviço, grau, endereço e fonte de avisos.
+A família é escolhida explicitamente; o campo de nome do sistema acompanha
+sua escolha e pode identificar o serviço com mais detalhe.
+Para PDPJ use Grau = Serviço nacional.
+Para um ambiente ainda em construção, escolha Em implantação. Nesse caso,
+não informe um endereço de acesso; informe a URL pública do cronograma/aviso.
+Quando for publicado o endereço real, cadastre-o como Endereço publicado e
+remova o cadastro antigo de implantação. Essa ativação é administrativa,
+pois o monitor não presume que um ambiente já começou a funcionar.
+Corrija outras URLs removendo o cadastro anterior e adicionando o correto.
+Remover da lista e Inativar e ocultar continuam disponíveis ao administrador.
+
+RELATÓRIOS E LIMITES
+As implantações aparecem com seu aviso nos relatórios, sem HTTP e sem horário
+de consulta inventado. A comparação dos informes públicos continua distinguindo
+primeira leitura, novidades, nenhuma novidade detectada, ausência de informes
+identificáveis e falha de leitura. Não equivale à leitura completa de sites,
+PDFs, JavaScript ou páginas autenticadas.
+A página do TJAL foi aberta pela pesquisa web, mas não forneceu conteúdo textual
+legível. A entrada eproc retornou 403 para a pesquisa web. O 2º grau em construção
+foi identificado na captura enviada pelo usuário. A implementação preserva essas
+limitações e não declara indisponibilidade oficial a partir delas.
+Testes automáticos cobrem família, escopo nacional, implantação sem consulta,
+migração sem sobrescrever fonte personalizada, remoções, filtros e relatórios.
+Não houve teste autenticado nos tribunais nem conferência visual em navegador
+real/Windows desta versão.
+
+Suíte completa: 287 testes Python aprovados. Filtros e navegação verificados
+em DOM simulado. A aparência em navegador real ainda requer validação local.

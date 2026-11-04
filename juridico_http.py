@@ -43,7 +43,10 @@ def handle(h, method):
         else: body={}
         if path=='/api/juridico/sessao' and method=='GET':
             try:
-                user,csrf=legal.store.auth(token(h));output={'ok':True,'usuario':user,'csrf':csrf,'configurar':False,'modo_chat':getattr(h.server,'chat_only',False),'chat_externo':getattr(h.server,'chat_externo',False)}
+                user,csrf=legal.store.auth(token(h));
+                import setores
+                setores.bootstrap(legal.store,with_calendar=not getattr(h.server,'chat_only',False))
+                output={'ok':True,'usuario':user,'csrf':csrf,'configurar':False,'modo_chat':getattr(h.server,'chat_only',False),'chat_externo':getattr(h.server,'chat_externo',False)}
             except legal.AppError: output={'ok':True,'usuario':None,'configurar':legal.store.setup_needed(),'modo_chat':getattr(h.server,'chat_only',False),'chat_externo':getattr(h.server,'chat_externo',False)}
             h.send_json(200,output);return True
         if path=='/api/juridico/configurar' and method=='POST':
@@ -60,7 +63,27 @@ def handle(h, method):
         try: page=max(1,int(q('pagina','1')))
         except ValueError: raise legal.AppError('Página inválida.')
         output=None
-        if path.startswith('/api/juridico/jusdown'):
+        if path.startswith('/api/juridico/2fa/'):
+            if getattr(h.server,'chat_only',False):raise legal.AppError('2FA disponível somente no sistema principal.',403)
+            import twofa
+            action=path.removeprefix('/api/juridico/2fa/')
+            if action=='acesso' and method=='GET':output=twofa.permission(legal.store,actor)
+            elif action=='configuracao' and method=='GET':output=twofa.settings(legal.store,actor)
+            elif action=='permissoes' and method=='POST':output=twofa.grant(legal.store,actor,body)
+            elif action=='autenticador' and method=='POST':output=twofa.add(legal.store,actor,body)
+            elif action=='desativar' and method=='POST':output=twofa.disable(legal.store,actor,int(body.get('id',0)))
+            elif action=='codigos' and method=='POST':output=twofa.codes(legal.store,actor)
+            else:raise legal.AppError('Rota 2FA não encontrada.',404)
+        elif path.startswith('/api/juridico/setores'):
+            if getattr(h.server,'chat_only',False):raise legal.AppError('Organização de agendas disponível no serviço principal.',403)
+            import setores
+            if path=='/api/juridico/setores/acesso' and method=='GET':output=setores.access(legal.store,actor)
+            elif path=='/api/juridico/setores' and method=='GET':output=setores.directory(legal.store,actor)
+            elif path=='/api/juridico/setores/permissoes' and method=='POST':output=setores.grant(legal.store,actor,body)
+            elif path=='/api/juridico/setores/membros' and method=='POST':output=setores.members(legal.store,actor,body.get('codigo'),body.get('membros',[]))
+            else:raise legal.AppError('Rota de setores não encontrada.',404)
+        elif path.startswith('/api/juridico/jusdown'):
+
             import jusdown
             if getattr(h.server,'chat_only',False):raise legal.AppError('JUSDOWN indisponível no serviço de chat.',403)
             if path=='/api/juridico/jusdown' and method=='GET':output=jusdown.monitor.status(actor)
@@ -103,7 +126,10 @@ def handle(h, method):
             output=calendario.calendars(legal.store,actor)
         elif path=='/api/juridico/calendarios' and method=='POST':
             import calendario
-            output=calendario.create(legal.store,actor,body.get('nome',''))
+            output=calendario.create(legal.store,actor,body.get('nome',''),body.get('setor'))
+        elif re.fullmatch(r'/api/juridico/calendarios/\d+/responsaveis',path) and method=='GET':
+            import calendario
+            output=calendario.assignees(legal.store,actor,int(path.split('/')[-2]))
         elif re.fullmatch(r'/api/juridico/calendarios/\d+/permissoes',path):
             import calendario
             output=calendario.grants(legal.store,actor,int(path.split('/')[-2]),body.get('permissoes',[]) if method=='POST' else None)

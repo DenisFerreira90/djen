@@ -5,13 +5,17 @@ const local=v=>new Date(v).toLocaleString('sv-SE',{timeZone:'America/Sao_Paulo'}
 window.Calendario={async render(){
  const {S,api,el,head,card,button,toast}=window.Juridico;
  head('Calendários da equipe','Agendamentos delegados entre pessoas e setores · horário de Brasília.');
- const calendars=await api('calendarios'),people=await api('chat/usuarios');
- if(!calendars.some(c=>c.id===C.id))C.id=calendars.find(c=>c.owner_id===S.user.id)?.id||calendars[0]?.id;
+ const [calendars,access]=await Promise.all([api('calendarios'),api('setores/acesso')]);
+ let people=[];
+ if(!calendars.some(c=>c.id===C.id))C.id=(access.pode_criar_agenda_relacionamento&&S.user.role!=='administrador'?calendars.find(c=>c.setor==='relacionamento')?.id:null)||calendars.find(c=>c.owner_id===S.user.id)?.id||calendars[0]?.id;
  const chosen=calendars.find(c=>c.id===C.id),top=card(),bar=el('div','toolbar'),select=el('select'),date=el('input');
  for(const c of calendars)select.append(new Option(c.nome+' · '+c.permissao,c.id));select.value=C.id||'';select.onchange=()=>{C.id=Number(select.value);window.Juridico.render();};date.type='date';date.value=C.date;date.onchange=()=>{if(date.value){C.date=date.value;window.Juridico.render();}};
+ const relacionamento=calendars.find(c=>c.setor==='relacionamento');if(relacionamento)bar.append(button('Agenda do Relacionamento',()=>{C.id=relacionamento.id;window.Juridico.render();},'link'));
  bar.append(select,date,button('Hoje',()=>{C.date=new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});window.Juridico.render();}));top.append(bar);
- if(S.user.role==='administrador')bar.append(button('Criar calendário de setor',async()=>{const name=prompt('Nome do calendário, por exemplo Contratação:');if(!name)return;const r=await api('calendarios',{nome:name});C.id=r.id;window.Juridico.render();}));
+ if(access.pode_criar_agenda_relacionamento)bar.append(button('Criar agenda do Relacionamento',async()=>{const name=prompt('Nome da nova agenda do Relacionamento:');if(!name)return;try{const r=await api('calendarios',{nome:name,setor:'relacionamento'});C.id=r.id;window.Juridico.render();}catch(e){toast(e.message);}},'primary'));
+ if(S.user.role==='administrador')bar.append(button('Criar outra agenda de setor',async()=>{const name=prompt('Nome do calendário:');if(!name)return;const r=await api('calendarios',{nome:name});C.id=r.id;window.Juridico.render();}));
  if(!chosen){top.append(el('p','','Nenhuma agenda disponível.'));return;}
+ people=await api(`calendarios/${C.id}/responsaveis`);
  if(chosen.permissao==='gerenciar')bar.append(button('Delegar acesso a pessoas / setores',permissions));
  if(chosen.permissao!=='ver')bar.append(button('Marcar atendimento',()=>edit(), 'primary'));
  top.append(el('p','','Conceda “agendar” ao setor que marca os atendimentos e “ver” a quem acompanha. Quem tem acesso ao calendário vê os compromissos dele. Use agendas separadas para dados restritos de RH.'));
@@ -31,8 +35,8 @@ window.Calendario={async render(){
  const feedback=el('p','full');form.append(feedback);const close=button('Fechar',()=>{dialog.close();dialog.remove();});form.append(close);
  if(chosen.permissao!=='ver'){const save=el('button','primary','Salvar compromisso');save.type='submit';form.append(save);form.onsubmit=async event=>{event.preventDefault();save.disabled=true;try{const body=Object.fromEntries(Object.entries(fields).map(([k,v])=>[k,v.value]));body.inicio+=':00-03:00';body.fim+=':00-03:00';body.responsavel_id=Number(body.responsavel_id);if(existing)body.versao=existing.versao;await api(`calendarios/${C.id}/eventos${existing?'/'+existing.id:''}`,body);dialog.close();dialog.remove();window.Juridico.render();}catch(e){feedback.textContent=e.message;save.disabled=false;}};}
  document.body.append(dialog);dialog.showModal();}
- async function permissions(){const data=await api(`calendarios/${C.id}/permissoes`),dialog=el('dialog','calendar-dialog'),rows=el('div','calendar-grants'),inputs=[];dialog.append(el('h2','','Quem pode usar esta agenda?'),el('p','','Ver permite consultar; agendar permite criar e alterar compromissos; gerenciar permite também delegar acesso. A permissão do setor acompanha os integrantes do grupo.'),rows);
- const principals=[...people.map(u=>({tipo:'usuario',id:u.id,nome:u.nome})),...data.setores.map(g=>({tipo:'setor',id:g.id,nome:'Setor: '+g.titulo}))];
+ async function permissions(){const allPeople=await api('usuarios');const data=await api(`calendarios/${C.id}/permissoes`),dialog=el('dialog','calendar-dialog'),rows=el('div','calendar-grants'),inputs=[];dialog.append(el('h2','','Quem pode usar esta agenda?'),el('p','','Ver permite consultar; agendar permite criar e alterar compromissos; gerenciar permite também delegar acesso. A permissão do setor acompanha os integrantes do grupo.'),rows);
+ const principals=[...allPeople.filter(u=>u.ativo!==0).map(u=>({tipo:'usuario',id:u.id,nome:u.nome})),...data.setores.map(g=>({tipo:'setor',id:g.id,nome:'Setor: '+g.titulo}))];
  for(const p of principals){const label=el('label','',p.nome),select=el('select');for(const [v,t] of [['','Sem acesso'],['ver','Ver'],['agendar','Agendar'],['gerenciar','Gerenciar']])select.append(new Option(t,v));select.value=data.permissoes.find(g=>g.tipo===p.tipo&&g.principal_id===p.id)?.papel||'';label.append(select);rows.append(label);inputs.push({p,select});}
  dialog.append(button('Cancelar',()=>{dialog.close();dialog.remove();}),button('Salvar delegações',async()=>{await api(`calendarios/${C.id}/permissoes`,{permissoes:inputs.filter(x=>x.select.value).map(x=>({tipo:x.p.tipo,principal_id:x.p.id,papel:x.select.value}))});dialog.close();dialog.remove();toast('Delegações salvas.');window.Juridico.render();},'primary'));document.body.append(dialog);dialog.showModal();}
 }};

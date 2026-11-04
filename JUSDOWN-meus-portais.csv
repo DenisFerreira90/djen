@@ -1,36 +1,40 @@
-﻿Tribunal;Nome do portal;Sistema;Grau;Endereço público;Fonte de informações;Origem
-STJ;STJ · CPE · Superior;CPE;superior;https://cpe.web.stj.jus.br/;https://www.stj.jus.br/;Favoritos enviados em 03/11/2026
-TJAC;TJAC · eproc · 1;eproc;1;https://eproc1g.tjac.jus.br/;https://www.tjac.jus.br/indisponibilidade/;Link solicitado pelo usuário
-TJAC;TJAC · eproc · 2;eproc;2;https://eproc2g.tjac.jus.br/;https://www.tjac.jus.br/indisponibilidade/;Link solicitado pelo usuário
-TJAC;TJAC · Portal eproc · informações · portal;Portal eproc · informações;portal;https://www.tjac.jus.br/eproc/;https://www.tjac.jus.br/indisponibilidade/;Link solicitado pelo usuário
-TJAL;TJAL · eproc · 1º grau;eproc;1;https://eproc1g.tjal.jus.br/;https://www.tjal.jus.br/;Favoritos enviados em 03/11/2026
-TJAP;TJAP · eproc · 1º grau;eproc;1;https://eproc1g.tjap.jus.br/eproc/;https://www.tjap.jus.br/;Favoritos enviados em 03/11/2026
-TJBA;TJBA · eproc · 1º grau;eproc;1;https://eproc1g.tjba.jus.br/eproc/;https://www.tjba.jus.br/;Favoritos enviados em 03/11/2026
-TJDFT;TJDFT · PJe · 1º grau;PJe;1;https://pje.tjdft.jus.br/pje/;https://www.tjdft.jus.br/;Favoritos enviados em 03/11/2026
-TJGO;TJGO · Projudi · 1º/2º grau unificados;Projudi;unificado;https://projudi.tjgo.jus.br/;https://www.tjgo.jus.br/;Favoritos enviados em 03/11/2026
-TJMA;TJMA · PJe · 2º grau;PJe;2;https://pje2.tjma.jus.br/pje2g/;https://www.tjma.jus.br/;Favoritos enviados em 03/11/2026
-TJMG;TJMG · eproc · 1º grau;eproc;1;https://eproc1g.tjmg.jus.br/eproc/;https://www.tjmg.jus.br/;Favoritos enviados em 03/11/2026
-TJPE;TJPE · PJe · 1º grau;PJe;1;https://pje.cloud.tjpe.jus.br/1g/;https://www.tjpe.jus.br/;Favoritos enviados em 03/11/2026
-TJPR;TJPR · eproc · 1º grau;eproc;1;https://eproc1g.tjpr.jus.br/eproc/;https://www.tjpr.jus.br/;Favoritos enviados em 03/11/2026
-TJPR;TJPR · Projudi · 1º/2º grau unificados;Projudi;unificado;https://projudi.tjpr.jus.br/projudi/;https://www.tjpr.jus.br/;Favoritos enviados em 03/11/2026
-TJRJ;TJRJ · PJe · 1º grau;PJe;1;https://tjrj.pje.jus.br/1g/;https://www.tjrj.jus.br/;Favoritos enviados em 03/11/2026
-TJRJ;TJRJ · eproc · 1º grau;eproc;1;https://eproc1g.tjrj.jus.br/eproc/;https://www.tjrj.jus.br/;Favoritos enviados em 03/11/2026
-TJRO;TJRO · PJe · 1º grau;PJe;1;https://pjepg.tjro.jus.br/pje/;https://www.tjro.jus.br/;Favoritos enviados em 03/11/2026
-TJRS;TJRS · eproc · 1º grau;eproc;1;https://eproc1g.tjrs.jus.br/eproc/;https://www.tjrs.jus.br/;Favoritos enviados em 03/11/2026
-TJRS;TJRS · eproc · 2º grau;eproc;2;https://eproc2g.tjrs.jus.br/eproc/;https://www.tjrs.jus.br/;Favoritos enviados em 03/11/2026
-TJSC;TJSC · eproc · 1º grau;eproc;1;https://eproc1g.tjsc.jus.br/eproc/;https://www.tjsc.jus.br/web/processo-eletronico-eproc;Favoritos enviados em 03/11/2026
-TJSC;TJSC · eproc · 2º grau;eproc;2;https://eproc2g.tjsc.jus.br/eproc/;https://www.tjsc.jus.br/web/processo-eletronico-eproc;Favoritos enviados em 03/11/2026
-TJSE;TJSE · eproc · 1º grau;eproc;1;https://eproc1g.tjse.jus.br/eproc/;https://www.tjse.jus.br/;Favoritos enviados em 03/11/2026
-TJSP;TJSP · eproc · 1º grau;eproc;1;https://eproc1g.tjsp.jus.br/eproc/;https://www.tjsp.jus.br/;Favoritos enviados em 03/11/2026
-TJTO;TJTO · eproc · 1º grau;eproc;1;https://eproc1.tjto.jus.br/eprocV2_prod_1grau/;https://www.tjto.jus.br/;Favoritos enviados em 03/11/2026
-TJTO;TJTO · eproc · 2º grau;eproc;2;https://eproc2.tjto.jus.br/eprocV2_prod_2grau/;https://www.tjto.jus.br/;Favoritos enviados em 03/11/2026
-TRF1;TRF1 · PJe · 1º grau;PJe;1;https://pje1g.trf1.jus.br/pje/;https://www.trf1.jus.br/;Favoritos enviados em 03/11/2026
-TRF1;TRF1 · PJe · 2º grau;PJe;2;https://pje2g.trf1.jus.br/pje/;https://www.trf1.jus.br/;Favoritos enviados em 03/11/2026
-TRF2;TRF2 · eproc · 2º grau;eproc;2;https://eproc.trf2.jus.br/eproc/;https://www.trf2.jus.br/;Favoritos enviados em 03/11/2026
-TRF3;TRF3 · PJe · 1º grau;PJe;1;https://pje1g.trf3.jus.br/pje/;https://www.trf3.jus.br/;Favoritos enviados em 03/11/2026
-TRF3;TRF3 · PJe · 2º grau;PJe;2;https://pje2g.trf3.jus.br/pje/;https://www.trf3.jus.br/;Favoritos enviados em 03/11/2026
-TRF4;TRF4 · eproc · 1º grau · JFRS;eproc;1;https://eproc.jfrs.jus.br/eprocV2/;https://www.trf4.jus.br/;Favoritos enviados em 03/11/2026
-TRF4;TRF4 · eproc · 2º grau;eproc;2;https://eproc.trf4.jus.br/eproc2trf4/;https://www.trf4.jus.br/;Favoritos enviados em 03/11/2026
-TRF5;TRF5 · PJe · 1º grau;PJe;1;https://pje1g.trf5.jus.br/pje/;https://www.trf5.jus.br/;Favoritos enviados em 03/11/2026
-TRF5;TRF5 · PJe · 2º grau;PJe;2;https://pje2g.trf5.jus.br/pje/;https://www.trf5.jus.br/;Favoritos enviados em 03/11/2026
-TRF6;TRF6 · eproc · 1º grau;eproc;1;https://eproc1g.trf6.jus.br/eproc/;https://portal.trf6.jus.br/;Favoritos enviados em 03/11/2026
+﻿Tribunal ou serviço;Nome do portal;Família;Sistema;Grau;Situação;Endereço público;Fonte de informações;Origem
+STJ;STJ · CPE · Superior;Outros;CPE;superior;em_uso;https://cpe.web.stj.jus.br/;https://www.stj.jus.br/;Favoritos enviados em 03/11/2026
+TJAC;TJAC · eproc · 1;eproc;eproc;1;em_uso;https://eproc1g.tjac.jus.br/;https://www.tjac.jus.br/indisponibilidade/;Link solicitado pelo usuário
+TJAC;TJAC · eproc · 2;eproc;eproc;2;em_uso;https://eproc2g.tjac.jus.br/;https://www.tjac.jus.br/indisponibilidade/;Link solicitado pelo usuário
+TJAC;TJAC · Portal eproc · informações · portal;eproc;Portal eproc · informações;portal;em_uso;https://www.tjac.jus.br/eproc/;https://www.tjac.jus.br/indisponibilidade/;Link solicitado pelo usuário
+TJAL;TJAL · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.tjal.jus.br/;https://www.tjal.jus.br/eproc;Favoritos enviados em 03/11/2026
+TJAP;TJAP · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.tjap.jus.br/eproc/;https://www.tjap.jus.br/;Favoritos enviados em 03/11/2026
+TJBA;TJBA · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.tjba.jus.br/eproc/;https://www.tjba.jus.br/;Favoritos enviados em 03/11/2026
+TJDFT;TJDFT · PJe · 1º grau;PJe;PJe;1;em_uso;https://pje.tjdft.jus.br/pje/;https://www.tjdft.jus.br/;Favoritos enviados em 03/11/2026
+TJGO;TJGO · Projudi · 1º/2º grau unificados;Outros;Projudi;unificado;em_uso;https://projudi.tjgo.jus.br/;https://www.tjgo.jus.br/;Favoritos enviados em 03/11/2026
+TJMA;TJMA · PJe · 2º grau;PJe;PJe;2;em_uso;https://pje2.tjma.jus.br/pje2g/;https://www.tjma.jus.br/;Favoritos enviados em 03/11/2026
+TJMG;TJMG · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.tjmg.jus.br/eproc/;https://www.tjmg.jus.br/;Favoritos enviados em 03/11/2026
+TJPE;TJPE · PJe · 1º grau;PJe;PJe;1;em_uso;https://pje.cloud.tjpe.jus.br/1g/;https://www.tjpe.jus.br/;Favoritos enviados em 03/11/2026
+TJPR;TJPR · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.tjpr.jus.br/eproc/;https://www.tjpr.jus.br/;Favoritos enviados em 03/11/2026
+TJPR;TJPR · Projudi · 1º/2º grau unificados;Outros;Projudi;unificado;em_uso;https://projudi.tjpr.jus.br/projudi/;https://www.tjpr.jus.br/;Favoritos enviados em 03/11/2026
+TJRJ;TJRJ · PJe · 1º grau;PJe;PJe;1;em_uso;https://tjrj.pje.jus.br/1g/;https://www.tjrj.jus.br/;Favoritos enviados em 03/11/2026
+TJRJ;TJRJ · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.tjrj.jus.br/eproc/;https://www.tjrj.jus.br/;Favoritos enviados em 03/11/2026
+TJRO;TJRO · PJe · 1º grau;PJe;PJe;1;em_uso;https://pjepg.tjro.jus.br/pje/;https://www.tjro.jus.br/;Favoritos enviados em 03/11/2026
+TJRS;TJRS · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.tjrs.jus.br/eproc/;https://www.tjrs.jus.br/;Favoritos enviados em 03/11/2026
+TJRS;TJRS · eproc · 2º grau;eproc;eproc;2;em_uso;https://eproc2g.tjrs.jus.br/eproc/;https://www.tjrs.jus.br/;Favoritos enviados em 03/11/2026
+TJSC;TJSC · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.tjsc.jus.br/eproc/;https://www.tjsc.jus.br/web/processo-eletronico-eproc;Favoritos enviados em 03/11/2026
+TJSC;TJSC · eproc · 2º grau;eproc;eproc;2;em_uso;https://eproc2g.tjsc.jus.br/eproc/;https://www.tjsc.jus.br/web/processo-eletronico-eproc;Favoritos enviados em 03/11/2026
+TJSE;TJSE · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.tjse.jus.br/eproc/;https://www.tjse.jus.br/;Favoritos enviados em 03/11/2026
+TJSP;TJSP · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.tjsp.jus.br/eproc/;https://www.tjsp.jus.br/;Favoritos enviados em 03/11/2026
+TJTO;TJTO · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1.tjto.jus.br/eprocV2_prod_1grau/;https://www.tjto.jus.br/;Favoritos enviados em 03/11/2026
+TJTO;TJTO · eproc · 2º grau;eproc;eproc;2;em_uso;https://eproc2.tjto.jus.br/eprocV2_prod_2grau/;https://www.tjto.jus.br/;Favoritos enviados em 03/11/2026
+TRF1;TRF1 · PJe · 1º grau;PJe;PJe;1;em_uso;https://pje1g.trf1.jus.br/pje/;https://www.trf1.jus.br/;Favoritos enviados em 03/11/2026
+TRF1;TRF1 · PJe · 2º grau;PJe;PJe;2;em_uso;https://pje2g.trf1.jus.br/pje/;https://www.trf1.jus.br/;Favoritos enviados em 03/11/2026
+TRF2;TRF2 · eproc · 2º grau;eproc;eproc;2;em_uso;https://eproc.trf2.jus.br/eproc/;https://www.trf2.jus.br/;Favoritos enviados em 03/11/2026
+TRF3;TRF3 · PJe · 1º grau;PJe;PJe;1;em_uso;https://pje1g.trf3.jus.br/pje/;https://www.trf3.jus.br/;Favoritos enviados em 03/11/2026
+TRF3;TRF3 · PJe · 2º grau;PJe;PJe;2;em_uso;https://pje2g.trf3.jus.br/pje/;https://www.trf3.jus.br/;Favoritos enviados em 03/11/2026
+TRF4;TRF4 · eproc · 1º grau · JFRS;eproc;eproc;1;em_uso;https://eproc.jfrs.jus.br/eprocV2/;https://www.trf4.jus.br/;Favoritos enviados em 03/11/2026
+TRF4;TRF4 · eproc · 2º grau;eproc;eproc;2;em_uso;https://eproc.trf4.jus.br/eproc2trf4/;https://www.trf4.jus.br/;Favoritos enviados em 03/11/2026
+TRF5;TRF5 · PJe · 1º grau;PJe;PJe;1;em_uso;https://pje1g.trf5.jus.br/pje/;https://www.trf5.jus.br/;Favoritos enviados em 03/11/2026
+TRF5;TRF5 · PJe · 2º grau;PJe;PJe;2;em_uso;https://pje2g.trf5.jus.br/pje/;https://www.trf5.jus.br/;Favoritos enviados em 03/11/2026
+TRF6;TRF6 · eproc · 1º grau;eproc;eproc;1;em_uso;https://eproc1g.trf6.jus.br/eproc/;https://portal.trf6.jus.br/;Favoritos enviados em 03/11/2026
+TJAL;TJAL · Portal eproc · informações;eproc;eproc;portal;em_uso;https://www.tjal.jus.br/eproc;https://www.tjal.jus.br/eproc;Portal oficial indicado/conferido em 04/11/2026
+TJAL;TJAL · eproc · 2º grau em implantação;eproc;eproc;2;em_implantacao;;https://www.tjal.jus.br/eproc;Portal oficial indicado/conferido em 04/11/2026
+TJAL;TJAL · Portal e-SAJ;e-SAJ;e-SAJ;portal;em_uso;https://www2.tjal.jus.br/esaj/;https://www2.tjal.jus.br/esaj/;Portal oficial indicado/conferido em 04/11/2026
+PDPJ;PDPJ · Portal de Serviços / Jus.br;PDPJ;PDPJ;nacional;em_uso;https://portaldeservicos.pdpj.jus.br/;https://www.cnj.jus.br/tecnologia-da-informacao-e-comunicacao/justica-4-0/relatorios-de-indisponibilidade/;Portal oficial indicado/conferido em 04/11/2026

@@ -31,7 +31,7 @@ class JusdownHTTP(unittest.TestCase):
                     with self.assertRaises(HTTPError) as error:req('jusdown')
                     self.assertEqual(error.exception.code,401)
                     reader=login('leitor');admin_auth=login('admin')
-                    self.assertEqual(req('jusdown',auth=reader)[0]['resultado']['resumo']['tribunais'],24)
+                    self.assertEqual(req('jusdown',auth=reader)[0]['resultado']['resumo']['tribunais'],25)
                     for action,body in [('verificar',{'tribunal':'TJRS'}),('configurar',{'ativo':False}),('lembrete',{}),('adicionar-portal',{}),('remover-portal',{}),('tribunal',{'tribunal':'TJRS','ativo':False})]:
                         with self.assertRaises(HTTPError) as error:req('jusdown/'+action,body,reader)
                         self.assertEqual(error.exception.code,403)
@@ -48,7 +48,7 @@ class JusdownHTTP(unittest.TestCase):
                     hidden=req('jusdown',auth=reader)[0]['resultado']
                     self.assertFalse(any(t['id']=='TJRS' for t in hidden['tribunais']))
                     self.assertFalse(any(r['tribunal']=='TJRS' for r in hidden['itens']))
-                    self.assertEqual(hidden['resumo']['tribunais'],23)
+                    self.assertEqual(hidden['resumo']['tribunais'],24)
                     self.assertEqual(req('jusdown/relatorio?slot=test-slot',auth=reader)[0]['resultado'],[])
                     self.assertFalse(req('jusdown/configurar',{'ativo':False},admin_auth)[0]['resultado']['ativo'])
                 finally:server.shutdown();server.server_close();thread.join()

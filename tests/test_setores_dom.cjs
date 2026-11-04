@@ -1,0 +1,9 @@
+const vm=require('node:vm'),fs=require('node:fs'),assert=require('node:assert/strict');
+class E{constructor(tag){this.tagName=tag.toUpperCase();this.children=[];this.value='';this.attributes={};}append(...ns){this.children.push(...ns);}prepend(...ns){this.children.unshift(...ns);}replaceChildren(...ns){this.children=ns;}setAttribute(k,v){this.attributes[k]=v;}remove(){}}
+const all=n=>[n,...n.children.filter(x=>x&&typeof x==='object').flatMap(all)];
+async function test(admin){const root=new E('main'),calls=[],el=(t,c,v)=>Object.assign(new E(t),{className:c,textContent:v}),button=(v,f)=>Object.assign(el('button','',v),{onclick:f});
+const response={setores:[{codigo:'relacionamento',nome:'Relacionamento',titulo:'Relacionamento',proprietario_id:1,membros:[1]}],usuarios:[{id:1,nome:'Admin',role:'administrador'},{id:2,nome:'Equipe',role:'equipe'}],pode_organizar_grupos:admin,pode_gerenciar_permissoes:admin};
+const window={Juridico:{S:{user:{id:admin?1:2,role:admin?'administrador':'equipe'}},el,button,api:async(p,b)=>{calls.push([p,b]);return p==='setores'?response:{ok:true};},head(){},card(){const n=new E('section');root.append(n);return n;},table(h,r,p){const n=new E('table');n.headers=h;n.rows=r;p.append(n);},render(){}}};const c={window,console,Option:class extends E{constructor(t,v){super('option');this.textContent=t;this.value=v;}}};vm.createContext(c);vm.runInContext(fs.readFileSync(require.resolve('../js/setores.js'),'utf8'),c);await window.Setores.render();
+assert(all(root).some(x=>x.tagName==='TABLE'));const save=all(root).find(x=>x.textContent==='Salvar integrantes');assert.equal(!!save,admin);if(save){await save.onclick();assert.equal(calls.at(-1)[0],'setores/membros');assert.equal(calls.at(-1)[1].codigo,'relacionamento');}
+}
+(async()=>{await test(true);await test(false);console.log('Setores: controles administrativos, grupos e envio de integrantes aprovados.');})();

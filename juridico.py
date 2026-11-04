@@ -169,7 +169,13 @@ class Store:
             chat_owner=db.execute('SELECT owner_id FROM chat_control WHERE id=1').fetchone() if control else None
             if chat_owner and uid==chat_owner[0] and actor['id']!=uid:
                 raise AppError('A conta proprietária do chat só pode ser alterada por ela mesma.',403)
+            vault_control=db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='twofa_owner'").fetchone()
+            vault_owner=db.execute('SELECT user_id FROM twofa_owner WHERE id=1').fetchone() if vault_control else None
+            if vault_owner and uid==vault_owner[0] and actor['id']!=uid:
+                raise AppError('A conta proprietária do 2FA só pode ser alterada por ela mesma.',403)
             role=payload.get('role',row['role']);active=payload.get('ativo',row['ativo'])
+            if vault_owner and uid==vault_owner[0] and (not active or role!='administrador'):
+                raise AppError('Mantenha a conta proprietária do 2FA ativa e administradora.')
             if chat_owner and uid==chat_owner[0] and (not active or role!='administrador'):
                 raise AppError('Mantenha a conta proprietária ativa e administradora.')
             if role not in ROLES or active not in (0,1,False,True): raise AppError('Perfil ou situação inválidos.')

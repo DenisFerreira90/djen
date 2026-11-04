@@ -29,7 +29,7 @@ API_URL = 'https://comunicaapi.pje.jus.br/api/v1/comunicacao'
 USER_AGENT = 'DJEN-Consulta-VSCode/1.0'
 MAX_REMOTE_BYTES = 24 * 1024 * 1024
 BATCH_SIZE = 100
-ALLOWED_STATIC = {'/js/jusdown.js','/js/conectores.js', '/', '/index.html', '/css/style.css', '/js/app.js', '/js/eproc.js', '/consulta.html', '/css/juridico.css', '/js/juridico.js', '/js/continuidade.js', '/js/organizacao.js', '/js/mandados.js', '/js/mandados-relatorios.js', '/js/chat.js', '/js/chat-alertas.js', '/js/chat-visualizacao.js', '/js/chat-escritorio.js', '/img/chat-icon.svg', '/js/painel-operacional.js', '/js/calendario.js', '/js/servico-coleta.js', '/js/dados.js', '/js/rh.js', '/js/monitoramento.js', '/js/busca-lista.js'}
+ALLOWED_STATIC = {'/js/twofa.js','/js/navegacao.js','/js/setores.js','/js/jusdown.js','/js/conectores.js', '/', '/index.html', '/css/style.css', '/js/app.js', '/js/eproc.js', '/consulta.html', '/css/juridico.css', '/js/juridico.js', '/js/continuidade.js', '/js/organizacao.js', '/js/mandados.js', '/js/mandados-relatorios.js', '/js/chat.js', '/js/chat-alertas.js', '/js/chat-visualizacao.js', '/js/chat-escritorio.js', '/img/chat-icon.svg', '/js/painel-operacional.js', '/js/calendario.js', '/js/servico-coleta.js', '/js/dados.js', '/js/rh.js', '/js/monitoramento.js', '/js/busca-lista.js'}
 FIELD_LIMITS = {
     'numeroOab': 32, 'ufOab': 2, 'nomeAdvogado': 140,
     'numeroProcesso': 32, 'nomeParte': 140, 'siglaTribunal': 12,
@@ -362,6 +362,7 @@ def main():
     parser.add_argument('--porta', type=int, default=None)
     parser.add_argument('--sem-navegador', action='store_true', help='Não abrir navegador automaticamente')
     parser.add_argument('--rede',help='Arquivo de configuração do proxy HTTPS LAN/VPN')
+    parser.add_argument('--piloto-escritorio',action='store_true',help='Piloto do escritório completo, somente via proxy HTTPS e redes LAN/VPN explícitas')
     parser.add_argument('--piloto-chat',action='store_true',help='Disponibilizar somente chat, usuários e auditoria')
     parser.add_argument('--chat-independente',action='store_true',help='Chat em banco exclusivo dados_chat/chat.sqlite3 e porta 8766')
     args = parser.parse_args()
@@ -373,8 +374,10 @@ def main():
         if not chat_servico.CHAT_PATH.is_file():parser.error('Execute MIGRAR_CHAT.bat primeiro. Nenhum banco do chat foi criado.')
     if args.porta is None:args.porta=8766 if args.chat_independente else int(os.environ.get('DJEN_PORT','8765'))
     policy=None
+    if args.piloto_escritorio and (args.piloto_chat or args.chat_independente):parser.error('Escolha piloto do escritório ou do chat, separadamente.')
+    if args.piloto_escritorio and not args.rede:parser.error('O piloto do escritório exige --rede com proxy HTTPS e redes permitidas.')
     if args.rede:
-        if not args.piloto_chat:parser.error('O acesso de rede está liberado apenas para o piloto de chat.')
+        if not (args.piloto_chat or args.piloto_escritorio):parser.error('Selecione explicitamente --piloto-chat ou --piloto-escritorio para acesso de rede.')
         import rede_piloto,juridico
         try:policy=rede_piloto.load(args.rede)
         except (ValueError,OSError,KeyError):parser.error('Configuração de rede inválida. Use CONFIGURAR_PILOTO_REDE.bat.')

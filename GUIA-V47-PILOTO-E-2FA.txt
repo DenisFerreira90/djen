@@ -1,0 +1,138 @@
+ConectaAdv V47 — Testes com colegas e aba lateral 2FA
+
+INSTALAR
+Faça backup da pasta. Aguarde/encerre coletas antes de fechar o servidor.
+Substitua os arquivos do programa pelo pacote, sem apagar bancos ou sessões.
+Inicie normalmente e use F5 para carregar a interface V47.
+
+PRIMEIRO TESTE, NO MESMO COMPUTADOR
+Para um piloto com dados fictícios, extraia o pacote em outra pasta (ex.:
+C:\projetos\djen_teste), sem copiar os bancos de produção. Inicie INICIAR.bat
+nessa pasta e crie uma conta proprietária. Não mantenha duas instâncias na
+mesma porta 8765; encerre a instância anterior antes de iniciar outra.
+Em Contas e acessos, crie uma conta individual por colega. Comece com dois
+perfis Equipe e um Leitor. Teste sua conta proprietária em um navegador e a
+conta do colega em outro perfil de navegador. Cada perfil mantém sua sessão.
+
+TESTAR EM COMPUTADORES DIFERENTES
+A versão anterior liberava somente o chat na rede. A V47 acrescenta um modo
+explícito do escritório completo, mantendo o servidor Python em 127.0.0.1.
+A exposição à LAN/VPN usa proxy HTTPS e redes privadas autorizadas.
+1. Peça ao TI IP privado fixo do servidor, nome HTTPS interno e faixas LAN/VPN.
+2. Execute CONFIGURAR_REDE_ESCRITORIO.bat e preencha esses dados reais.
+   Os exemplos exibidos não são configurações já descobertas do escritório.
+3. O TI configura o nome interno/DNS, o firewall restrito e instala o Caddy
+   oficial disponível em https://caddyserver.com/docs/install.
+   O certificado raiz HTTPS interno deve ser confiável nos PCs dos colegas:
+   https://caddyserver.com/docs/automatic-https#local-https.
+4. Encerre o servidor local anterior e execute INICIAR_REDE_ESCRITORIO.bat.
+5. Em outra janela, execute INICIAR_PROXY_ESCRITORIO.bat.
+6. Os colegas abrem o MESMO endereço HTTPS interno informado na configuração,
+   estando na rede autorizada ou conectados à VPN. Cada um usa seu próprio login.
+O gerador cria rede_escritorio/piloto-rede.json e Caddyfile. Não altera firewall,
+DNS, roteador, VPN ou confiança dos certificados automaticamente. O Caddy não
+vem embutido no ZIP. Não encaminhe portas do roteador para a Internet.
+Não use localhost no PC do colega: localhost significa o próprio computador.
+Não compartilhe a pasta dos bancos como pasta de rede para dar acesso à equipe.
+O banco permanece no servidor; os colegas usam somente o navegador.
+
+O certificado HTTPS do site interno é diferente do certificado digital
+ICP-Brasil usado para autenticação/assinatura em tribunais.
+O iniciador automático antigo do JUSDOWN usa modo local. Durante o piloto,
+mantenha um único iniciador do servidor. Se adotar rede permanente, o TI deve
+ajustar a tarefa para usar os mesmos argumentos do modo escritório.
+A configuração do chat independente, se houver, continua separada e pode
+continuar usando sua porta 8766.
+
+ROTEIRO COM OS COLEGAS
+- Criar e trocar mensagens em contas e grupos de teste com integrantes definidos.
+- Marcar atendimento no Relacionamento por usuário com permissão de secretaria.
+- Conferir quem visualiza a agenda e que Leitor não altera compromissos.
+- Tentar dois compromissos no mesmo horário/responsável; o segundo deve ser barrado.
+- Navegar e usar F5 durante uma consulta de teste; conferir seu estado no servidor.
+- Abrir JUSDOWN e consultar um portal selecionado.
+- Verificar que uma conta sem permissão 2FA não vê a aba nem recebe códigos na API.
+- Conceder e retirar a permissão de um colega, usando a conta proprietária.
+- Usar um autenticador TOTP de teste antes de cadastrar credenciais reais.
+- Conferir a auditoria das liberações e das consultas de códigos.
+
+ABA LATERAL 2FA
+A aba azul “2FA” aparece na lateral direita para a conta proprietária e para
+usuários que ela autorizar. Um administrador comum não ganha acesso automático.
+A conta proprietária é fixada a partir do proprietário já cadastrado no chat;
+na ausência dele, usa a primeira conta da instalação. Não é o primeiro usuário
+que clicar no botão. A propriedade é persistida para evitar apropriação posterior.
+
+COMO CADASTRAR
+Entre como proprietário > aba 2FA > Configurar / Permissão 2FA.
+Informe tribunal/sistema, identificação da conta e a chave Base32 ou URI
+“otpauth://totp/...” fornecida no cadastramento oficial do autenticador.
+Confirme com o código atual exibido no aplicativo para evitar uma chave incorreta.
+Não cole apenas o código de seis dígitos no campo de chave. Não envie a chave,
+URI ou QR code no chat. Não há leitura de imagem QR nesta versão: use a chave
+manual correspondente ou URI, obtida pelo procedimento oficial do tribunal.
+Não é possível deduzir a chave a partir de um código temporário já exibido.
+Se você não tem a chave, consulte o procedimento oficial do tribunal para
+adicionar/recadastrar um autenticador; o ConectaAdv não extrai chaves do celular.
+
+A implementação suporta TOTP por tempo, SHA1/SHA256/SHA512, 6/8 dígitos e períodos
+30/60 segundos informados na URI. Chave manual usa SHA1, 6 dígitos e 30 segundos.
+SMS, e-mail, aprovação por notificação e outros mecanismos não são gerados aqui.
+Cada código pertence à conta identificada no cadastro, não a qualquer login.
+O relógio do servidor precisa estar correto e sincronizado.
+
+LIBERAR COLEGA
+No mesmo painel, em Permissão 2FA, marque o usuário e clique Salvar.
+Ele passa a ver a aba após atualizar a página ou na checagem de permissão
+(aproximadamente 30 segundos). A permissão é individual e dá acesso aos códigos
+ativos do cofre. Não há concessão por setor nem exportação da chave secreta.
+Desmarcar impede novas consultas. Código já visto pode continuar válido até
+expirar; não é possível “desver” um código que já foi mostrado.
+Desativar um autenticador no ConectaAdv para de gerar códigos aqui e remove
+sua chave do cadastro ativo. Não desativa o 2FA no tribunal nem revoga o aplicativo.
+
+PROTEÇÃO E LIMITES
+A chave é protegida pelo DPAPI da conta Windows que executa o servidor. O cofre
+fica em banco separado: dados_juridico/2fa/cofre.sqlite3, na instalação padrão.
+Não há armazenamento em texto puro nem alternativa sem criptografia no Linux.
+O cadastro só funciona no Windows nesta versão. Os colegas acessam pelo browser;
+não precisam usar a mesma conta Windows. A geração acontece no servidor.
+A chave não é retornada pela API/interface após salvar. Auditoria registra
+cadastro, desativação, concessão/revogação e consulta dos códigos, sem registrar
+chave ou código. As respostas de códigos são POST com sessão/CSRF e no-store.
+Os códigos são apagados do painel ao recolher, sair, trocar a aba do navegador
+ou após um minuto sem interação. A interface mascara códigos expirados e
+reconsulta a autorização ao atualizar os códigos.
+Copiar usa a área de transferência do computador do usuário por ação explícita.
+O ConectaAdv não limpa automaticamente essa área depois da cópia.
+
+Uma cópia isolada do banco criptografado não é um backup portável entre contas
+Windows. Antes de trocar servidor/conta Windows, planeje o recadastro autorizado
+e mantenha a recuperação disponível no autenticador original. O administrador
+do Windows e quem controla os arquivos do servidor fazem parte da confiança
+dessa instalação; permissões do aplicativo não isolam um servidor comprometido.
+A aba 2FA não fica disponível no serviço independente de chat.
+
+CERTIFICADO DIGITAL
+A V47 não adiciona cadastro nem uso compartilhado de certificados A1/A3.
+Um certificado identifica seu titular; não cria acessos individuais nos tribunais.
+Registrar um certificado não dá aos usuários do ConectaAdv uma permissão judicial.
+O acesso depende do certificado/login, cadastro, perfis e exigências do tribunal.
+Use contas/perfis de assistente/delegações oficiais quando disponíveis, em vez
+de tratar a identidade do titular como uma identidade de toda a equipe.
+A permissão de visualizar 2FA não concede certificado, assinatura, senha ou
+acesso automático ao eproc. O usuário ainda precisa autenticar na conta
+correspondente, conforme as regras do tribunal.
+
+VALIDAÇÃO
+295 testes Python da suíte completa aprovados; um teste HTTP adicional aprovou
+piloto completo simulado por proxy, bloqueio fora de LAN/HTTPS, sessão/CSRF,
+proprietário versus outro administrador, concessão e revogação e no-store.
+Depois do reforço de proteção da conta proprietária, os 10 testes específicos
+2FA/HTTP e os 14 testes do núcleo jurídico também foram aprovados.
+TOTP validado com vetores públicos RFC 6238. O codec criptográfico foi simulado
+nos testes Linux para conferir as fronteiras de armazenamento e acesso.
+O DPAPI real precisa de validação no Windows. A aparência foi testada por DOM
+simulado, sem navegador real. O proxy Caddy/TLS e a conectividade entre PCs
+não foram instalados/testados no escritório. Nenhuma chave real foi cadastrada
+nem certificado de tribunal foi enviado nesta entrega.

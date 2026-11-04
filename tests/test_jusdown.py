@@ -13,15 +13,16 @@ class JusdownTests(unittest.TestCase):
  def key(self,court='TJRS',degree='1'):return next(r['id'] for r in CATALOG if r['tribunal']==court and r['grau']==degree)
  def check(self,r):return dict(id=r['id'],estado='sem_resposta' if self.failed else 'respondeu',verificado_em=jusdown.now(),http=None if self.failed else 200,latencia_ms=12,conteudos=[{'url':'https://www.tjac.jus.br/noticia','titulo':'Nova versão '+str(self.version)}])
  def test_focused_catalog_and_sanitization(self):
-  self.assertEqual(len(CATALOG),35);self.assertEqual(len(COURTS),24)
-  for r in CATALOG:self.assertNotIn('?',r['url']);self.assertNotIn('#',r['url'])
+  self.assertEqual(len(CATALOG),39);self.assertEqual(len(COURTS),25)
+  for r in CATALOG:
+   if r['url']:self.assertNotIn('?',r['url']);self.assertNotIn('#',r['url'])
   self.assertNotIn('TRT4',{r['tribunal'] for r in CATALOG})
   import eproc_tribunais
   self.assertEqual(eproc_tribunais.ATIVOS,{'TJRS'})
  def test_selected_scope_and_sources(self):
   calls=[];self.m.check=lambda r:(calls.append(r['tribunal']) or self.check(r))
   self.m.run('TJAC');self.assertEqual(set(calls),{'TJAC'})
-  self.assertEqual(self.m.status()['resumo']['instancias'],35)
+  self.assertEqual(self.m.status()['resumo']['instancias'],39)
  def test_baseline_new_and_unchanged(self):
   self.m.run('TJAC');r=next(x for x in self.m.status()['itens'] if x['tribunal']=='TJAC');self.assertEqual(r['informacoes']['estado'],'primeira_leitura');self.assertFalse(r['informacoes']['novidades'])
   self.m.run('TJAC');r=next(x for x in self.m.status()['itens'] if x['tribunal']=='TJAC');self.assertEqual(r['informacoes']['estado'],'sem_novidades_detectadas')
@@ -47,7 +48,7 @@ class JusdownTests(unittest.TestCase):
   self.m.save_note({'tribunal':'TJRS','texto':'Interno'},self.actor)
   with self.m.db() as c:c.execute('INSERT INTO daily_runs VALUES (?,?)',('x',json.dumps({'tribunal':'TJRS','manual':True,'portais':[{'id':self.key(),'tribunal':'TJRS'}]})))
   self.m.set_court('TJRS',False,self.actor)
-  d=self.m.status({'id':2,'role':'leitor'});self.assertFalse(any(r['tribunal']=='TJRS' for r in d['itens']));self.assertFalse(d['lembretes']);self.assertFalse(d['rotinas']);self.assertEqual(d['resumo']['tribunais'],23)
+  d=self.m.status({'id':2,'role':'leitor'});self.assertFalse(any(r['tribunal']=='TJRS' for r in d['itens']));self.assertFalse(d['lembretes']);self.assertFalse(d['rotinas']);self.assertEqual(d['resumo']['tribunais'],24)
   self.m.set_court('TJRS',True,self.actor);self.assertTrue(any(r['tribunal']=='TJRS' for r in self.m.status()['itens']))
  def test_inactive_not_requested(self):
   self.m.set_court('TJRS',False,self.actor)

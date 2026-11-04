@@ -13,6 +13,8 @@ def schema(db):
     CREATE TABLE IF NOT EXISTS calendar_events(id INTEGER PRIMARY KEY,calendar_id INTEGER NOT NULL,titulo TEXT NOT NULL,inicio TEXT NOT NULL,fim TEXT NOT NULL,responsavel_id INTEGER NOT NULL,cliente TEXT NOT NULL,contato TEXT NOT NULL,processo TEXT NOT NULL,local TEXT NOT NULL,observacoes TEXT NOT NULL,status TEXT NOT NULL,criado_por INTEGER NOT NULL,atualizado_por INTEGER NOT NULL,atualizado TEXT NOT NULL,versao INTEGER NOT NULL DEFAULT 1);
     CREATE INDEX IF NOT EXISTS calendar_date ON calendar_events(calendar_id,inicio,fim);
     ''')
+    import setores
+    setores.schema(db)
     for u in db.execute('SELECT id,nome FROM users WHERE ativo=1').fetchall():db.execute('INSERT OR IGNORE INTO calendars(nome,owner_id,criado) VALUES(?,?,?)',('Agenda de '+u['nome'],u['id'],legal.now()))
 
 
@@ -21,7 +23,10 @@ def role(db,actor,cid):
     if not calendar:raise legal.AppError('Calendário não encontrado.',404)
     if actor['role']=='administrador' or calendar['owner_id']==actor['id']:return 'gerenciar'
     grants=db.execute("SELECT papel FROM calendar_grants g WHERE calendar_id=? AND ((tipo='usuario' AND principal_id=?) OR (tipo='setor' AND EXISTS(SELECT 1 FROM chat_members m WHERE m.room_id=g.principal_id AND m.user_id=?)))",(cid,actor['id'],actor['id'])).fetchall()
-    return max((r[0] for r in grants),key=lambda p:RANK[p],default=None)
+    permissions=[r[0] for r in grants]
+    import setores
+    if db.execute("SELECT 1 FROM calendar_sectors WHERE calendar_id=? AND codigo='relacionamento'",(cid,)).fetchone() and setores.can_create_db(db,actor):permissions.append('agendar')
+    return max(permissions,key=lambda p:RANK[p],default=None)
 
 
 def require(db,actor,cid,minimum):
@@ -36,16 +41,28 @@ def calendars(store,actor):
         schema(db);out=[]
         for c in db.execute('SELECT * FROM calendars ORDER BY nome').fetchall():
             p=role(db,actor,c['id'])
-            if p:out.append({**dict(c),'permissao':'ver' if actor['role']=='leitor' else p})
+            if p:
+                sector=db.execute('SELECT codigo FROM calendar_sectors WHERE calendar_id=?',(c['id'],)).fetchone()
+                out.append({**dict(c),'setor':sector[0] if sector else None,'permissao':'ver' if actor['role']=='leitor' else p})
         return out
 
 
-def create(store,actor,name):
-    if actor['role']!='administrador':raise legal.AppError('Só administradores criam calendários compartilhados.',403)
+def create(store,actor,name,sector=None):
+    import setores
     name=str(name).strip()
     if not 1<=len(name)<=120:raise legal.AppError('Informe o nome do calendário.')
     with store.lock,store.connect() as db:
-        schema(db);cur=db.execute('INSERT INTO calendars(nome,criado) VALUES(?,?)',(name,legal.now()));cid=cur.lastrowid;store.audit(db,actor,'criar_calendario','calendario',cid,after={'nome':name})
+        schema(db)
+        if actor['role']!='administrador' and (sector!='relacionamento' or not setores.can_create_db(db,actor)):
+            raise legal.AppError('Você precisa da permissão de secretaria para criar agendas do Relacionamento.',403)
+        if sector and sector not in dict(setores.SETORES):raise legal.AppError('Setor inválido.')
+        cid=db.execute('INSERT INTO calendars(nome,criado) VALUES(?,?)',(name,legal.now())).lastrowid
+        if sector:
+            db.execute('INSERT INTO calendar_sectors VALUES(?,?,?)',(cid,sector,actor['id']))
+            room=db.execute('SELECT room_id FROM office_sectors WHERE codigo=?',(sector,)).fetchone()
+            if room:db.execute('INSERT INTO calendar_grants VALUES(?,?,?,?)',(cid,'setor',room[0],'ver'))
+        db.execute('INSERT INTO calendar_grants VALUES(?,?,?,?)',(cid,'usuario',actor['id'],'gerenciar'))
+        store.audit(db,actor,'criar_calendario','calendario',cid,after={'nome':name,'setor':sector})
     return {'id':cid}
 
 
@@ -72,6 +89,12 @@ def timestamp(value):
         if d.tzinfo is None:raise ValueError()
         return d.astimezone(dt.timezone.utc).isoformat(timespec='seconds')
     except (ValueError,TypeError):raise legal.AppError('Informe data e horário com fuso horário.')
+
+
+def assignees(store,actor,cid):
+    with store.lock,store.connect() as db:
+        schema(db);require(db,actor,cid,'ver')
+        return [{'id':u['id'],'nome':u['nome']} for u in db.execute('SELECT * FROM users WHERE ativo=1 ORDER BY nome').fetchall() if role(db,dict(u),cid)]
 
 
 def events(store,actor,cid,start,end):

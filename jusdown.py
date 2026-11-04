@@ -118,7 +118,7 @@ def probe(item):
     try:
         validate_url(item['url'])
         opener=urllib.request.build_opener(JudicialRedirect())
-        request=urllib.request.Request(item['url'],headers={'User-Agent':'ConectaAdv-JUSDOWN/44 (public availability check)'})
+        request=urllib.request.Request(item['url'],headers={'User-Agent':'ConectaAdv-JUSDOWN/46 (public availability check)'})
         with opener.open(request,timeout=8) as response:
             code=response.status
             content=response.read(131072).decode('utf-8',errors='replace')
@@ -172,6 +172,16 @@ def public_url(value):
     return urllib.parse.urlunsplit(('https',p.netloc.lower(),p.path or '/','',''))
 
 
+FAMILIES=('eproc','e-SAJ','PJe','PDPJ','Outros')
+def system_family(value):
+    key=re.sub('[^a-z0-9]','',str(value).lower())
+    if 'pdpj' in key or key=='jusbr':return 'PDPJ'
+    if 'esaj' in key:return 'e-SAJ'
+    if 'eproc' in key:return 'eproc'
+    if 'pje' in key:return 'PJe'
+    return 'Outros'
+
+
 SLOTS=('08:00','12:30')
 def reading_stale(checked,current):
     due=[current.replace(hour=int(t[:2]),minute=int(t[3:]),second=0,microsecond=0) for t in SLOTS]
@@ -196,6 +206,14 @@ class Monitor:
         conn=sqlite3.connect(self.path,timeout=10)
         conn.execute('CREATE TABLE IF NOT EXISTS portal_catalog (id TEXT PRIMARY KEY, data TEXT NOT NULL, removed INTEGER NOT NULL DEFAULT 0)')
         for seed in CATALOG:conn.execute('INSERT OR IGNORE INTO portal_catalog(id,data) VALUES (?,?)',(seed['id'],json.dumps(seed,ensure_ascii=False)))
+        conn.execute('CREATE TABLE IF NOT EXISTS catalog_revisions (id TEXT PRIMARY KEY)')
+        if not conn.execute("SELECT 1 FROM catalog_revisions WHERE id='v46-al'").fetchone():
+            for key,raw in conn.execute('SELECT id,data FROM portal_catalog').fetchall():
+                item=json.loads(raw)
+                if item.get('tribunal')=='TJAL' and item.get('url')=='https://eproc1g.tjal.jus.br/' and item.get('url_informacoes') in ('https://www.tjal.jus.br/','https://www.tjal.jus.br') and not item.get('alterado_por'):
+                    item.update(url_informacoes='https://www.tjal.jus.br/eproc',fonte_endpoint='https://www.tjal.jus.br/eproc')
+                    conn.execute('UPDATE portal_catalog SET data=? WHERE id=?',(json.dumps(item,ensure_ascii=False),key))
+            conn.execute("INSERT INTO catalog_revisions VALUES ('v46-al')")
         conn.execute('CREATE TABLE IF NOT EXISTS daily_runs (slot TEXT PRIMARY KEY, data TEXT NOT NULL)')
         conn.execute('CREATE TABLE IF NOT EXISTS page_seen (id TEXT PRIMARY KEY, data TEXT NOT NULL)')
         conn.execute('CREATE TABLE IF NOT EXISTS settings (id INTEGER PRIMARY KEY, enabled INTEGER NOT NULL)')
@@ -216,7 +234,9 @@ class Monitor:
         with self.db() as c:
             overrides={k:json.loads(v) for k,v in c.execute('SELECT id,data FROM endpoints')}
             rows=[json.loads(v) for v, in c.execute('SELECT data FROM portal_catalog WHERE removed=0 ORDER BY id')]
-        return [{**item,**overrides.get(item['id'],{})} for item in rows]
+        result=[{**item,**overrides.get(item['id'],{})} for item in rows]
+        for item in result:item['familia']=item.get('familia') or system_family(item['sistema'])
+        return result
 
     def courts(self):
         return list({r['tribunal']:{**r,'id':r['tribunal']} for r in self.catalog()}.values())
@@ -253,6 +273,7 @@ class Monitor:
             row={**item,**result,'ativo':settings.get(item['tribunal'],True)}
             row.setdefault('estado','nao_verificado' if item['url'] else 'endpoint_pendente')
             row.setdefault('cor','cinza')
+            if item.get('situacao_implantacao')=='em_implantacao':row.update(estado='em_implantacao',cor='cinza',detalhe=item.get('nota_implantacao','Em implantação conforme fonte informada.'))
             if row.get('verificado_em'):
                 try:
                     if reading_stale(iso(row['verificado_em']),dt.datetime.now(TZ)):
@@ -270,7 +291,7 @@ class Monitor:
             items.append(row)
         judicial=[r for r in items if r['ativo']]
         summary={k:sum(r['cor']==k for r in judicial) for k in ['verde','amarelo','vermelho','cinza']}
-        summary.update(tribunais=sum(settings.get(c['id'],True) for c in courts if c['id'] in visible),instancias=len(judicial),enderecos=sum(bool(r['url']) for r in judicial),pendentes=sum(not r['url'] for r in judicial),portais=sum(settings.get(c['id'],True) for c in courts if c['id'] in visible))
+        summary.update(tribunais=sum(settings.get(c['id'],True) for c in courts if c['id'] in visible),instancias=len(judicial),enderecos=sum(bool(r['url']) for r in judicial),pendentes=sum(not r['url'] and r.get('situacao_implantacao')!='em_implantacao' for r in judicial),em_implantacao=sum(r.get('situacao_implantacao')=='em_implantacao' for r in judicial),portais=sum(settings.get(c['id'],True) for c in courts if c['id'] in visible))
         if admin:summary['inativos']=sum(not settings.get(c['id'],True) for c in courts)
         notes=[n for n in notes if n['tribunal'] in visible]
         notices=[n for n in notices if n['tribunal'] in visible]
@@ -426,12 +447,17 @@ class Monitor:
         title=str(body.get('nome','')).strip()[:150]
         system=str(body.get('sistema','')).strip()[:50]
         degree=str(body.get('grau','portal'))
-        url=public_url(body.get('url',''))
-        source=public_url(body.get('url_informacoes','') or url)
-        if not re.fullmatch(r'[A-Z][A-Z0-9-]{1,19}',court) or not title or not system or degree not in ('1','2','portal','unificado','superior'):raise ValueError('Informe sigla, nome, sistema e grau válidos.')
-        key='P-'+hashlib.sha256(url.encode()).hexdigest()[:16]
+        phase=body.get('situacao_implantacao','em_uso')
+        if phase not in ('em_uso','em_implantacao'):raise ValueError('Situação de implantação inválida.')
+        url=public_url(body.get('url','')) if phase=='em_uso' else None
+        source=public_url(body.get('url_informacoes','') or url or '')
+        family=body.get('familia') or system_family(system)
+        if family not in FAMILIES:raise ValueError('Família de sistema inválida.')
+        if family=='PDPJ' and degree!='nacional':raise ValueError('Cadastre PDPJ como serviço nacional.')
+        if not re.fullmatch(r'[A-Z][A-Z0-9-]{1,19}',court) or not title or not system or degree not in ('1','2','portal','unificado','superior','nacional'):raise ValueError('Informe sigla, nome, sistema e grau válidos.')
+        key='P-'+hashlib.sha256((url or court+'|'+system+'|'+degree+'|'+source).encode()).hexdigest()[:16]
         base=next((c for c in self.courts() if c['id']==court),{})
-        row={**base,'id':key,'tribunal':court,'nome':base.get('nome') or title,'nome_portal':title,'ramo':base.get('ramo','Meus portais'),'uf':base.get('uf',''),'estados':base.get('estados',''),'grau':degree,'unidade':'','sistema':system,'url':url,'url_informacoes':source,'portal':base.get('portal') or source,'fonte_endpoint':source,'origem':'Adicionado pelo administrador','fonte_certidao':base.get('fonte_certidao'),'tipo_fonte':base.get('tipo_fonte'),'alterado_por':actor['id'],'alterado_em':now()}
+        row={**base,'familia':family,'situacao_implantacao':phase,'nota_implantacao':str(body.get('nota_implantacao','Em implantação; confirme o cronograma na fonte oficial.'))[:600] if phase=='em_implantacao' else '', 'id':key,'tribunal':court,'nome':base.get('nome') or title,'nome_portal':title,'ramo':base.get('ramo','Meus portais'),'uf':base.get('uf',''),'estados':base.get('estados',''),'grau':degree,'unidade':'','sistema':system,'url':url,'url_informacoes':source,'portal':base.get('portal') or source,'fonte_endpoint':source,'origem':'Adicionado pelo administrador','fonte_certidao':base.get('fonte_certidao'),'tipo_fonte':base.get('tipo_fonte'),'alterado_por':actor['id'],'alterado_em':now()}
         with self.lock:
             if self.busy:raise ValueError('Aguarde a rodada atual terminar para alterar os portais.')
             with self.db() as c:
@@ -474,11 +500,16 @@ class Monitor:
         with self.db() as c:return bool(c.execute('SELECT enabled FROM settings WHERE id=1').fetchone()[0])
 
     def finish_routine(self,slot,targets,results):
+        settings=self.court_settings()
+        planning=[i for i in self.catalog() if i.get('situacao_implantacao')=='em_implantacao' and settings.get(i['tribunal'],True)]
         with self.db() as c:
             raw=c.execute('SELECT data FROM daily_runs WHERE slot=?',(slot,)).fetchone()
             payload=json.loads(raw[0]) if raw else {'slot':slot,'previsto':slot}
             latest={key:json.loads(data) for key,data in c.execute('SELECT id,data FROM checks')}
             payload.update(estado='concluida',fim=now(),portais=[{**item,**latest.get(item['id'],result)} for item,result in zip(targets,results)])
+            for item in planning:
+                if not payload.get('tribunal') or item['tribunal']==payload['tribunal']:
+                    payload['portais'].append({**item,'estado':'em_implantacao','cor':'cinza','informacoes':{'estado':'em_implantacao','url':item['fonte_endpoint'],'detalhe':item.get('nota_implantacao','Em implantação conforme fonte informada.')}})
             c.execute('INSERT OR REPLACE INTO daily_runs VALUES (?,?)',(slot,json.dumps(payload,ensure_ascii=False)))
             c.execute('DELETE FROM daily_runs WHERE slot NOT IN (SELECT slot FROM daily_runs ORDER BY slot DESC LIMIT 60)')
 
@@ -500,7 +531,7 @@ class Monitor:
         output=[]
         for row in rows:
             if row.get('tribunal') and row['tribunal'] not in visible_courts:continue
-            row['portais']=[r for r in row.get('portais',[]) if r['id'] in visible]
+            row['portais']=[{**r,'familia':r.get('familia') or system_family(r.get('sistema',''))} for r in row.get('portais',[]) if r['id'] in visible]
             row['quantidade']=len(row['portais'])
             if not details:row.pop('portais',None)
             output.append(row)

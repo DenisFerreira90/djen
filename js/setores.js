@@ -1,0 +1,18 @@
+'use strict';
+window.Setores={async render(){
+ const J=window.Juridico,{S,api,el,card,head,button,table}=J;
+ head('Setores e permissões','Organização da equipe, grupos de setor e permissão de secretaria.');
+ const data=await api('setores'),intro=card();intro.append(el('p','callout',`${data.setores.length} setores preparados. Os grupos são privados; o proprietário define seus integrantes. A agenda “Relacionamento — Agendamentos” já está disponível conforme as permissões.`));
+ if(S.chatExternal)intro.append(el('p','callout warn','O chat está em serviço independente. Os setores deste painel valem para as agendas do sistema principal. Configure também os integrantes dos grupos no serviço de chat; a associação não é sincronizada entre os dois bancos.'));
+ table(['Setor','Grupo correspondente'],data.setores.map(s=>[s.nome,s.titulo]),intro);
+ if(data.pode_gerenciar_permissoes){const box=card();box.append(el('h2','','Permissão de secretaria'),el('p','','Permite criar agendas do Relacionamento e agendar atendimentos nelas. Não concede acesso ao RH, às conversas dos setores ou a agendas de outros setores. O perfil Leitor continua apenas consultando.'));
+  table(['Pessoa','Perfil','Secretaria',''],data.usuarios.map(u=>{const c=el('input');c.type='checkbox';c.checked=!!u.secretaria;c.disabled=u.role==='leitor'||u.role==='administrador';if(u.role==='administrador')c.checked=true;const message=el('span','');const save=button('Salvar',async()=>{try{await api('setores/permissoes',{user_id:u.id,secretaria:c.checked});message.textContent='Permissão salva.';}catch(e){message.textContent=e.message;}},'link');save.disabled=c.disabled;const cell=el('div');cell.append(save,message);return[u.nome,u.role,c,cell];}),box);
+ }
+ if(data.pode_organizar_grupos){const box=card(),select=el('select'),members=el('div');box.append(el('h2','','Integrantes dos grupos de setor'),el('p','','A associação ao grupo também vale para permissões de agenda concedidas a esse setor. Escolha as pessoas com cuidado, especialmente para RH, Gerência e TI.'),select,members);
+  for(const s of data.setores)select.append(new Option(s.nome,s.codigo));select.value=data.setores[0]?.codigo||'';
+  const draw=()=>{members.replaceChildren();const sector=data.setores.find(s=>s.codigo===select.value);if(!sector)return;const checks=[];
+   for(const u of data.usuarios){const label=el('label','sector-person',u.nome),input=el('input');input.type='checkbox';input.checked=(sector.membros||[]).includes(u.id);if(u.id===sector.proprietario_id){input.checked=true;input.disabled=true;}label.prepend(input);members.append(label);checks.push({u,input});}
+   const message=el('p','');members.append(button('Salvar integrantes',async()=>{try{await api('setores/membros',{codigo:sector.codigo,membros:checks.filter(x=>x.input.checked).map(x=>x.u.id)});await J.render();}catch(e){message.textContent=e.message;}},'primary'),message);
+  };select.onchange=draw;draw();
+ }else intro.append(el('p','','Somente o proprietário do chat altera os integrantes dos grupos.'));
+}};
