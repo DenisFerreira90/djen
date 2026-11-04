@@ -28,7 +28,12 @@ SNAPSHOT = r'''() => {
   linhas: [...t.rows].filter(visible).map(r => [...r.cells].map(c => c.innerText.trim()))
  }));
  const links = [...document.querySelectorAll('a[href]')].filter(visible).map(a => ({texto:a.innerText.trim(),url:a.href}));
- return {texto:document.body.innerText, tabelas:tables, links};
+ const documentos_eventos=[];
+ for(const table of [...document.querySelectorAll('table')].filter(visible))for(const row of [...table.rows].filter(visible)){
+  if(row.cells.length!==5||!/^\d+$/.test(row.cells[0].innerText.trim()))continue;
+  for(const a of row.cells[4].querySelectorAll('a[href]'))if(visible(a))documentos_eventos.push({evento:row.cells[0].innerText.trim(),nome:a.innerText.trim(),url:a.href});
+ }
+ return {texto:document.body.innerText, tabelas:tables, links,documentos_eventos};
 }'''
 
 
@@ -195,7 +200,19 @@ class Collector:
         options=dict(options or {})
         tribunal=options.get("tribunal","TJRS")
         tribunais.config(tribunal)
+        if not tribunais.enabled(tribunal):raise ValueError('TJSC temporariamente desativado. Selecione TJRS.')
         options["tribunal"]=tribunal
+        if type(options.get('monitorar_lista',False))is not bool:raise ValueError('Seleção de monitoramento inválida.')
+        if options.get('monitorar_lista'):options['modo']='completa'
+        if options.get('monitorar_lista'):
+            if not actor or actor.get('role')=='leitor':raise ValueError('Usuário sem permissão para consultar a lista.')
+            import mandados
+            from juridico import store
+            with store.lock,store.connect() as db:
+                mandados.schema(db)
+                snapshot=options.get('numeros_monitorados')
+                if snapshot is not None and (not isinstance(snapshot,list) or not 1<=len(snapshot)<=20000 or any(not isinstance(n,str) or not CNJ.fullmatch(n) or tribunais.from_number(n)!=tribunal for n in snapshot)):raise ValueError('Lista de consulta inválida.')
+                if snapshot is None and not any(tribunais.from_number(r[0])==tribunal for r in db.execute('SELECT numero FROM mandate_watchlist')):raise ValueError('Salve uma lista com processos do tribunal selecionado.')
         if options.get("modo")=="individual" and tribunais.from_number(options.get("numero",""))!=tribunal:
             raise ValueError("O número do processo não corresponde ao tribunal selecionado.")
         with self.lock:
@@ -319,6 +336,11 @@ class Collector:
             except Exception as exc:
                 self.log(self.diagnostic(exc, 'Preenchimento do login') + ' Você pode preencher manualmente.')
         if self.options.get('automatico'):return
+        if self.options.get('monitorar_lista'):
+            for frame in self.surfaces(context):
+                if urlsplit(frame.url).hostname!=tribunais.config(tribunal)['host']:continue
+                known=frame.locator('button[data-descricao="ADVOGADO-TITULAR"], a[href*="acao=citacao_intimacao_prazo_aberto_listar"], form[name="formPesquisaRapida"]')
+                if any(known.nth(i).is_visible() for i in range(known.count())):return
         self.wait_user('Faça o login na janela do eproc, sem limite de tempo. Quando chegar ao perfil ou painel, volte ao nosso sistema e clique em Continuar após login / seleção.')
 
     def await_listing(self, context):
@@ -406,6 +428,11 @@ class Collector:
         context = None
         outcome = 'erro'
         try:
+            if self.options.get('monitorar_lista'):
+                import monitoramento
+                from juridico import store
+                self.monitor_numbers=monitoramento.begin(store,self.current['id'],self.options['tribunal'],self.options.get('numeros_monitorados'))
+                self.update(encontrados=len(self.monitor_numbers))
             try:
                 from playwright.sync_api import sync_playwright
             except ImportError:
@@ -416,177 +443,186 @@ class Collector:
                 context.on('response', self.observe_response)
                 try:
                     self.open_login(context)
-                    listing = self.await_listing(context)
-                    self.log('Lista localizada. Lendo páginas e preservando as linhas originais.')
-                    found, seen, fingerprints = {}, set(), {}
-                    mode=self.options.get('modo','incremental')
-                    wanted=self.options.get('numero','')
-                    from eproc_relatorios import collect as collect_report,ACTIONS
-                    report_coverage=[];deadline_priority=set()
-                    for action,kind in ACTIONS.items():
-                        if not self.options.get('incluir_'+kind,kind=='prazos_a_encerrar') or mode=='individual':continue
-                        self.log('Etapa: relatório '+kind+'.')
-                        try:
-                            coverage,report_numbers=collect_report(self,context,action,SNAPSHOT,pages,found,lambda snap:process_links(snap,self.options.get('tribunal','TJRS')))
-                            if kind=='prazos_a_encerrar':deadline_priority.update(report_numbers)
-                        except (InterruptedError,CollectionBudget):raise
-                        except Exception as exc:
-                            self.check()
-                            coverage={'tipo':kind,'completo':False,'motivo':'falha_na_leitura'}
-                            self.log(self.diagnostic(exc,'Relatório '+kind))
-                        report_coverage.append(coverage);self.update(relatorios=report_coverage)
-                    self.log('Etapa: lista de prazos abertos.')
-                    pagination_complete = False
-                    for page_index in range(1000):
-                        self.check()
-                        listing.locator('body').wait_for()
-                        listing.page.wait_for_timeout(700)
-                        snapshot = listing.evaluate(SNAPSHOT)
-                        from eproc_estruturado import listing as parse_pending
-                        occurrences=parse_pending([public_snapshot(snapshot)])
-                        numbers=sorted({r['numero'] for r in occurrences if tribunais.from_number(r['numero'])==self.options.get('tribunal','TJRS')})
-                        totals=[re.search(r'([\d.]+)\s+registros?',t.get('titulo',''),re.I) for t in snapshot.get('tabelas',[]) if t.get('linhas') and {'Processo','Evento e Prazo','Final Prazo'}<=set(t['linhas'][0])]
-                        announced=next((int(m[1].replace('.','')) for m in totals if m),None)
-                        if announced is not None:self.update(esperados=announced)
-                        signature = hashlib.sha256(json.dumps(snapshot.get('tabelas',[]),sort_keys=True).encode()).hexdigest()
-                        if not numbers or signature in seen:
-                            self.log('Lista vazia ou página repetida: coleta marcada como parcial para conferência.')
-                            break
-                        seen.add(signature)
-                        pages.append(public_snapshot(snapshot))
-                        self.save_checkpoint(records, pages)
-                        for number in numbers:
-                            found.setdefault(number, None)
-                        found.update(process_links(snapshot,self.options.get('tribunal','TJRS')))
-                        from gestao import fingerprints_from_pages
-                        fingerprints.update(fingerprints_from_pages([public_snapshot(snapshot)]))
-                        from eproc_estruturado import listing as parse_pending
-                        pending_count=len(parse_pending(pages))
-                        self.update(encontrados=len(found),registros_lista=pending_count)
-                        self.log(f'Página {page_index + 1}: {len(numbers)} processos; {len(found)} únicos até agora.')
-                        if mode=='individual' and wanted in found:
-                            self.log('Processo solicitado localizado; dispensando as outras páginas.')
-                            break
-                        if self.current.get('esperados') is not None and pending_count==self.current['esperados']:
-                            pagination_complete=True
-                            self.log('Total de registros da lista confirmado; processos repetidos representam intimações distintas.')
-                            break
-                        # Never guess numbered URLs or click generic arrows that could be actions.
-                        from eproc_relatorios import NEXT
-                        next_link = listing.locator(NEXT)
-                        enabled = [next_link.nth(i) for i in range(next_link.count())
-                                   if next_link.nth(i).get_attribute('aria-disabled') != 'true'
-                                   and 'disabled' not in (next_link.nth(i).get_attribute('class') or '').lower()
-                                   and not next_link.nth(i).evaluate("e => !!e.closest('[disabled], [aria-disabled=\"true\"], .disabled')")]
-                        if not enabled:
-                            expected = self.current['esperados']
-                            pagination_complete = expected is not None and pending_count == expected
-                            if not pagination_complete:
-                                self.log('Fim da paginação não confirmado. O total precisa de conferência.')
-                            break
-                        old = listing.locator('body').inner_text()
-                        self.log(f'Etapa: próxima página após página {page_index + 1}.')
-                        self.cancelled.wait(2.0)
-                        try:
-                            enabled[0].click(timeout=45000)
-                        except Exception as exc:
-                            self.log(self.diagnostic(exc, 'Próxima página') + ' Preservando a lista e seguindo para os detalhes disponíveis; paginação não confirmada.')
-                            break
-                        changed = False
-                        for _ in range(120):
-                            self.check()
-                            listing.page.wait_for_timeout(250)
-                            try:next_text=listing.locator('body').inner_text()
-                            except Exception:continue
-                            if next_text != old:
-                                changed = True
-                                break
-                        if not changed:
-                            self.log('A página seguinte não mudou; interrompendo para evitar repetição.')
-                            break
-                    from gestao import fingerprints_from_pages
-                    fingerprints=fingerprints_from_pages(pages)
-                    pages_by_case=case_pages(pages)
-                    if getattr(self,'actor',None):
-                        from juridico import store
-                        initial_pages=pages_by_case.get(wanted,[]) if mode=='individual' else pages
-                        if initial_pages:
-                            basic=store.import_corpus({'execucao':{'id':self.current['id']+':lista','fim':now()},'processos':[],'paginas_da_lista':initial_pages},self.actor)
-                            self.log(f'Lista gravada no sistema: {basic["total"]} processos com dados básicos disponíveis antes dos detalhes.')
-                    self.log('Etapa: leitura de detalhes dos processos.')
-                    detail_page = context.new_page()
-                    import mandados
-                    from juridico import store as mandate_store
-                    watch=mandados.status(mandate_store)
-                    urgent=set(watch['numeros']) if watch['estado'].get('somente_lista')=='1' else set()
-                    urgent.update(deadline_priority)
-                    self.log(f'Prioridade de acompanhamento: {len(urgent)} processos; só os encontrados na lista atual do eproc poderão ser consultados.')
-                    import fila_coleta
-                    order=fila_coleta.prepare(mandate_store,found,fingerprints,mode,urgent,bool(self.options.get('descobrir_consultas'))) if getattr(self,'actor',None) else list(found)
-                    self.log(f'Fila persistente: {len(order)} processos elegíveis nesta rodada.')
-                    for number in order:
-                        self.check()
-                        url=found[number]
-                        if mode=='individual' and number!=wanted:continue
-                        if getattr(self,'actor',None):
-                            from gestao import sync_plan
-                            from juridico import store
-                            should_read,reason=sync_plan(store,number,fingerprints.get(number,''),mode)
-                            if fila_coleta.pending(store,number):
-                                should_read=True;reason='Pendência da fila persistente.'
-                            if number in urgent:
-                                should_read=True;reason='Reconsulta prioritária da lista de acompanhamento.'
-                            if not should_read:
-                                self.update(ignorados=self.current.get('ignorados',0)+1)
-                                self.log(f'{number}: dispensado — {reason}.')
-                                continue
-                            self.log(f'{number}: {reason}.')
-                        self.check()
-                        if getattr(self,'actor',None):fila_coleta.claim(store,number)
-                        record = {'gravado_no_sistema':False, 'processo': number, 'situacao': 'sem_link_de_detalhes', 'detalhes': None}
-                        if url:
+                    if self.options.get('monitorar_lista'):
+                        import monitoramento
+                        outcome=monitoramento.collect(self,context,records,pages)
+                    else:
+                        listing = self.await_listing(context)
+                        self.log('Lista localizada. Lendo páginas e preservando as linhas originais.')
+                        found, seen, fingerprints = {}, set(), {}
+                        mode=self.options.get('modo','incremental')
+                        wanted=self.options.get('numero','')
+                        from eproc_relatorios import collect as collect_report,ACTIONS
+                        report_coverage=[];deadline_priority=set()
+                        for action,kind in ACTIONS.items():
+                            if not self.options.get('incluir_'+kind,kind=='prazos_a_encerrar') or mode=='individual':continue
+                            self.log('Etapa: relatório '+kind+'.')
                             try:
-                                self.log(f'Etapa: detalhes do processo {number}.')
-                                detail_page.goto(url, wait_until='domcontentloaded', timeout=60000)
-                                self.check()
-                                detail_page.wait_for_timeout(700)
-                                from eproc_eventos import expand
-                                history_coverage=expand(self,detail_page)
-                                snapshot = detail_page.evaluate(SNAPSHOT)
-                                identity=re.search(r'Nº do processo\s*('+CNJ.pattern.removeprefix(r'\b').removesuffix(r'\b')+')',snapshot['texto'])
-                                if not tribunais.valid_url(detail_page.url,self.options.get('tribunal','TJRS'),('processo_selecionar','processo_consultar')) or not identity or identity.group(1)!=number or detail_page.locator('input[type="password"]').count():
-                                    raise ValueError('Página não confirmada')
-                                record.update(situacao='pagina_lida_requer_conferencia', detalhes=public_snapshot(snapshot))
-                                record['detalhes']['cobertura_eventos']=history_coverage
-                                if not history_coverage['completo']:
-                                    record['situacao']='historico_parcial'
-                                    self.update(historicos_pendentes=self.current.get('historicos_pendentes',0)+1)
-                                    self.log(number+': histórico não confirmado; ficará pendente de nova consulta.')
-                                record['detalhes']['complementos']=self.collect_supplements(context,snapshot,number)
-                            except InterruptedError:raise
-                            except Exception:
-                                record['situacao'] = 'pagina_lida_complementos_pendentes' if record.get('detalhes') else 'falha_na_leitura'
-                        records.append(record)
-                        self.update(lidos=len(records), falhas=sum(r['detalhes'] is None for r in records))
-                        self.log(f"Processo {number}: {record['situacao']} ({len(records)}/{len(found)}).")
-                        self.save_checkpoint(records, pages)
-                        if getattr(self,'actor',None) and record.get('detalhes'):
-                            try:
-                                from juridico import store
-                                store.import_corpus({'execucao':{'id':self.current['id']+':processo:'+re.sub(r'\D','',number),'fim':now()},'processos':[record],'paginas_da_lista':pages_by_case.get(number,[])},self.actor)
-                                record['gravado_no_sistema']=True
-                                self.update(salvos_sistema=self.current.get('salvos_sistema',0)+1)
+                                coverage,report_numbers=collect_report(self,context,action,SNAPSHOT,pages,found,lambda snap:process_links(snap,self.options.get('tribunal','TJRS')))
+                                if kind=='prazos_a_encerrar':deadline_priority.update(report_numbers)
+                            except (InterruptedError,CollectionBudget):raise
                             except Exception as exc:
-                                self.log(self.diagnostic(exc,'Gravação do processo no sistema')+' A origem está no checkpoint para reimportação.')
+                                self.check()
+                                coverage={'tipo':kind,'completo':False,'motivo':'falha_na_leitura'}
+                                self.log(self.diagnostic(exc,'Relatório '+kind))
+                            report_coverage.append(coverage);self.update(relatorios=report_coverage)
+                        self.log('Etapa: lista de prazos abertos.')
+                        pagination_complete = False
+                        for page_index in range(1000):
+                            self.check()
+                            listing.locator('body').wait_for()
+                            listing.page.wait_for_timeout(700)
+                            snapshot = listing.evaluate(SNAPSHOT)
+                            from eproc_estruturado import listing as parse_pending
+                            occurrences=parse_pending([public_snapshot(snapshot)])
+                            numbers=sorted({r['numero'] for r in occurrences if tribunais.from_number(r['numero'])==self.options.get('tribunal','TJRS')})
+                            totals=[re.search(r'([\d.]+)\s+registros?',t.get('titulo',''),re.I) for t in snapshot.get('tabelas',[]) if t.get('linhas') and {'Processo','Evento e Prazo','Final Prazo'}<=set(t['linhas'][0])]
+                            announced=next((int(m[1].replace('.','')) for m in totals if m),None)
+                            if announced is not None:self.update(esperados=announced)
+                            signature = hashlib.sha256(json.dumps(snapshot.get('tabelas',[]),sort_keys=True).encode()).hexdigest()
+                            if not numbers or signature in seen:
+                                self.log('Lista vazia ou página repetida: coleta marcada como parcial para conferência.')
+                                break
+                            seen.add(signature)
+                            pages.append(public_snapshot(snapshot))
+                            self.save_checkpoint(records, pages)
+                            for number in numbers:
+                                found.setdefault(number, None)
+                            found.update(process_links(snapshot,self.options.get('tribunal','TJRS')))
+                            from gestao import fingerprints_from_pages
+                            fingerprints.update(fingerprints_from_pages([public_snapshot(snapshot)]))
+                            from eproc_estruturado import listing as parse_pending
+                            pending_count=len(parse_pending(pages))
+                            self.update(encontrados=len(found),registros_lista=pending_count)
+                            self.log(f'Página {page_index + 1}: {len(numbers)} processos; {len(found)} únicos até agora.')
+                            if mode=='individual' and wanted in found:
+                                self.log('Processo solicitado localizado; dispensando as outras páginas.')
+                                break
+                            if self.current.get('esperados') is not None and pending_count==self.current['esperados']:
+                                pagination_complete=True
+                                self.log('Total de registros da lista confirmado; processos repetidos representam intimações distintas.')
+                                break
+                            # Never guess numbered URLs or click generic arrows that could be actions.
+                            from eproc_relatorios import NEXT
+                            next_link = listing.locator(NEXT)
+                            enabled = [next_link.nth(i) for i in range(next_link.count())
+                                       if next_link.nth(i).get_attribute('aria-disabled') != 'true'
+                                       and 'disabled' not in (next_link.nth(i).get_attribute('class') or '').lower()
+                                       and not next_link.nth(i).evaluate("e => !!e.closest('[disabled], [aria-disabled=\"true\"], .disabled')")]
+                            if not enabled:
+                                expected = self.current['esperados']
+                                pagination_complete = expected is not None and pending_count == expected
+                                if not pagination_complete:
+                                    self.log('Fim da paginação não confirmado. O total precisa de conferência.')
+                                break
+                            old = listing.locator('body').inner_text()
+                            self.log(f'Etapa: próxima página após página {page_index + 1}.')
+                            self.cancelled.wait(2.0)
+                            try:
+                                enabled[0].click(timeout=45000)
+                            except Exception as exc:
+                                self.log(self.diagnostic(exc, 'Próxima página') + ' Preservando a lista e seguindo para os detalhes disponíveis; paginação não confirmada.')
+                                break
+                            changed = False
+                            for _ in range(120):
+                                self.check()
+                                listing.page.wait_for_timeout(250)
+                                try:next_text=listing.locator('body').inner_text()
+                                except Exception:continue
+                                if next_text != old:
+                                    changed = True
+                                    break
+                            if not changed:
+                                self.log('A página seguinte não mudou; interrompendo para evitar repetição.')
+                                break
+                        from gestao import fingerprints_from_pages
+                        fingerprints=fingerprints_from_pages(pages)
+                        pages_by_case=case_pages(pages)
                         if getattr(self,'actor',None):
-                            from gestao import sync_save
                             from juridico import store
-                            sync_save(store,number,fingerprints.get(number,''),record,self.current['id'])
-                            fila_coleta.finish(store,number,record)
-                        self.cancelled.wait(2.0)
-                    if mode=='individual' and wanted not in found:self.log('Processo solicitado não apareceu nas listas consultadas. Não foram abertos outros processos.')
-                    outcome = 'coletado_revisar' if pagination_complete and not self.current['falhas'] and not self.current.get('historicos_pendentes') and all(c['completo'] for c in report_coverage) else 'parcial'
-                    self.log('Leitura encerrada. Confira as tabelas originais; associações de partes e prazos ainda não foram validadas neste layout.')
+                            initial_pages=pages_by_case.get(wanted,[]) if mode=='individual' else pages
+                            if initial_pages:
+                                basic=store.import_corpus({'execucao':{'id':self.current['id']+':lista','fim':now()},'processos':[],'paginas_da_lista':initial_pages},self.actor)
+                                self.log(f'Lista gravada no sistema: {basic["total"]} processos com dados básicos disponíveis antes dos detalhes.')
+                        self.log('Etapa: leitura de detalhes dos processos.')
+                        detail_page = context.new_page()
+                        import mandados
+                        from juridico import store as mandate_store
+                        watch=mandados.status(mandate_store)
+                        urgent=set(watch['numeros']) if watch['estado'].get('somente_lista')=='1' else set()
+                        urgent.update(deadline_priority)
+                        self.log(f'Prioridade de acompanhamento: {len(urgent)} processos; só os encontrados na lista atual do eproc poderão ser consultados.')
+                        import fila_coleta
+                        order=fila_coleta.prepare(mandate_store,found,fingerprints,mode,urgent,bool(self.options.get('descobrir_consultas'))) if getattr(self,'actor',None) else list(found)
+                        self.log(f'Fila persistente: {len(order)} processos elegíveis nesta rodada.')
+                        for number in order:
+                            self.check()
+                            url=found[number]
+                            if mode=='individual' and number!=wanted:continue
+                            if getattr(self,'actor',None):
+                                from gestao import sync_plan
+                                from juridico import store
+                                should_read,reason=sync_plan(store,number,fingerprints.get(number,''),mode)
+                                if fila_coleta.pending(store,number):
+                                    should_read=True;reason='Pendência da fila persistente.'
+                                if number in urgent:
+                                    should_read=True;reason='Reconsulta prioritária da lista de acompanhamento.'
+                                if not should_read:
+                                    self.update(ignorados=self.current.get('ignorados',0)+1)
+                                    self.log(f'{number}: dispensado — {reason}.')
+                                    continue
+                                self.log(f'{number}: {reason}.')
+                            self.check()
+                            if getattr(self,'actor',None):fila_coleta.claim(store,number)
+                            record = {'gravado_no_sistema':False, 'processo': number, 'situacao': 'sem_link_de_detalhes', 'detalhes': None}
+                            if url:
+                                try:
+                                    self.log(f'Etapa: detalhes do processo {number}.')
+                                    detail_page.goto(url, wait_until='domcontentloaded', timeout=60000)
+                                    self.check()
+                                    detail_page.wait_for_timeout(700)
+                                    from eproc_eventos import expand
+                                    history_coverage=expand(self,detail_page)
+                                    snapshot = detail_page.evaluate(SNAPSHOT)
+                                    import mandados_documentos
+                                    mandados_documentos.capture(number,snapshot)
+                                    identity=re.search(r'Nº do processo\s*('+CNJ.pattern.removeprefix(r'\b').removesuffix(r'\b')+')',snapshot['texto'])
+                                    if not tribunais.valid_url(detail_page.url,self.options.get('tribunal','TJRS'),('processo_selecionar','processo_consultar')) or not identity or identity.group(1)!=number or detail_page.locator('input[type="password"]').count():
+                                        raise ValueError('Página não confirmada')
+                                    record.update(situacao='pagina_lida_requer_conferencia', detalhes=public_snapshot(snapshot))
+                                    record['detalhes']['cobertura_eventos']=history_coverage
+                                    from coleta_evidencias import save_tables
+                                    save_tables(DATA / self.current['id'],number,snapshot,history_coverage,
+                                                sistema='eproc',tribunal=self.options.get('tribunal','TJRS'),coletado_em=now())
+                                    if not history_coverage['completo']:
+                                        record['situacao']='historico_parcial'
+                                        self.update(historicos_pendentes=self.current.get('historicos_pendentes',0)+1)
+                                        self.log(number+': histórico não confirmado; ficará pendente de nova consulta.')
+                                    record['detalhes']['complementos']=self.collect_supplements(context,snapshot,number)
+                                except InterruptedError:raise
+                                except Exception:
+                                    record['situacao'] = 'pagina_lida_complementos_pendentes' if record.get('detalhes') else 'falha_na_leitura'
+                            records.append(record)
+                            self.update(lidos=len(records), falhas=sum(r['detalhes'] is None for r in records))
+                            self.log(f"Processo {number}: {record['situacao']} ({len(records)}/{len(found)}).")
+                            self.save_checkpoint(records, pages)
+                            if getattr(self,'actor',None) and record.get('detalhes'):
+                                try:
+                                    from juridico import store
+                                    store.import_corpus({'execucao':{'id':self.current['id']+':processo:'+re.sub(r'\D','',number),'fim':now()},'processos':[record],'paginas_da_lista':pages_by_case.get(number,[])},self.actor)
+                                    record['gravado_no_sistema']=True
+                                    self.update(salvos_sistema=self.current.get('salvos_sistema',0)+1)
+                                except Exception as exc:
+                                    self.log(self.diagnostic(exc,'Gravação do processo no sistema')+' A origem está no checkpoint para reimportação.')
+                            if getattr(self,'actor',None):
+                                from gestao import sync_save
+                                from juridico import store
+                                sync_save(store,number,fingerprints.get(number,''),record,self.current['id'])
+                                fila_coleta.finish(store,number,record)
+                            self.cancelled.wait(2.0)
+                        if mode=='individual' and wanted not in found:self.log('Processo solicitado não apareceu nas listas consultadas. Não foram abertos outros processos.')
+                        outcome = 'coletado_revisar' if pagination_complete and not self.current['falhas'] and not self.current.get('historicos_pendentes') and all(c['completo'] for c in report_coverage) else 'parcial'
+                        self.log('Leitura encerrada. Confira as tabelas originais; associações de partes e prazos ainda não foram validadas neste layout.')
                 except InterruptedError:
                     raise
                 except Exception as exc:
@@ -612,6 +648,10 @@ class Collector:
         finally:
             if self.options.get('automatico') and any('acesso requer intervenção' in x.get('mensagem','') for x in (self.current or {}).get('log',[])):outcome='requer_login'
             self.update(estado=outcome, fim=now())
+            if self.options.get('monitorar_lista') and getattr(self,'actor',None):
+                import monitoramento
+                from juridico import store
+                monitoramento.finish(store,self.current['id'],outcome)
             try:
                 self.save_checkpoint(records, pages)
                 write_exports(self.data / self.current['id'], records, pages, dict(self.current))
@@ -624,6 +664,10 @@ class Collector:
                     write_exports(self.data / self.current['id'], records, pages, dict(self.current))
             except Exception:
                 self.update(estado='erro_exportacao', mensagem='Não foi possível gravar a exportação. Confira espaço e permissões da pasta.')
+                if self.options.get('monitorar_lista') and getattr(self,'actor',None):
+                    import monitoramento
+                    from juridico import store
+                    monitoramento.finish(store,self.current['id'],'erro_exportacao')
 
 
 collector = Collector()

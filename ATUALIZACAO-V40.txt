@@ -1,0 +1,35 @@
+ConectaAdv v40 — mandados por período, relatórios e recomeço das coletas
+
+ONDE USAR
+Abra Mandados e veículos. O novo bloco Buscar mandados por data de expedição fica antes do histórico completo. Escolha um PEDIDO DE CONSULTA CONCLUÍDO da lista, depois Hoje, Ontem, Esta semana (segunda-feira até hoje), Todo o histórico ou datas inicial e final pelo calendário. Clique em Filtrar e preparar relatórios. Este botão filtra dados já coletados; não inicia consulta ao tribunal.
+
+O resultado separa previstos, consultas concluídas, falhas/não consultados e expedições no período. A data filtrada é da expedição no eproc, não da descoberta pelo coletor. Datas futuras não permitem prever o que o tribunal ainda vai expedir.
+Os resultados estão vinculados a um pedido concluído, com sua lista e seus tribunais. Cancelados/parciais aparecem com sua situação, e números não consultados permanecem no relatório de falhas. Não se trata de acompanhamento de todo o acervo fora da lista.
+
+FALHAS
+O filtro de datas nunca exclui as falhas daquele pedido. Cada número vem com cliente/contato disponível, motivo e tentativa. Use Copiar números com falha / pendência para encaminhar ou fazer conferência manual. Se o navegador bloquear a área de transferência, selecione os números exibidos e use Ctrl+C.
+Consultas registradas como concluídas mas sem eventos vinculados à importação são separadas como evidência indisponível; não viram resultado negativo de mandado. Expedições sem data são destacadas fora do filtro para conferência. Linhas inválidas da planilha também aparecem no relatório de falhas.
+
+ENVIAR DA MESMA TELA
+Abra Ver conteúdo nos relatórios. Administradores podem selecionar Mandados encontrados, Falhas ou ambos e enviar usando remetente, senha protegida e destinatário já salvos. Não é solicitado novo login do Gmail nem há disparo automático. Sem configuração, vá a Notificações e salve-a primeiro.
+Cada prévia tem conteúdo salvo. O mesmo relatório idêntico não é reenviado automaticamente, e tentativas incertas ficam bloqueadas contra duplicação. Confira Enviados e o histórico local. Aceitação SMTP não garante entrega na caixa de entrada. O relatório não contém links com hash de sessão do eproc; documentos são identificados por referência.
+
+HISTÓRICO COMPLETO
+Fica em um bloco recolhido claramente identificado como sem filtro de data. Preserva as colunas separadas e o cabeçalho Usuário no eproc. Os documentos continuam sujeitos à captura de link e autenticação da versão 39.
+
+RECOMEÇAR DO ZERO
+1. Aguarde encerrar ou cancele a coleta em andamento. Pare o servidor (Ctrl+C no terminal) e tarefas/serviços externos do Windows que possam iniciar o coletor.
+2. Faça uma cópia de segurança das pastas de dados. Instale o conteúdo desta versão na mesma pasta do programa, preservando dados_*.
+3. No PowerShell, dentro de C:\projetos\djen, execute:
+   .\RECOMECAR_COLETAS.bat
+4. Confira a prévia, informe o administrador DO CONECTAADV e digite RECOMEÇAR COLETAS.
+5. A ferramenta cria e verifica backup do banco antes da limpeza; arquiva as execuções antigas fora da listagem ativa e zera processos importados elegíveis, resultados, falhas, referências, lista, agendamentos internos, eventos importados e prévias de relatórios. Falha tratada na limpeza reverte a transação e devolve arquivos movidos.
+6. Preserve o caminho do backup informado. Reabra o sistema com seu iniciador habitual, pressione Ctrl+F5, carregue a planilha atual em Consultas e atualizações, escolha Substituir lista antiga e Consultar apenas agora, depois Procurar.
+7. Espere terminar e volte a Mandados e veículos. Selecione o novo pedido e filtre o período desejado.
+
+PRESERVADO PELA LIMPEZA
+Usuários, pessoas/clientes, RH, chat, calendários, auditoria, histórico de envios, credenciais e sessões do eproc. Processos criados manualmente permanecem; trabalho manual e financeiro ligados a processos removidos ficam preservados e podem exigir reassociação. Não é exclusão integral de dados pessoais: backups e auditoria mantêm histórico. Veja COMECE-AQUI-V35.txt para restauração.
+
+LIMITES
+O reset não corrige automaticamente falhas de leitura do tribunal. Histórico incompleto, eventos originários misturados e problemas de sessão continuam pendentes, sem indicação falsa de ausência de mandado. O relatório usa versões de eventos importadas até o encerramento do pedido; não compara PDF nem confirma vigência da ordem. Novos relatórios só ficam disponíveis depois de pedidos finalizados. O recomeço não foi executado no banco real do usuário.
+Validação em bancos temporários e DOM simulado. Nenhum e-mail real nem consulta autenticada ao tribunal executados nesta preparação.

@@ -1,0 +1,10 @@
+// DOM simulado: não substitui validação visual ou acesso ao tribunal.
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+class E{constructor(tag){this.tagName=tag.toUpperCase();this.children=[];this.value='';this.attributes={};}append(...n){this.children.push(...n);}setAttribute(k,v){this.attributes[k]=v;}replaceChildren(...n){this.children=n;}showModal(){this.open=true;}close(){this.open=false;}remove(){}}
+const all=e=>[e,...e.children.flatMap(n=>typeof n==='object'?all(n):[])];
+async function run(role,waiting){const root=new E('section'),calls=[],el=(tag,cls,text)=>{const n=new E(tag);n.className=cls;n.textContent=text;return n;};const button=(t,fn)=>{const n=el('button','',t);n.onclick=fn;return n;};
+const window={Juridico:{S:{user:{role}},el,button,table(){},toast(){},stamp:x=>x,render(){},api:async(p,b)=>{calls.push([p,b]);if(p.startsWith('monitoramento?'))return {itens:[],rodadas:[],rodada:'',contagens:{},tribunais_lista:{TJRS:2,outros_tribunais:1},total_lista:3,cobertura:'Não compara PDFs'};if(p==='monitoramento/config')return {ativo:false,tribunal:'TJRS',limite_minutos:50,intervalo_horas:3};throw Error(p);},request:async()=>({atual:{estado:waiting?'aguardando':'coletando'}})}};
+vm.createContext(window);const ctx={window,document:{body:new E('body')},Option:class extends E{constructor(t,v){super('option');this.textContent=t;this.value=v;}},clearTimeout(){}};vm.createContext(ctx);vm.runInContext(fs.readFileSync(require.resolve('../js/monitoramento.js'),'utf8'),ctx);await window.Monitoramento.render(root);
+assert.equal(!!all(root).find(n=>n.textContent==='Consultar a lista agora'),role!=='leitor');assert.equal(!!all(root).find(n=>n.textContent==='Salvar rotina da lista'),role==='administrador');assert.equal(!!all(root).find(n=>n.textContent==='Continuar após login / seleção de perfil'),waiting);assert(all(root).some(n=>String(n.textContent).includes('ainda sem conector')));
+}
+(async()=>{await run('administrador',true);await run('equipe',false);await run('leitor',false);console.log('3 cenários de acompanhamento e controles aprovados.');})().catch(e=>{console.error(e);process.exit(1);});

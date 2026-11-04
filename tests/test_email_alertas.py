@@ -29,14 +29,10 @@ class EmailTests(unittest.TestCase):
   with self.store.connect() as db:
    mandados.schema(db)
    db.execute('INSERT INTO mandate_alerts(id,event_id,case_id,numero,evento,data_evento,trecho,categoria,criado) VALUES(?,?,?,?,?,?,?,?,?)',(ident,ident,1,'5004310-40.2026.8.21.0018','1','2026-10-27','Mandado expedido','possivel_expedicao',juridico.now()))
- def test_auto_future_only_and_no_repeat_after_ambiguous_send(self):
+ def test_legacy_mandate_alerts_no_longer_generate_automatic_email(self):
   self.add_alert(1);self.configure(True)
   with patch.object(mail,'smtp_send') as send:
-   mail.process(self.store);send.assert_not_called()
-   self.add_alert(2);send.side_effect=TimeoutError('private detail must never be recorded')
-   with self.assertRaises(juridico.AppError):mail.process(self.store)
-   mail.process(self.store);self.assertEqual(send.call_count,1)
-  r=mail.status(self.store,self.actor)['historico'][0];self.assertEqual(r['status'],'incerto');self.assertNotIn('private',r['erro'])
+   mail.process(self.store);self.add_alert(2);mail.process(self.store);send.assert_not_called()
  def test_reader_cannot_save_or_send(self):
   reader={**self.actor,'role':'leitor'}
   with self.assertRaises(juridico.AppError):mail.save(self.store,reader,{})

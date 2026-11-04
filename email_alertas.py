@@ -60,8 +60,9 @@ def status(store,actor):
         except legal.AppError:c={};available=False
         with store.lock,store.connect() as db:
             schema(db)
+            import email_resumos;email_resumos.schema(db)
             history=[dict(r) for r in db.execute('SELECT * FROM email_delivery ORDER BY id DESC LIMIT 20')]
-        return {'disponivel':available,'configurado':bool(c),'remetente':c.get('remetente',DEFAULT),'destinatario':c.get('destinatario',DEFAULT),'automatico':c.get('automatico',False),'historico':history}
+        return {'disponivel':available,'configurado':bool(c),'remetente':c.get('remetente',DEFAULT),'destinatario':c.get('destinatario',DEFAULT),'automatico':False,'revisao_manual':True,'formato_alertas':'tres_resumos_por_pedido','historico':history}
 
 
 def save(store,actor,body):
@@ -73,9 +74,11 @@ def save(store,actor,body):
         if not re.fullmatch(r'[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}',recipient):raise legal.AppError('Destinatário inválido.')
         password=str(body.get('senha_app','')).replace(' ','') or previous.get('senha','')
         if not re.fullmatch('[a-zA-Z0-9]{16}',password):raise legal.AppError('Informe a senha de app de 16 caracteres gerada pelo Google.')
-        automatic=body.get('automatico') is True
+        automatic=False if review_required(store) else body.get('automatico') is True
         with store.lock,store.connect() as db:
             import mandados;mandados.schema(db);schema(db)
+            import email_resumos
+            email_resumos.initialize(db,rearm=automatic and not previous.get('automatico'))
             floor=previous.get('inicio_alerta',0) if previous.get('automatico') and automatic else db.execute('SELECT COALESCE(MAX(id),0) FROM mandate_alerts').fetchone()[0]
         c={'remetente':sender,'destinatario':recipient,'senha':password,'automatico':automatic,'inicio_alerta':floor}
         p=config_path(store);p.parent.mkdir(parents=True,exist_ok=True)
@@ -91,10 +94,14 @@ def smtp_send(config,subject,text):
         if smtp.send_message(msg):raise smtplib.SMTPRecipientsRefused({})
 
 
-def deliver(store,config,subject,text,kind,ids=()):
+def deliver(store,config,subject,text,kind,ids=(),digest=None,quantity=None):
     with store.lock,store.connect() as db:
         schema(db)
-        cur=db.execute('INSERT INTO email_delivery(criado,tipo,status,quantidade,erro) VALUES(?,?,?,?,?)',(legal.now(),kind,'enviando',len(ids),''));ident=cur.lastrowid
+        if digest:
+            import email_resumos;email_resumos.schema(db)
+            if db.execute('SELECT 1 FROM email_digest_parts WHERE batch_key=? AND parte=?',digest).fetchone():return {'mensagem':'Resumo já reservado; não será repetido.'}
+        cur=db.execute('INSERT INTO email_delivery(criado,tipo,status,quantidade,erro) VALUES(?,?,?,?,?)',(legal.now(),kind,'enviando',len(ids) if quantity is None else quantity,''));ident=cur.lastrowid
+        if digest:db.execute('INSERT INTO email_digest_parts VALUES(?,?,?)',(*digest,ident))
         db.executemany('INSERT INTO email_alert_items VALUES(?,?)',[(i,ident) for i in ids])
     state='aceito_smtp';error=''
     try:smtp_send(config,subject,text)
@@ -115,18 +122,90 @@ def test(store,actor):
         return result
 
 
-def process(store):
+def prepare(store):
+    """Inicializa a política antes de aceitar novas consultas; não envia mensagens."""
+    import email_resumos
+    if review_required(store):return
     with LOCK:
         try:c=load(store)
         except legal.AppError:return
         if not c.get('automatico'):return
         with store.lock,store.connect() as db:
-            import mandados;mandados.schema(db);schema(db)
-            # Interrupção depois de aceitar SMTP é ambígua: manter os itens vinculados evita duplicação.
-            scope=(db.execute("SELECT valor FROM mandate_state WHERE chave='somente_lista'").fetchone() or ['0'])[0]=='1'
-            query='SELECT a.* FROM mandate_alerts a WHERE a.id>? AND a.revisado IS NULL AND NOT EXISTS(SELECT 1 FROM email_alert_items i WHERE i.alert_id=a.id)'
-            if scope:query+=' AND a.numero IN (SELECT numero FROM mandate_watchlist)'
-            rows=db.execute(query+' ORDER BY a.id LIMIT 20',(c['inicio_alerta'],)).fetchall()
-        if not rows:return
-        text='Indícios para revisão jurídica. Confira os documentos no tribunal.\n\n'+'\n\n'.join('Processo: '+r['numero']+'\nEvento: '+r['evento']+'\nCategoria: '+r['categoria'] for r in rows)
-        deliver(store,c,'ConectaAdv — novos alertas para revisão',text,'alertas',[r['id'] for r in rows])
+            schema(db);email_resumos.initialize(db)
+
+
+def process(store):
+    """Envia três resumos de execução, nunca lotes de indícios de mandados."""
+    import email_resumos
+    if review_required(store):return
+    with LOCK:
+        try:c=load(store)
+        except legal.AppError:return
+        if not c.get('automatico'):return
+        with store.lock,store.connect() as db:
+            schema(db)
+            if email_resumos.initialize(db):return
+            # Reserva antiga em "enviando" pode ter sido aceita pelo SMTP antes de uma queda.
+            db.execute("UPDATE email_delivery SET status='incerto',erro='Servidor interrompido durante o envio. Confira Enviados; não haverá repetição automática.' WHERE status='enviando' AND id IN(SELECT delivery_id FROM email_digest_parts)")
+            batches=email_resumos.completed(db)
+            batch=next((b for b in batches if not db.execute('SELECT 1 FROM email_digest_batches WHERE batch_key=? AND ignorado=1',(b['key'],)).fetchone() and db.execute('SELECT COUNT(*) FROM email_digest_parts WHERE batch_key=?',(b['key'],)).fetchone()[0]<3),None)
+            if not batch:return
+            db.execute('INSERT OR IGNORE INTO email_digest_batches VALUES(?,?,0)',(batch['key'],legal.now()))
+            batch=email_resumos.enrich(db,batch)
+        errors=[]
+        for part,subject,text,count in email_resumos.messages(batch):
+            try:deliver(store,c,subject,text,'resumo_'+part,digest=(batch['key'],part),quantity=count)
+            except legal.AppError as exc:errors.append(str(exc))
+        if errors:raise legal.AppError(' '.join(dict.fromkeys(errors)))
+
+
+def review_required(store):
+    # Revisão manual é obrigatória nesta versão, mesmo com configuração antiga automática.
+    return True
+
+
+def drafts(store,actor):
+    admin(actor)
+    import email_resumos
+    with LOCK,store.lock,store.connect() as db:
+        schema(db);email_resumos.schema(db)
+        db.execute('CREATE TABLE IF NOT EXISTS email_review_drafts(batch_key TEXT PRIMARY KEY,criado TEXT NOT NULL,conteudo TEXT NOT NULL)')
+        batches=email_resumos.completed(db,pending_only=False)
+        for batch in sorted(batches,key=lambda b:b['inicio'],reverse=True)[:20]:
+            if db.execute('SELECT 1 FROM email_review_drafts WHERE batch_key=?',(batch['key'],)).fetchone():continue
+            batch=email_resumos.enrich(db,batch)
+            messages=[{'parte':p,'assunto':s,'texto':t,'quantidade':n} for p,s,t,n in email_resumos.messages(batch)]
+            db.execute('INSERT INTO email_review_drafts VALUES(?,?,?)',(batch['key'],legal.now(),legal.dumps(messages)))
+        rows=db.execute('SELECT * FROM email_review_drafts ORDER BY criado DESC,rowid DESC LIMIT 20').fetchall()
+        output=[]
+        for row in rows:
+            parts=json.loads(row['conteudo'])
+            for part in parts:
+                sent=db.execute('SELECT d.status FROM email_digest_parts p JOIN email_delivery d ON d.id=p.delivery_id WHERE p.batch_key=? AND p.parte=?',(row['batch_key'],part['parte'])).fetchone()
+                part['envio']=sent[0] if sent else 'nao_enviado'
+            output.append({'id':row['batch_key'],'criado':row['criado'],'resumos':parts})
+        return {'itens':output,'modo':'revisao_manual'}
+
+
+def send_selected(store,actor,body):
+    admin(actor)
+    parts=body.get('partes');key=body.get('id')
+    if not isinstance(key,str) or not isinstance(parts,list) or not parts or len(parts)>3 or len(set(str(p) for p in parts))!=len(parts) or any(p not in ('alteracoes','sem_diferencas','erros') for p in parts):raise legal.AppError('Selecione de um a três resumos válidos.')
+    with LOCK:
+        c=load(store)
+        if not c:raise legal.AppError('Salve o remetente, destinatário e senha de app em Canais de aviso.')
+        if body.get('destinatario')!=c['destinatario'] or body.get('remetente')!=c['remetente']:raise legal.AppError('A configuração de envio mudou. Reabra a prévia antes de enviar.',409)
+        with store.lock,store.connect() as db:
+            exists=db.execute("SELECT 1 FROM sqlite_master WHERE name='email_review_drafts'").fetchone()
+            row=db.execute('SELECT conteudo FROM email_review_drafts WHERE batch_key=?',(key,)).fetchone() if exists else None
+            if not row:raise legal.AppError('Abra a prévia do pedido antes de enviar.',404)
+            messages=json.loads(row[0])
+        results=[]
+        for message in messages:
+            if message['parte'] not in parts:continue
+            try:
+                result=deliver(store,c,message['assunto'],message['texto'],'resumo_'+message['parte'],digest=(key,message['parte']),quantity=message['quantidade'])
+                results.append({'parte':message['parte'],**result})
+            except legal.AppError as exc:results.append({'parte':message['parte'],'erro':str(exc)})
+        with store.lock,store.connect() as db:store.audit(db,actor,'enviar_resumos_selecionados','email',after={'pedido':key,'partes':parts,'destinatario':c['destinatario']})
+        return {'resultados':results}

@@ -45,3 +45,18 @@ class MandadosTest(unittest.TestCase):
   r=mandados.extract_watchlist(data,'busca.csv')
   self.assertEqual(len(r['numeros']),1)
   self.assertEqual(len(r['invalidos']),1)
+
+ def test_normalizes_only_punctuation_when_check_digits_match(self):
+  pairs={'5001982-77.2025.821.0017':'5001982-77.2025.8.21.0017','5002985-67.2025.821.0017':'5002985-67.2025.8.21.0017','5003475-89.2025.821.0017':'5003475-89.2025.8.21.0017','5150236.40.2025.8.21.0001':'5150236-40.2025.8.21.0001'}
+  for original,expected in pairs.items():self.assertEqual(mandados.number(original),expected)
+  self.assertIsNone(mandados.number('5001982-78.2025.821.0017'))
+  self.assertIsNone(mandados.number('5.00252583202082E+19'))
+  self.assertIsNone(mandados.number('[número Excel sem precisão] 5.00252583202082E+19'))
+ def test_import_preserves_original_and_explains_rejections(self):
+  data='Processo\n5001982-77.2025.821.0017\n5150236.40.2025.8.21.0001\n5.00252583202082E+19\n5001982-78.2025.8.21.0017\n'.encode()
+  result=mandados.extract_watchlist(data,'lista.csv');self.assertEqual(len(result['numeros']),2);self.assertEqual(len(result['normalizados']),2);self.assertEqual(len(result['invalidos']),2)
+  self.assertEqual(result['normalizados'][0]['original'],'5001982-77.2025.821.0017');self.assertIn('não são confiáveis',result['invalidos'][0]['motivo']);self.assertIn('verificador',result['invalidos'][1]['motivo'])
+
+ def test_watchlist_carries_explicit_client_columns_without_using_responsible_as_contact(self):
+  csv='Processo,CLIENTE,TELEFONE,RESPONSÁVEL\n5001982-77.2025.821.0017,Cliente fictício,(51) 99999-0000,Supervisor\n'.encode()
+  result=mandados.extract_watchlist(csv,'lista.csv');ctx=result['contexto'][0];self.assertEqual(ctx['nome_cliente'],'Cliente fictício');self.assertIn('99999-0000',ctx['contato']);self.assertNotIn('Supervisor',ctx['contato'])

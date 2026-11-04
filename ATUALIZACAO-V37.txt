@@ -1,0 +1,30 @@
+ConectaAdv 37 — organização das consultas e preparação de integrações
+
+INSTALAÇÃO NA PASTA EXISTENTE
+Pare servidor e coletor. Faça backup da pasta atual. Copie o conteúdo da pasta
+djen deste pacote para a sua pasta djen, substituindo os arquivos de programa.
+Mantenha suas pastas de dados, sessões e configurações locais. Não apague a
+instalação anterior para fazer esta atualização. Reinicie pelo iniciador habitual
+e atualize o navegador com Ctrl+F5.
+
+MENU
+Consultas e fontes > Consultas e atualizações: planilha, lista salva e resultados.
+Consultas e fontes > Tribunais e conexões: capacidades e integrações planejadas.
+Consultas e fontes > Notificações: revisão dos resumos e envio manual.
+Consultas e fontes > Operação do coletor: controles e diagnóstico existentes.
+Jurídico > Mandados e veículos: resumo das expedições e retornos por processo.
+
+Integrações: o catálogo distingue conectores eproc instalados (TJRS/TJSC) de
+integrações futuras (outros eproc, e-SAJ, PJe e serviços PDPJ). Inclui contrato
+para futuros adaptadores e componente de evidência HTML independente da fonte.
+Não ativa novos tribunais nem concede acesso. Os futuros adaptadores ainda
+precisam ser implementados, ligados ao executor e validados por implantação.
+
+A evidência HTML é uma reconstrução segura das tabelas extraídas. É gerada nas
+novas coletas em dados_eproc/<execução>/html_processos. Não é o código-fonte
+integral e não inclui os documentos. A leitura do conteúdo de PDFs, OCR e
+identificação dos veículos por documentos continuam pendentes.
+
+Pacote cumulativo: inclui as correções de retornos negativos e os resumos de
+mandados da atualização anterior. Não contém bancos ou sessões do usuário.
+Não houve medição de ganho de velocidade nem validação ao vivo nos tribunais.

@@ -1,0 +1,101 @@
+ConectaAdv V43 — JUSDOWN organizado por tribunal e instância
+
+INSTALAÇÃO
+Aguarde ou encerre a coleta pelo sistema antes de fechar o servidor.
+Faça uma cópia da pasta atual. Extraia os arquivos do pacote sobre a pasta
+existente e abra pelo iniciador habitual. Use F5 se o menu estiver em cache.
+NÃO apague bancos nem sessões. O pacote não contém bancos ou credenciais.
+A navegação está em Consultas e fontes > JUSDOWN.
+
+USO
+Pesquise sigla, nome, estado ou seção judiciária. Selecione um tribunal e
+use Verificar tribunal selecionado. O botão dentro do cartão faz a mesma coisa.
+Verificar todos consulta todos os endereços cadastrados. Consultas públicas
+não exigem login no tribunal. A busca de processos continua somente TJRS.
+Mudar de tela ou usar F5 não cancela a rodada no servidor.
+
+Filtros: ramo, tribunal, grau, normais, problemas, instabilidade, sem confirmação,
+manutenção e endereços pendentes. Portal institucional aparece em filtro próprio:
+sua resposta não é usada como resultado do sistema judicial de 1º/2º grau.
+
+CORES
+Verde: endereço respondeu normalmente (HTTP), sem provar login/consulta/documentos.
+Amarelo: lentidão acima de 3 segundos, primeira falha, recuperação em confirmação,
+erro HTTP ou página com título indicando manutenção/indisponibilidade.
+Vermelho: falha de conexão/HTTP 5xx em pelo menos duas rodadas consecutivas.
+É uma observação deste computador, NÃO uma certificação oficial de queda.
+Se pelo menos 80% de 5 ou mais endereços não responderem na mesma rodada,
+a cor vermelha é suprimida e aparece aviso para verificar a rede do escritório.
+Cinza: endereço não cadastrado, ainda não consultado, resultado com mais de
+15 minutos, acesso restrito (incluindo 403/429) ou destino não verificável.
+Recuperação de falha exige duas respostas normais para voltar ao verde.
+
+INATIVAR E OCULTAR TRIBUNAIS
+No cartão do tribunal, o administrador usa Inativar e ocultar da equipe.
+O tribunal deixa de ser verificado (manual ou automaticamente), sem apagar seu
+histórico, comunicados ou lembretes. Somente administradores conseguem vê-lo
+no filtro Tribunais inativos e usar Reativar tribunal. A configuração persiste.
+Para equipe/leitor, a API remove o tribunal da busca, itens, contagens, alertas,
+comunicados e lembretes. A ocultação não é apenas visual no navegador.
+Aguarde a rodada atual terminar para alterar a ativação. Lembretes de inativos
+não geram novos alertas enquanto estiverem inativos.
+Este controle vale para JUSDOWN; não apaga processos nem altera seus coletores.
+
+ALERTAS E MANUTENÇÃO
+A central registra mudança para instabilidade/falha, recuperação e lembretes.
+Reconhecer alerta não altera a situação técnica. Administradores controlam
+verificação, pausa, reconhecimento, cadastro de endereços e lembretes.
+Lembretes e manutenções ficam salvos por tribunal. Manutenção exige link
+oficial .jus.br e início/fim. Pode ser programada ou encerrada. A cor técnica
+fica separada do aviso de manutenção. O lembrete aparece na central no horário
+marcado (checado aproximadamente a cada minuto com o servidor aberto).
+Sem horário de lembrete específico, a manutenção avisa a partir do início.
+Não há envio novo por e-mail/WhatsApp nesta versão.
+
+O monitor procura links com termos de manutenção/indisponibilidade nos primeiros
+128 KiB das páginas consultadas. Links detectados aparecem como comunicados
+PARA CONFERÊNCIA; podem ser antigos. Não mudam automaticamente a cor nem criam
+uma manutenção vigente. Confira o documento e depois cadastre suas datas.
+Esse mecanismo não cobre todas as notícias, PDFs, avisos dinâmicos ou áreas
+internas dos tribunais. Ausência de detecção não prova ausência de manutenção.
+
+COBERTURA CONFERIDA NO INVENTÁRIO EM 03/11/2026
+92 tribunais: 27 TJs, 6 TRFs, 24 TRTs, 27 TREs, 3 TJMs,
+STJ, TST, TSE, STM e STF. São 91 da estrutura acompanhada pelo CNJ mais o STF.
+CNJ/CJF/CSJT são conselhos, não contados como tribunais.
+201 posições judiciais esperadas (incluindo 27 seções judiciárias federais),
+além de 92 portais institucionais.
+65 posições judiciais têm endereço cadastrado; 136 estão PENDENTES.
+Logo, o inventário de tribunais NÃO equivale a monitoramento completo de todos
+os seus sistemas. Há lacunas explícitas, não uma alegação de cobertura integral.
+Há apenas um endereço cadastrado por posição; sistemas coexistentes, turmas
+recursais, juizados, especialidades e migrações precisam de revisão adicional.
+Confira JUSDOWN-cobertura.csv incluído para a relação posição por posição.
+Fontes gerais: https://www.cnj.jus.br/tribunais/
+https://www.cnj.jus.br/pesquisas-judiciarias/justica-em-numeros/
+Eleitoral: https://www.tse.jus.br/servicos-judiciais/processos/pje
+
+CADASTRAR ENDEREÇOS PENDENTES
+Abra o cartão do tribunal e use Cadastrar/corrigir endereço.
+Informe o sistema, endereço público e página oficial que publica o link.
+Somente HTTPS .jus.br; sem hashes, tokens ou parâmetros de sessão.
+Trocar o endereço zera o resultado atual daquela posição para evitar
+atribuir ao endereço novo uma leitura antiga. Histórico não é apagado.
+
+DADOS E EXECUÇÃO
+SQLite separado em dados_jusdown/jusdown.sqlite3. Preserva a base V42, usando
+novos identificadores por instância. Leituras antigas sem esse escopo não são
+apresentadas como verificações novas. Até 4 chamadas simultâneas, timeout de
+rede de 8 segundos por operação, sem rodadas sobrepostas. Rotina a cada 5
+minutos, enquanto o servidor estiver aberto. Pode atrasar se a rodada anterior
+estiver ocupada. Pausar automático permite consultas manuais e lembretes.
+Retenção limitada às últimas 250 mil observações e 2 mil alertas; a tela mostra
+até 200 alertas recentes, com até 60 no filtro. O painel é atualizado pelo botão
+Atualizar painel. Não existe acompanhamento remoto se o computador estiver desligado.
+
+VALIDAÇÃO
+270 testes Python da suíte completa aprovados antes do ajuste de ativação.
+Depois, 19 testes do JUSDOWN foram executados, incluindo HTTP real local
+para login/CSRF/permissões, consulta selecionada e ocultação de inativos. Comportamento da tela validado em DOM
+simulado. Não houve teste autenticado no eproc nem verificação ao vivo de todos
+os endereços. As cores reais aparecerão quando instalado e executado no escritório.

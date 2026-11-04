@@ -19,6 +19,8 @@ def configure(store,actor,hour=6,enabled=True):
 
 
 def tick(store,collector):
+    import monitoramento
+    if monitoramento.tick(store,collector):return
     now=dt.datetime.fromisoformat(legal.now());today=now.date().isoformat()
     with store.lock,store.connect() as db:
         schema(db);row=db.execute('SELECT config FROM collection_schedule WHERE id=1').fetchone()

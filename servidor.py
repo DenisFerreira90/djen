@@ -29,7 +29,7 @@ API_URL = 'https://comunicaapi.pje.jus.br/api/v1/comunicacao'
 USER_AGENT = 'DJEN-Consulta-VSCode/1.0'
 MAX_REMOTE_BYTES = 24 * 1024 * 1024
 BATCH_SIZE = 100
-ALLOWED_STATIC = {'/', '/index.html', '/css/style.css', '/js/app.js', '/js/eproc.js', '/consulta.html', '/css/juridico.css', '/js/juridico.js', '/js/organizacao.js', '/js/mandados.js', '/js/chat.js', '/js/chat-alertas.js', '/js/chat-visualizacao.js', '/js/chat-escritorio.js', '/img/chat-icon.svg', '/js/painel-operacional.js', '/js/calendario.js', '/js/servico-coleta.js', '/js/dados.js'}
+ALLOWED_STATIC = {'/js/jusdown.js','/js/conectores.js', '/', '/index.html', '/css/style.css', '/js/app.js', '/js/eproc.js', '/consulta.html', '/css/juridico.css', '/js/juridico.js', '/js/continuidade.js', '/js/organizacao.js', '/js/mandados.js', '/js/mandados-relatorios.js', '/js/chat.js', '/js/chat-alertas.js', '/js/chat-visualizacao.js', '/js/chat-escritorio.js', '/img/chat-icon.svg', '/js/painel-operacional.js', '/js/calendario.js', '/js/servico-coleta.js', '/js/dados.js', '/js/rh.js', '/js/monitoramento.js', '/js/busca-lista.js'}
 FIELD_LIMITS = {
     'numeroOab': 32, 'ufOab': 2, 'nomeAdvogado': 140,
     'numeroProcesso': 32, 'nomeParte': 140, 'siglaTribunal': 12,
@@ -401,6 +401,8 @@ def main():
         import mandados, juridico
         if not args.piloto_chat:
             mandados.start(juridico.store)
+            import jusdown
+            jusdown.monitor.start()
             import agendamento,eproc
             agendamento.start(juridico.store,eproc.collector)
         server.serve_forever(poll_interval=0.2)

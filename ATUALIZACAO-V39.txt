@@ -1,0 +1,27 @@
+ConectaAdv v39 — eventos de mandados e documentos
+
+Base: arquivos de código enviados em djen(1).rar, comparados com v38. Alterações de coleta por tribunal existentes foram preservadas. O pacote contém somente programa e testes, sem bancos, credenciais ou sessões do arquivo enviado.
+
+ONDE VER
+Mandados e veículos → Mandados por processo. O primeiro processo abre expandido; clique nos demais para consultar.
+O destaque mostra o evento relacionado mais recente e a expedição à qual ele está vinculado. Abaixo, cada expedição tem sua tabela: Evento, Data/hora (Brasília), Descrição, Usuário e Documentos, do mais recente para o mais antigo.
+
+EXEMPLO DA REFERÊNCIA
+Evento 49: Expedição de mandado — CM0001, documento MAND1.
+Evento 50: Recebido o mandado para cumprimento pelo oficial de justiça — Refer. ao Evento: 49.
+Resultado: recebimento pelo oficial para cumprimento; referente à expedição 49; retorno do cumprimento ainda não localizado na consulta. Recebimento não é cumprimento concluído.
+Esses dados não foram inseridos como processo real. A tela usa exclusivamente os eventos importados no banco em uso.
+
+RELAÇÕES E LIMITES
+Retornos sem referência explícita não são atribuídos ao último mandado por proximidade. Referências encadeadas são vinculadas quando o evento intermediário já está associado à expedição. Referências ambíguas não fecham automaticamente uma expedição.
+A ausência de retorno se refere aos eventos importados, não comprova ausência real de cumprimento. A identificação do veículo, a vigência da ordem e o conteúdo da certidão não são inferidos pelo nome do evento. As versões anteriores de eventos são consolidadas pela versão importada mais recente do mesmo número; processos originários com numeração misturada continuam exigindo conferência.
+
+ABRIR MAND1
+O rótulo do documento é preservado na expedição correspondente. Coletas antigas normalmente guardavam só o nome, sem endereço: o botão fica indisponível e solicita nova consulta.
+Esta versão captura links HTTPS visíveis dos documentos na coluna Documentos da tabela de eventos do processo, para ações de visualização reconhecidas no host do próprio TJRS/TJSC. Não inventa endereço a partir do nome MAND1. Links em JavaScript/onclick, domínios externos, ações desconhecidas e links ambíguos não são abertos automaticamente.
+Os endereços ficam somente na memória do servidor por até 30 minutos, sem gravar hash de sessão nos relatórios/exportações. Reiniciar o servidor ou expirar o prazo exige nova captura. O botão abre o endereço no navegador do usuário; o eproc pode exigir autenticação, permissões e nova sessão. Não baixa PDFs antecipadamente nem promete acesso sem login.
+
+INSTALAÇÃO
+Aguarde encerrar as coletas em andamento. Faça backup, pare o servidor e substitua os arquivos do programa na mesma pasta. Preserve dados_* e a sessão de cada tribunal. Reinicie e pressione Ctrl+F5. Coletas antigas com eventos já importados podem gerar a tabela imediatamente; para o link de documento, consulte novamente o processo nesta versão.
+
+Validação em bancos temporários, coletor simulado e DOM simulado. Não foi acessada sessão autenticada real nem aberto MAND1 real nesta preparação. Envio de e-mails permanece sob revisão manual.

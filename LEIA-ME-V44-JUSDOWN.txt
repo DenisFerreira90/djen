@@ -1,0 +1,121 @@
+ConectaAdv V44 — Meus portais e informes públicos
+
+O QUE MUDA
+A lista ampla de tribunais da V43 sai do painel. Entram apenas 35 endereços
+públicos de 24 tribunais, extraídos dos favoritos enviados em 03/11/2026,
+com o portal eproc do TJAC e seus links oficiais de 1º e 2º grau.
+Links repetidos, números de processos, e-mails, ícones e dados de sessão
+não foram incluídos no pacote. Redirecionamentos SSO foram convertidos
+em seus destinos públicos. O arquivo pessoal de favoritos não é distribuído.
+A relação está em JUSDOWN-meus-portais.csv.
+
+INSTALAR A ATUALIZAÇÃO
+1. Aguarde/encerre uma coleta antes de fechar o servidor.
+2. Faça uma cópia de segurança da pasta atual.
+3. Extraia o pacote na mesma pasta, substituindo os arquivos do programa.
+4. Inicie normalmente e use F5 se houver conteúdo antigo em cache.
+Não apague bancos nem sessões. O banco JUSDOWN continua separado:
+dados_jusdown/jusdown.sqlite3. Os outros módulos e a coleta TJRS são preservados.
+O histórico antigo é preservado, mas os endereços fora desta lista não aparecem
+nem são consultados. Inativações anteriores dos tribunais selecionados persistem.
+
+HORÁRIOS
+O servidor inicia rodadas às 08:00 e 12:30, todos os dias, no horário de Brasília,
+inclusive fins de semana. Não há mais varredura automática a cada 5 minutos.
+O computador deve estar ligado, conectado e com o servidor em execução.
+O agendador interno verifica a hora aproximadamente a cada segundo. A consulta
+começa no horário; a conclusão depende das respostas, DNS e conexão. Não existe
+garantia de conclusão instantânea às 08:00/12:30. Os horários previstos, reais
+de início e de encerramento aparecem no relatório.
+Se o servidor só iniciar até 15 minutos depois do horário, a rodada pode começar
+com atraso registrado. Depois disso, o horário será marcado como não executado;
+não será inventado um resultado. Não há sobreposição de rodadas. Uma interrupção
+do servidor aparece como interrompida na próxima inicialização. Os agendamentos
+ficam gravados para impedir duplicação após F5 ou reinício.
+
+ABRIR O SERVIDOR PELO WINDOWS (OPCIONAL)
+Execute INSTALAR_ROTINA_JUSDOWN.bat uma vez na pasta instalada.
+Ele registra ConectaAdv-JUSDOWN no Agendador de Tarefas para a conta atual,
+sem pedir/guardar senha de tribunal. O servidor será preparado às 07:55 e
+12:25 e também após login no Windows. A tarefa evita instâncias sobrepostas.
+É necessário estar conectado à conta do Windows (sessão pode estar bloqueada).
+A tentativa de despertar só funciona se as configurações de energia permitirem.
+O computador desligado não será ligado pela tarefa. Não mova a pasta depois;
+se mover, execute o instalador outra vez. Esse instalador requer o lançador
+py e os comandos padrão ScheduledTasks do Windows PowerShell.
+A tarefa inicia servidor.py --sem-navegador, não INICIAR_COM_ACESSO.py:
+não abre o navegador nem exige credenciais eproc para os portais públicos.
+Se já há outro agendador que mantém o ConectaAdv aberto, use apenas um iniciador.
+Para remover a tarefa, use o Agendador de Tarefas > ConectaAdv-JUSDOWN > Excluir.
+A tarefa do Windows é um arquivo para instalação local; não foi instalada
+nem executada remotamente no computador do usuário nesta entrega.
+
+RELATÓRIOS NO JUSDOWN
+Abra Consultas e fontes > JUSDOWN. Clique Verificar todos agora para formar
+a base inicial e testar antes do próximo horário. Ao concluir, use Atualizar painel.
+Toda rodada manual e agendada fica em Relatórios das rodadas, com dados por portal.
+Selecione a rodada; seu conteúdo é carregado sob demanda. Retenção: últimas
+60 rodadas, incluindo manuais. Não há envio automático por e-mail nesta versão.
+
+COMO INTERPRETAR AS INFORMAÇÕES
+1. Resultado técnico: resposta HTTP/latência do endereço do sistema.
+2. Informações públicas: página de avisos/novidades configurada separadamente.
+Primeira leitura = base inicial; referências existentes não são chamadas de novas.
+Novidades detectadas = links/títulos novos em relação à última leitura confirmada.
+Nenhum novo informe detectado = não houve novos links relevantes na página lida.
+Leitura não confirmada = fonte falhou, ficou restrita ou não pôde ser consultada.
+Nenhum informe identificável = a página respondeu, mas o leitor não identificou
+informes públicos; isso NÃO confirma ausência de atualizações.
+Cada informação mantém título/texto extraído e link para a origem. Datas de uma
+tabela oficial são preservadas como texto da linha. Data da publicação e data
+da consulta são conceitos diferentes. Uma notícia antiga recém-encontrada
+não deve ser interpretada como acontecimento do dia.
+
+O leitor usa HTTP público e os primeiros 128 KiB da página; encontra links
+relevantes a manutenção, indisponibilidade, atualização, versão, implantação,
+migração, prazos e avisos, além de linhas de tabelas públicas com datas.
+Não lê todas as páginas internas, JavaScript, PDFs ou conteúdo autenticado.
+A fonte de avisos inicial é a página institucional pública, ou a fonte específica
+já conhecida, para cada tribunal. Pode ser ajustada cadastrando o portal de novo.
+Uma página dinâmica/bloqueada pode exigir uma fonte pública alternativa.
+Portanto, não há garantia de encontrar todos os comunicados de todos os tribunais.
+Este módulo não consulta andamento ou documentos de processos.
+
+ADICIONAR DEPOIS
+1. Entre como administrador e abra Adicionar portal.
+2. Informe sigla (ex.: TJAC), nome, sistema e grau.
+3. URL do sistema: entrada pública, como https://eproc1g.tjac.jus.br/.
+4. URL de avisos: página oficial de notícias/atualizações, como
+   https://www.tjac.jus.br/eproc/.
+5. Clique Adicionar portal e depois Verificar todos agora ou Verificar só TJAC.
+Para acompanhar apenas uma página de informações, use Grau = Página de informações
+com o mesmo endereço nos dois campos. Assim, não é necessário cadastrar login.
+Use HTTPS .jus.br, sem parâmetros, hash, fragmentos ou tokens de sessão.
+Não é necessário editar código, JSON ou banco. A configuração persiste após reiniciar.
+
+REMOVER / INATIVAR
+Remover da lista tira apenas aquele endereço do painel e das verificações.
+O registro é marcado como removido; não reaparece sozinho e o histórico persiste.
+Para corrigir nome, URL ou fonte, remova e adicione o cadastro correto.
+Inativar e ocultar da equipe oculta todo o tribunal e interrompe sua verificação.
+Somente administradores veem/reabrem os inativos. Contas de equipe/leitor não
+recebem os seus itens, alertas, lembretes nem relatórios exclusivos.
+Aguarde a rodada em andamento terminar antes de alterar a lista ou ativação.
+
+CORES
+Verde: respondeu na última leitura; não comprova login, consulta ou documento.
+Amarelo: primeira falha/lentidão/erro ou recuperação ainda em confirmação.
+Vermelho: falhas consecutivas, observadas deste computador, não certidão oficial.
+Cinza: sem confirmação, acesso bloqueado ou leitura anterior à rodada esperada.
+O painel não é mais um monitor contínuo; sempre confira a data/hora da leitura.
+Uma falha de rede generalizada não será apresentada como queda confirmada de
+vários tribunais. HTTP 403/429 não é tratado automaticamente como fora do ar.
+
+VERIFICAÇÃO DA ENTREGA
+Testes automáticos de catálogo, persistência, remoção, permissões, ocultação,
+comparação de conteúdo, falhas, horários 08:00/12:30, não duplicação, atrasos,
+falha de banco e navegação simulada. Os testes HTTP usam servidor local real.
+A página pública do TJAC e seus links de acesso foram conferidos pela web.
+Não foram testados ao vivo todos os 35 endereços, as páginas autenticadas,
+a tarefa Windows nem a aparência em navegador real. Os testes de regras de
+horário usam um relógio simulado; não se esperou os horários reais para executá-los.

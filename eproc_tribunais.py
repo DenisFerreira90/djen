@@ -22,3 +22,7 @@ def valid_url(value,tribunal='TJRS',actions=None):
     return len(selected)==1 and (actions is None or selected[0] in actions)
 def entry(tribunal='TJRS'):
     return 'https://'+config(tribunal)['host']+'/eproc/'
+
+# Restrição temporária solicitada: apenas TJRS executa novas consultas.
+ATIVOS={'TJRS'}
+def enabled(tribunal):return tribunal in ATIVOS

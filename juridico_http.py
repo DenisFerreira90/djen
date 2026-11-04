@@ -60,7 +60,45 @@ def handle(h, method):
         try: page=max(1,int(q('pagina','1')))
         except ValueError: raise legal.AppError('Página inválida.')
         output=None
-        if path=='/api/juridico/calendarios' and method=='GET':
+        if path.startswith('/api/juridico/jusdown'):
+            import jusdown
+            if getattr(h.server,'chat_only',False):raise legal.AppError('JUSDOWN indisponível no serviço de chat.',403)
+            if path=='/api/juridico/jusdown' and method=='GET':output=jusdown.monitor.status(actor)
+            elif path=='/api/juridico/jusdown/relatorio' and method=='GET':
+                if not q('slot'):raise legal.AppError('Selecione uma rodada.')
+                output=jusdown.monitor.routine_status(actor,slot=q('slot'),details=True)
+            elif method=='POST':
+                if actor['role']!='administrador':raise legal.AppError('Controle restrito ao administrador.',403)
+                try:
+                    action=path.removeprefix('/api/juridico/jusdown/')
+                    if action=='verificar':output={'iniciado':jusdown.monitor.request(body.get('tribunal') or None)}
+                    elif action=='configurar':output=jusdown.monitor.configure(body.get('ativo'))
+                    elif action=='endpoint':output=jusdown.monitor.save_endpoint(body,actor)
+                    elif action=='tribunal':output=jusdown.monitor.set_court(body.get('tribunal'),body.get('ativo'),actor)
+                    elif action=='adicionar-portal':output=jusdown.monitor.add_portal(body,actor)
+                    elif action=='remover-portal':output=jusdown.monitor.remove_portal(body.get('id'),actor)
+                    elif action=='lembrete':output=jusdown.monitor.save_note(body,actor)
+                    elif action=='arquivar':output=jusdown.monitor.archive_note(int(body.get('id',0)),actor)
+                    elif action=='reconhecer':output=jusdown.monitor.acknowledge(int(body.get('id',0)))
+                    elif action=='conferir':output=jusdown.monitor.review_notice(str(body.get('id','')))
+                    else:raise legal.AppError('Rota JUSDOWN não encontrada.',404)
+                except (ValueError,TypeError) as exc:raise legal.AppError(str(exc))
+            else:raise legal.AppError('Rota JUSDOWN não encontrada.',404)
+        elif path.startswith('/api/juridico/rh/'):
+            import rh
+            route=path.removeprefix('/api/juridico/rh/')
+            if route=='acesso' and method=='GET':output=rh.access(legal.store,actor)
+            elif route=='permissoes':output=rh.permissions(legal.store,actor,body if method=='POST' else None)
+            elif route=='auditoria' and method=='GET':output=rh.history(legal.store,actor)
+            elif route=='chat-geral' and method=='POST':output=rh.save_general(legal.store,actor,body)
+            elif route=='backup' and method=='GET':
+                data=rh.backup(legal.store,actor)
+                h.send_response(200);h.send_header('Content-Type','application/zip');h.send_header('Content-Disposition','attachment; filename="backup-rh.zip"');h.send_header('Content-Length',str(len(data)));h.send_header('Cache-Control','private, no-store');h.end_headers();h.wfile.write(data);return True
+            elif route in rh.SCOPES:output=rh.items(legal.store,actor,route,q('q'),page,q('de'),q('ate')) if method=='GET' else rh.save(legal.store,actor,route,body)
+            elif re.fullmatch(r'[a-z]+/\d+',route) and method=='POST':
+                scope,rid=route.split('/');output=rh.save(legal.store,actor,scope,body,int(rid))
+            else:raise legal.AppError('Rota do RH não encontrada.',404)
+        elif path=='/api/juridico/calendarios' and method=='GET':
             import calendario
             output=calendario.calendars(legal.store,actor)
         elif path=='/api/juridico/calendarios' and method=='POST':
@@ -236,15 +274,57 @@ def handle(h, method):
             output=legal.store.detail(case['id'])
             output['diagnostico_origem']=reprocessamento.diagnose(legal.store,case['id'])
             output['consultas']={'eventos':'/api/juridico/eventos/'+str(case['id']),'complementos':'/api/juridico/complementos/'+str(case['id']),'reprocessar':'/api/juridico/reprocessar/'+str(case['id'])}
+        elif path=='/api/juridico/mandados/relatorios' and method=='GET':
+            import mandados_relatorios
+            output=mandados_relatorios.options(legal.store,actor)
+        elif path=='/api/juridico/mandados/relatorios' and method=='POST':
+            import mandados_relatorios
+            output=mandados_relatorios.create(legal.store,actor,body)
+        elif path=='/api/juridico/mandados/relatorios/enviar' and method=='POST':
+            import mandados_relatorios
+            output=mandados_relatorios.send(legal.store,actor,body)
+        elif path=='/api/juridico/mandados/documento' and method=='POST':
+            import mandados_documentos
+            output=mandados_documentos.resolve(legal.store,actor,body)
         elif path=='/api/juridico/email' and method=='GET':
             import email_alertas
             output=email_alertas.status(legal.store,actor)
         elif path=='/api/juridico/email' and method=='POST':
             import email_alertas
             output=email_alertas.save(legal.store,actor,body)
+        elif path=='/api/juridico/email/resumos' and method=='GET':
+            import email_alertas
+            output=email_alertas.drafts(legal.store,actor)
+        elif path=='/api/juridico/email/resumos/enviar' and method=='POST':
+            import email_alertas
+            output=email_alertas.send_selected(legal.store,actor,body)
         elif path=='/api/juridico/email/teste' and method=='POST':
             import email_alertas
             output=email_alertas.test(legal.store,actor)
+        elif path=='/api/juridico/conectores' and method=='GET':
+            import conectores
+            output=conectores.catalog()
+        elif path=='/api/juridico/monitoramento/procurar' and method=='POST':
+            import monitoramento,eproc
+            output=monitoramento.search_list(legal.store,actor,eproc.collector,body)
+        elif path=='/api/juridico/monitoramento/repeticao' and method=='POST':
+            import monitoramento
+            output=monitoramento.pause_repeat(legal.store,actor)
+        elif path=='/api/juridico/monitoramento/repeticao' and method=='GET':
+            import monitoramento
+            output=monitoramento.repeat_config(legal.store,actor)
+        elif path=='/api/juridico/monitoramento/pedidos' and method=='GET':
+            import monitoramento
+            output=monitoramento.job_status(legal.store,actor)
+        elif path=='/api/juridico/monitoramento/cancelar' and method=='POST':
+            import monitoramento,eproc
+            output=monitoramento.cancel_job(legal.store,actor,eproc.collector,body.get('id'))
+        elif path=='/api/juridico/monitoramento/config':
+            import monitoramento
+            output=monitoramento.config(legal.store,actor,body if method=='POST' else None)
+        elif path=='/api/juridico/monitoramento' and method=='GET':
+            import monitoramento
+            output=monitoramento.status(legal.store,actor,q('rodada'),page)
         elif path=='/api/juridico/mandados' and method=='GET':
             import mandados
             output=mandados.status(legal.store)

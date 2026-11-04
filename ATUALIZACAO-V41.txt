@@ -1,0 +1,6 @@
+ConectaAdv v41 — somente TJRS
+
+TJSC temporariamente desativado por solicitação do usuário, sem tentar abrir seu SSO. Apenas TJRS inicia novas buscas, inclusive em listas e repetições. Lista mista consulta RS e identifica SC entre os não consultados; lista apenas SC é recusada sem substituir a lista anterior. Etapas SC ainda aguardando em pedidos antigos são encerradas como tribunal desativado. Uma execução SC já aberta deve ser encerrada antes de instalar.
+O histórico e a identificação dos processos SC permanecem; o código do conector não foi apagado. Relatórios antigos continuam refletindo sua data de coleta. Não é preciso apagar banco, credenciais ou sessões.
+
+Instalação: aguarde encerrar/cancele coletas em andamento, faça backup, pare o servidor, substitua os arquivos do programa na mesma pasta preservando dados_*. Reinicie e pressione Ctrl+F5. Para a próxima consulta, use TJRS. Não precisa executar RECOMECAR_COLETAS.bat apenas por esta atualização.

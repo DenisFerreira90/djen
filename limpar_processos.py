@@ -41,7 +41,7 @@ def preview(path):
   db.row_factory=sqlite3.Row
   return plan(db)
 
-def clean(store,actor,expected=None):
+def clean(store,actor,expected=None,restart=False):
  if actor.get('role')!='administrador':raise legal.AppError('Limpeza restrita à conta administradora.',403)
  if store.path.name=='chat.sqlite3':raise ValueError('Esta ferramenta não opera sobre o banco do chat.')
  with closing(store.connect()) as db:
@@ -49,7 +49,7 @@ def clean(store,actor,expected=None):
   try:
    summary=plan(db)
    if expected is not None and any(summary[k]!=expected[k] for k in ('apagar','desvincular','processos')):raise ValueError('Os dados mudaram desde a prévia. Execute novamente para conferir.')
-   if not summary['processos']:db.rollback();return {'removidos':0,'backup':None,'resumo':summary}
+   if not summary['processos'] and not restart:db.rollback();return {'removidos':0,'backup':None,'resumo':summary}
    account=db.execute('SELECT * FROM users WHERE id=? AND ativo=1 AND role=?',(actor['id'],'administrador')).fetchone()
    if not account:raise ValueError('Conta administradora indisponível.')
    folder=store.path.parent/'backups';folder.mkdir(exist_ok=True)
@@ -85,8 +85,14 @@ def clean(store,actor,expected=None):
    for table in ('sync_state','collection_queue'):
     if table in names:db.execute('DELETE FROM '+table+' WHERE numero IN (SELECT numero FROM cleanup_numbers)')
    db.execute('DELETE FROM records WHERE id IN (SELECT id FROM cleanup_ids)')
+   if restart:
+    # Somente estado da coleta; identidade, RH, chat e histórico de envio permanecem.
+    for table in ('mandate_alerts','source_events','source_complements','mandate_reports','monitor_results','monitor_job_courts','monitor_jobs','monitor_runs','monitor_baselines','monitor_watch_context','monitor_watch_meta','monitor_repeat','monitor_config','mandate_watchlist','mandate_state','email_review_drafts','email_digest_parts','email_digest_batches','email_digest_state','collection_queue','sync_state','collection_schedule'):
+     if table in names:db.execute('DELETE FROM '+table)
+    if 'imports' in names:db.execute('DELETE FROM imports WHERE NOT EXISTS(SELECT 1 FROM evidence e WHERE e.import_id=imports.id)')
+    if 'mandate_state' in names:db.execute("INSERT INTO mandate_state VALUES('somente_lista','1')")
    if db.execute('PRAGMA foreign_key_check').fetchall():raise ValueError('Há vínculos não previstos. Limpeza cancelada, banco original preservado.')
-   store.audit(db,actor,'limpar_processos_importados','manutencao',after={'removidos':summary['contagens'],'preservados_sem_vinculo':len(summary['desvincular']),'backup':backup.name})
+   store.audit(db,actor,'reiniciar_coletas' if restart else 'limpar_processos_importados','manutencao',after={'removidos':summary['contagens'],'preservados_sem_vinculo':len(summary['desvincular']),'backup':backup.name})
    db.commit()
    return {'removidos':len(summary['processos']),'backup':str(backup),'resumo':summary}
   except Exception:db.rollback();raise
