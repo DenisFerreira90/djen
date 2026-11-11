@@ -64,6 +64,8 @@ def acknowledge(store,actor,rid,ids,read=False):
    placeholders=','.join('?' for _ in ids)
    rows=db.execute('SELECT id,sender_id FROM chat_messages WHERE room_id=? AND id IN ('+placeholders+')',(rid,*ids)).fetchall()
    if len(rows)!=len(ids):raise legal.AppError('Mensagem fora desta conversa.',403)
+   import chat_produtividade as work
+   if any(not work.visible(db,actor['id'],rid,row['id']) for row in rows):raise legal.AppError('Mensagem anterior à sua entrada.',403)
    now=legal.now();baseline=db.execute('SELECT through_id FROM chat_read_baseline WHERE room_id=? AND user_id=?',(rid,actor['id'])).fetchone()
    through=baseline[0] if baseline else 0;share=allowed(db,actor['id'])['compartilhar_leitura']
    for row in rows:
@@ -84,6 +86,8 @@ def receipt_db(db,actor,m):
  sharing={r['user_id']:bool(r['enabled']) for r in db.execute('SELECT * FROM chat_read_sharing WHERE message_id=?',(m['id'],))};global_share=policy(db)['compartilhar_leitura']
  denied={r['user_id'] for r in db.execute('SELECT * FROM chat_display_grants') if json.loads(r['payload']).get('compartilhar_leitura') is False}
  for u in db.execute('SELECT u.id,u.nome FROM users u JOIN chat_members cm ON cm.user_id=u.id WHERE cm.room_id=? AND u.id!=? AND u.ativo=1',(m['room_id'],actor['id'])):
+  import chat_produtividade as work
+  if not work.visible(db,u['id'],m['room_id'],m['id']):continue
   legacy=base.get(u['id'],0)>=m['id'];known=u['id'] in read or legacy;seen=known and global_share and u['id'] not in denied and sharing.get(u['id'],True);received=u['id'] in delivered or known
   d={'id':u['id'],'nome':u['nome'],'estado':'visualizada' if seen else 'recebida' if received else 'enviada','horario_anterior_indisponivel':bool(seen and read.get(u['id']) is None)}
   if caps['horarios']:d.update(lida_em=read.get(u['id']) if seen else None,recebida_em=delivered.get(u['id']))
@@ -95,6 +99,8 @@ def receipt(store,actor,mid):
  with store.lock,store.connect() as db:
   chat.schema(db);m=db.execute('SELECT * FROM chat_messages WHERE id=?',(mid,)).fetchone()
   if not m or not db.execute('SELECT 1 FROM chat_members WHERE room_id=? AND user_id=?',(m['room_id'],actor['id'])).fetchone():raise legal.AppError('Mensagem indisponível.',403)
+  import chat_produtividade as work
+  if not work.visible(db,actor['id'],m['room_id'],m['id']):raise legal.AppError('Mensagem anterior à sua entrada.',403)
   result=receipt_db(db,actor,m)
   if result is None:raise legal.AppError('Você não pode consultar estas confirmações.',403)
   return result

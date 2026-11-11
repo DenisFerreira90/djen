@@ -25,7 +25,7 @@ def load(path):
 def allowed_chat(path,method):
     if path in ('/api/juridico/sessao','/api/juridico/entrar','/api/juridico/sair','/api/juridico/configurar'):return True
     if path=='/api/juridico/usuarios' or re.fullmatch(r'/api/juridico/usuarios/\d+',path):return True
-    if path.startswith('/api/juridico/chat/'):return True
+    if path.startswith(('/api/juridico/chat/','/api/juridico/saude-sistema/')):return True
     return method=='GET' and path in ('/api/juridico/auditoria','/api/juridico/backup','/api/health')
 
 

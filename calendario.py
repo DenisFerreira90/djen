@@ -53,14 +53,14 @@ def create(store,actor,name,sector=None):
     if not 1<=len(name)<=120:raise legal.AppError('Informe o nome do calendário.')
     with store.lock,store.connect() as db:
         schema(db)
-        if actor['role']!='administrador' and (sector!='relacionamento' or not setores.can_create_db(db,actor)):
-            raise legal.AppError('Você precisa da permissão de secretaria para criar agendas do Relacionamento.',403)
+        if actor['role']=='leitor' or (actor['role']!='administrador' and not setores.can_create_agenda_db(db,actor,sector)):
+            raise legal.AppError('Você precisa da permissão de criar agendas para este setor.',403)
         if sector and sector not in dict(setores.SETORES):raise legal.AppError('Setor inválido.')
         cid=db.execute('INSERT INTO calendars(nome,criado) VALUES(?,?)',(name,legal.now())).lastrowid
         if sector:
             db.execute('INSERT INTO calendar_sectors VALUES(?,?,?)',(cid,sector,actor['id']))
             room=db.execute('SELECT room_id FROM office_sectors WHERE codigo=?',(sector,)).fetchone()
-            if room:db.execute('INSERT INTO calendar_grants VALUES(?,?,?,?)',(cid,'setor',room[0],'ver'))
+            if room and sector not in setores.AGENDAMENTO_SETORES:db.execute('INSERT INTO calendar_grants VALUES(?,?,?,?)',(cid,'setor',room[0],'ver'))
         db.execute('INSERT INTO calendar_grants VALUES(?,?,?,?)',(cid,'usuario',actor['id'],'gerenciar'))
         store.audit(db,actor,'criar_calendario','calendario',cid,after={'nome':name,'setor':sector})
     return {'id':cid}

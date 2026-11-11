@@ -12,7 +12,7 @@ def feed(store,actor,after=None):
   if after is None or after>maximum:
    cursor=db.execute('SELECT COALESCE(MAX(id),0) FROM chat_messages').fetchone()[0]
    return {'cursor':cursor,'itens':[],'tem_mais':False}
-  rows=db.execute('''SELECT m.id,m.room_id,m.sender_id,r.titulo,r.tipo,u.nome,
+  rows=db.execute('''SELECT m.id,m.room_id,m.sender_id,r.titulo,r.tipo,u.nome,m.texto,
     EXISTS(SELECT 1 FROM chat_mutes t WHERE t.room_id=m.room_id AND t.user_id=?) AS silenciado,
     cm.last_read FROM chat_messages m JOIN chat_rooms r ON r.id=m.room_id
     JOIN users u ON u.id=m.sender_id JOIN chat_members cm ON cm.room_id=m.room_id AND cm.user_id=?
@@ -22,6 +22,10 @@ def feed(store,actor,after=None):
    if r['sender_id']==actor['id'] or r['silenciado']:continue
    d={k:r[k] for k in ('id','room_id','nome','titulo')}
    if r['tipo']=='direta':d['titulo']=r['nome']
+   import chat_preferencias as prefs
+   caps=visual.effective(db,actor['id']);preferences=prefs.get_db(db,actor['id'])
+   if caps['previas'] and not preferences.get('ocultar_historico'):d['previa']=r['texto'][:120] or 'Anexo recebido'
+   d['prioridade']='mencao' if ('@'+actor['nome']).casefold() in r['texto'].casefold() else 'direta' if r['tipo']=='direta' else 'aviso' if r['tipo'] in ('geral','comunicado') else 'grupo'
    items.append(d)
   # Cursor avança também para mensagens próprias, lidas ou silenciadas.
   cursor=rows[-1]['id'] if more else db.execute('SELECT COALESCE(MAX(id),0) FROM chat_messages').fetchone()[0]

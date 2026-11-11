@@ -1,0 +1,113 @@
+CONECTAADV V51 — IMPORTAR AUTENTICADORES POR QR CODE
+
+ONDE ESTÁ O BOTÃO
+Entre com a conta proprietária. Abra 2FA > Configurar / Permissão 2FA.
+No início da configuração há uma seção IMPORTAR CONTAS POR QR CODE com:
+- Ler com câmera
+- Parar câmera
+- Importar QR por imagem (pode selecionar várias imagens)
+- Limpar leitura
+- Conferir e importar selecionadas
+O cadastro manual continua disponível abaixo. Somente o proprietário importa.
+
+COMO USAR NO NOTEBOOK
+1. Abra o sistema em HTTPS com certificado confiável no navegador, por exemplo
+   https://192.168.1.147:9443/ na rede já configurada. Entre na conta proprietária.
+2. No aplicativo que contém as contas, abra a exportação/transferência de contas
+   ou o QR de cadastro TOTP da conta que você quer copiar.
+3. No ConectaAdv, clique Ler com câmera e autorize a webcam no navegador.
+4. Mostre a tela do celular para a câmera do notebook. Mantenha o QR inteiro,
+   nítido e sem reflexo. Um QR é reconhecido por vez.
+5. Se a transferência tiver mais QR Codes, mostre os seguintes. A tela informa
+   quantas etapas foram lidas e não permite concluir com etapa faltante.
+6. Confira portal, identificação da conta e CPF opcional. Desmarque o que não
+   deseja importar. Clique Conferir e importar selecionadas e confirme.
+7. Reabra o painel 2FA para ver os códigos das contas importadas. Compare com
+   o aplicativo original antes de depender do novo autenticador.
+Não é necessário apagar as contas do aplicativo de origem.
+
+ALTERNATIVA SEM WEBCAM
+Use Importar QR por imagem e selecione arquivos PNG, JPEG ou WebP contendo
+os QR Codes de cadastro/exportação. Escolha uma imagem por QR, até 10 MB cada.
+Uma imagem com vários QR Codes pode ter somente um deles reconhecido;
+recorte cada QR separadamente. Imagens muito grandes são recusadas.
+Se o mesmo QR for lido novamente, ele não é adicionado como nova etapa.
+Não envie essas imagens pelo chat, e-mail ou para sites externos de leitura.
+
+O QUE É COMPATÍVEL
+- QR de cadastro padrão otpauth://totp, com chave Base32.
+- Transferência Google Authenticator no formato otpauth-migration://offline,
+  incluindo uma sequência com vários QR Codes da mesma transferência.
+- TOTP com SHA1, SHA256 ou SHA512, seis/oito dígitos e período 30/60 segundos.
+O formato de migração é compatível com o esquema conhecido, versão 1; futuros
+formatos ou extensões proprietárias podem exigir adaptação.
+Não é importação universal de qualquer aplicativo ou extensão. Não aceita
+HOTP por contador, MD5, QR de aprovação de login, QR de WhatsApp, SMS,
+notificações push ou backup criptografado de extensão/aplicativo.
+Se uma exportação tiver HOTP ou parâmetros incompatíveis, o QR é recusado;
+selecione somente contas TOTP compatíveis no aplicativo de origem.
+Se sua extensão só permitir adicionar um QR por vez, faça o mesmo aqui:
+leia vários QR Codes, confira a lista e importe de uma vez.
+A câmera não consegue descobrir contas que não estejam representadas nos QRs.
+
+VÁRIAS ETAPAS
+A sequência do Google é identificada pelo lote, tamanho e índice dos QRs.
+A leitura pode acontecer fora de ordem; QR repetido não avança a contagem.
+Misturar lotes diferentes é recusado. Finalize ou limpe antes de outro lote.
+Para transferências grandes, o limite continua sendo cem autenticadores ativos.
+O salvamento confere a lista inteira antes de inserir. Erros não devem deixar
+uma parte das contas salva. Contas com mesma chave/parâmetros são tratadas como
+duplicadas e ignoradas, sem substituir as já cadastradas. Confira o resumo.
+Repetir o mesmo pedido após perda de resposta não cadastra as contas de novo.
+
+PROTEÇÃO DOS DADOS
+A biblioteca jsQR está incluída no pacote e é servida pelo próprio ConectaAdv.
+Nenhuma CDN é carregada durante o uso. A imagem e o vídeo são lidos no
+navegador: não são enviados ao servidor nem a serviço de terceiros.
+Somente após a confirmação, os dados das contas selecionadas são enviados por
+HTTPS ao próprio servidor, para gravar as chaves e CPF com proteção Windows DPAPI.
+As chaves não aparecem na prévia e não são colocadas nos logs/auditoria.
+A seleção fica apenas na memória da página, sem localStorage ou exportação.
+A câmera e a seleção são encerradas ao fechar/sair ou ocultar a aba.
+O prazo de privacidade de 60 segundos sem interação do painel anterior continua;
+a câmera também pausa após dois minutos. Reabra a configuração para recomeçar.
+Ao terminar, a câmera é desligada. O novo autenticador gera os códigos sem
+precisar do celular conectado, desde que a chave e parâmetros coincidam e o
+relógio do servidor esteja correto. Não faz sincronização posterior com o app:
+novas contas ou chaves alteradas precisam ser importadas novamente.
+
+INSTALAR SOBRE A V50
+Faça backup. Aguarde coletas terminarem e feche apenas o Python do sistema.
+Copie o conteúdo da pasta djen deste ZIP para C:\xampp\htdocs\djen,
+substituindo arquivos de programa e preservando todos os bancos, cofre 2FA,
+sessões, Caddyfile e configurações locais. Não execute limpeza das coletas.
+Inclua os arquivos novos vendor/jsQR.js, js/twofa-qr.js e os arquivos de programa
+atualizados; copiar somente CSS não instala esta função.
+Inicie uma única instância:
+python servidor.py --porta 8765 --piloto-escritorio --rede "rede_escritorio\piloto-rede.json" --sem-navegador
+Mantenha o Caddy funcionando e use Ctrl+F5 no notebook e no PC do colega.
+Não instale pip ou outro leitor QR: a biblioteca local já está no pacote.
+
+COMO CONFERIR
+- Verifique Versão 51 e se os botões aparecem no início da configuração 2FA.
+- Leia primeiro um QR de uma conta de teste. Confira e importe.
+- Compare o código com o original e aguarde o vencimento: os dois devem mudar.
+- Leia todas as etapas de uma transferência de teste. Confira a contagem.
+- Releia um QR para confirmar que não duplica.
+- Feche/oculte a aba e confira que a câmera deixa de transmitir.
+Se o navegador não autorizar a webcam, verifique certificado HTTPS confiável,
+permissão de câmera e se outro aplicativo está usando o dispositivo. Use imagem
+como alternativa; não ignore avisos de certificado para cadastrar chaves.
+
+VALIDAÇÃO E LIMITES
+O decoder real foi testado com QR sintético contendo chave pública dos vetores
+RFC; parsers e sequência multipartes com dados sintéticos. Integração de câmera,
+seleção e encerramento testados em DOM simulado. Testes de servidor incluem
+acesso restrito, CSRF, criptografia por codec de teste, repetição sem duplicar e
+nenhuma inserção parcial em entradas inválidas. A webcam, o DPAPI real do Windows
+e as exportações específicas do seu aplicativo precisam do teste local.
+
+REFERÊNCIAS
+https://github.com/cozmo/jsQR
+https://support.google.com/accounts/answer/1066447?hl=pt-br
+https://github.com/qistoph/otp_export (esquema de migração documentado pelo projeto)

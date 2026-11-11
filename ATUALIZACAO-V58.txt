@@ -1,0 +1,7 @@
+ConectaAdv v58 — manter janela bloqueada aberta para diagnóstico
+
+Quando houver HTTP 403/429 em modo visível, o coletor mantém a janela aberta. A coleta continua parada, sem novas tentativas automáticas. O botão mostra Coleta parada — HTTP 403/429. Encerrar diagnóstico ou Cancelar fecha esta tentativa. Fechar a própria janela também encerra a inspeção.
+Modo invisível permanece sem espera para inspeção. Esta correção permite examinar o erro; não resolve nem contorna a recusa de acesso do tribunal.
+Para conferir a tela, desmarque Modo invisível e inicie uma vez.
+Validado com 41 testes locais do coletor e 3 verificações do botão; inclui recusa HTTP simulada na abertura, pausa com janela aberta e encerramento sem repetição.
+Instale com o servidor parado, preserve dados e reinicie. Confirme Versão 58 e use Ctrl+F5.

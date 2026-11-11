@@ -7,6 +7,7 @@ class ConnectorTest(unittest.TestCase):
   items=conectores.catalog()['itens']
   self.assertEqual({i['tribunal'] for i in items if i['estado']=='instalado'},{'TJRS'})
   self.assertEqual({i['tribunal'] for i in items if i['estado']=='desativado_temporariamente'},{'TJSC'})
+  self.assertEqual({i['tribunal'] for i in items if i['estado']=='teste_manual'},{'TJRJ'})
   for item in items:
    if item['estado']=='planejado':self.assertFalse(any(item['capacidades'].values()))
   self.assertIn('/js/conectores.js',servidor.ALLOWED_STATIC)

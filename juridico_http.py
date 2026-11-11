@@ -46,7 +46,8 @@ def handle(h, method):
                 user,csrf=legal.store.auth(token(h));
                 import setores
                 setores.bootstrap(legal.store,with_calendar=not getattr(h.server,'chat_only',False))
-                output={'ok':True,'usuario':user,'csrf':csrf,'configurar':False,'modo_chat':getattr(h.server,'chat_only',False),'chat_externo':getattr(h.server,'chat_externo',False)}
+                import proprietario
+                output={'ok':True,**proprietario.access(legal.store,user),'usuario':user,'csrf':csrf,'configurar':False,'modo_chat':getattr(h.server,'chat_only',False),'chat_externo':getattr(h.server,'chat_externo',False)}
             except legal.AppError: output={'ok':True,'usuario':None,'configurar':legal.store.setup_needed(),'modo_chat':getattr(h.server,'chat_only',False),'chat_externo':getattr(h.server,'chat_externo',False)}
             h.send_json(200,output);return True
         if path=='/api/juridico/configurar' and method=='POST':
@@ -58,19 +59,52 @@ def handle(h, method):
         actor,csrf=legal.store.auth(token(h))
         if method=='POST' and not __import__('hmac').compare_digest(h.headers.get('X-CSRF-Token',''),csrf):
             raise legal.AppError('Sessão inválida. Atualize a página e entre novamente.',403)
+        import proprietario
+        if proprietario.technical(path) and path!='/api/juridico/saude-sistema/acesso':proprietario.require(legal.store,actor)
         query=urllib.parse.parse_qs(url.query)
         def q(key,default=''): return query.get(key,[default])[0]
         try: page=max(1,int(q('pagina','1')))
         except ValueError: raise legal.AppError('Página inválida.')
         output=None
-        if path.startswith('/api/juridico/2fa/'):
+        if path.startswith('/api/juridico/estoque/'):
+            if getattr(h.server,'chat_only',False):raise legal.AppError('Estoque disponível no sistema principal.',403)
+            import estoque
+            action=path.removeprefix('/api/juridico/estoque/')
+            stock=body.get('estoque') if method=='POST' else q('estoque')
+            if action=='acesso' and method=='GET':output=estoque.access(legal.store,actor)
+            elif action=='permissoes' and method in ('GET','POST'):output=estoque.permissions(legal.store,actor,body if method=='POST' else None)
+            elif action=='locais' and method in ('GET','POST'):output=estoque.locations(legal.store,actor,stock,body if method=='POST' else None)
+            elif re.fullmatch(r'locais/\d+',action) and method=='POST':output=estoque.locations(legal.store,actor,stock,body,int(action.split('/')[1]))
+            elif action=='itens' and method=='GET':output=estoque.items(legal.store,actor,stock,q('q'),page,int(q('local')) if q('local') else None,q('baixos')=='1')
+            elif action=='itens' and method=='POST':output=estoque.save(legal.store,actor,stock,body)
+            elif re.fullmatch(r'itens/\d+',action) and method=='POST':output=estoque.save(legal.store,actor,stock,body,int(action.split('/')[1]))
+            elif re.fullmatch(r'itens/\d+/movimentar',action) and method=='POST':output=estoque.movement(legal.store,actor,int(action.split('/')[1]),body)
+            elif re.fullmatch(r'itens/\d+/excluir',action) and method=='POST':output=estoque.delete(legal.store,actor,int(action.split('/')[1]),body)
+            elif re.fullmatch(r'itens/\d+/historico',action) and method=='GET':output=estoque.history(legal.store,actor,int(action.split('/')[1]),page)
+            else:raise legal.AppError('Rota de estoque não encontrada.',404)
+        elif path.startswith('/api/juridico/saude-sistema/'):
+            import diagnostico as diag
+            action=path.removeprefix('/api/juridico/saude-sistema/')
+            if action=='acesso' and method=='GET':
+                owner=proprietario.access(legal.store,actor)['area_tecnica']
+                output={'permitido':owner,'proprietario':owner}
+            elif action=='saude' and method=='GET':output=diag.health(legal.store,actor,getattr(h.server,'chat_independente',False),getattr(h.server,'chat_externo',False))
+            elif action=='permissoes':output=diag.grants(legal.store,actor,body if method=='POST' else None)
+            elif action=='erros' and method=='GET':output=diag.faults(legal.store,actor,{k:q(k) for k in ('modulo','situacao','busca','inicio','fim')})
+            elif re.fullmatch(r'erros/ERR-[A-F0-9]{10}',action):output=diag.faults(legal.store,actor,code=action.split('/')[1],body=body if method=='POST' else None)
+            else:raise legal.AppError('Rota de diagnóstico não encontrada.',404)
+        elif path.startswith('/api/juridico/2fa/'):
+
             if getattr(h.server,'chat_only',False):raise legal.AppError('2FA disponível somente no sistema principal.',403)
             import twofa
             action=path.removeprefix('/api/juridico/2fa/')
             if action=='acesso' and method=='GET':output=twofa.permission(legal.store,actor)
+            elif action=='autenticadores' and method=='GET':output=twofa.collector_tokens(legal.store,actor)
             elif action=='configuracao' and method=='GET':output=twofa.settings(legal.store,actor)
             elif action=='permissoes' and method=='POST':output=twofa.grant(legal.store,actor,body)
             elif action=='autenticador' and method=='POST':output=twofa.add(legal.store,actor,body)
+            elif action=='importar' and method=='POST':output=twofa.import_batch(legal.store,actor,body)
+            elif action=='identificacao' and method=='POST':output=twofa.metadata(legal.store,actor,body)
             elif action=='desativar' and method=='POST':output=twofa.disable(legal.store,actor,int(body.get('id',0)))
             elif action=='codigos' and method=='POST':output=twofa.codes(legal.store,actor)
             else:raise legal.AppError('Rota 2FA não encontrada.',404)
@@ -80,6 +114,7 @@ def handle(h, method):
             if path=='/api/juridico/setores/acesso' and method=='GET':output=setores.access(legal.store,actor)
             elif path=='/api/juridico/setores' and method=='GET':output=setores.directory(legal.store,actor)
             elif path=='/api/juridico/setores/permissoes' and method=='POST':output=setores.grant(legal.store,actor,body)
+            elif path=='/api/juridico/setores/agendamentos' and method in ('GET','POST'):output=setores.calendar_capabilities(legal.store,actor,body if method=='POST' else None)
             elif path=='/api/juridico/setores/membros' and method=='POST':output=setores.members(legal.store,actor,body.get('codigo'),body.get('membros',[]))
             else:raise legal.AppError('Rota de setores não encontrada.',404)
         elif path.startswith('/api/juridico/jusdown'):
@@ -150,7 +185,16 @@ def handle(h, method):
             if getattr(h.server,'chat_externo',False):raise legal.AppError('Chat transferido para o serviço independente na porta 8766.',409)
             import chat_interno as chat
             route=path.removeprefix('/api/juridico/chat/')
-            if route=='organizacao':
+            if route.startswith('produtividade/'):
+                import chat_produtividade as work
+                part=route.removeprefix('produtividade/')
+                if part in ('busca','salvos') and method=='GET':output=work.list_items(legal.store,actor,part,{k:q(k) for k in ('texto','pessoa','conversa','inicio','fim','anexos')})
+                elif part=='notas':output=work.notes(legal.store,actor,body if method=='POST' else None)
+                elif part=='demandas':output=work.tasks(legal.store,actor,body if method=='POST' else None)
+                elif re.fullmatch(r'mensagem/\d+',part) and method=='POST':output=work.message(legal.store,actor,int(part.split('/')[1]),body)
+                elif re.fullmatch(r'historico/\d+',part):output=work.history(legal.store,actor,int(part.split('/')[1]),body if method=='POST' else None)
+                else:raise legal.AppError('Ferramenta não encontrada.',404)
+            elif route=='organizacao':
                 import chat_escritorio as office
                 output=office.directory(legal.store,actor,body if method=='POST' else None)
             elif route=='avisos/previa' and method=='POST':
@@ -231,7 +275,7 @@ def handle(h, method):
                 output=json.loads(row[0]) if row else {'ativo':False}
         elif path=='/api/juridico/painel-operacional' and method=='GET':
             import painel_operacional
-            output=painel_operacional.report(legal.store,actor)
+            output=painel_operacional.report(legal.store,actor,query.get('indicador',[''])[0] or None,int(query.get('pagina',['1'])[0]))
         elif path.startswith('/api/eproc/'):
             if method=='POST':
                 if actor['role']=='leitor': raise legal.AppError('Seu perfil permite apenas leitura.',403)
@@ -354,6 +398,10 @@ def handle(h, method):
         elif path=='/api/juridico/mandados' and method=='GET':
             import mandados
             output=mandados.status(legal.store)
+        elif path=='/api/juridico/mandados/triagem' and method=='POST':
+            if getattr(h.server,'chat_only',False):raise legal.AppError('Triagem disponível no sistema principal.',403)
+            import mandados_triagem
+            output=mandados_triagem.search(legal.store,body,page)
         elif path=='/api/juridico/mandados/lista/ler' and method=='POST':
             import mandados
             if actor['role']=='leitor':raise legal.AppError('Seu perfil permite apenas leitura.',403)
@@ -457,10 +505,19 @@ def handle(h, method):
         else: raise legal.AppError('Rota não encontrada.',404)
         h.send_json(200,{'ok':True,'resultado':output});return True
     except legal.AppError as exc:
+        if exc.code>=500:
+            import diagnostico
+            error=diagnostico.capture(exc,'aplicacao',method+' '+path,locals().get('actor',{}).get('id'))
+            h.send_json(exc.code,{'ok':False,'erro':'Operação indisponível. Código: '+error['codigo'],'codigo_erro':error['codigo'],'registro_tecnico':error['registrado']});return True
         h.send_json(exc.code,{'ok':False,'erro':str(exc)});return True
-    except (ValueError,TypeError):
-        h.send_json(400,{'ok':False,'erro':'Confira os dados enviados.'});return True
-    except Exception:
-        h.send_json(500,{'ok':False,'erro':'Não foi possível concluir a operação. Os dados anteriores foram preservados.'})
-        import traceback;traceback.print_exc()
+    except (ValueError,TypeError) as exc:
+        import diagnostico
+        error=diagnostico.capture(exc,'validacao',method+' '+path,locals().get('actor',{}).get('id'),severity='aviso')
+        h.send_json(400,{'ok':False,'erro':'Confira os dados enviados. Código: '+error['codigo'],'codigo_erro':error['codigo'],'registro_tecnico':error['registrado']});return True
+    except Exception as exc:
+        import diagnostico
+        error=diagnostico.capture(exc,'chat' if '/chat/' in path else 'diagnostico' if '/saude-sistema/' in path else 'juridico',method+' '+path,locals().get('actor',{}).get('id'))
+        text='Não foi possível concluir a operação. Verifique o resultado antes de tentar novamente. Código: '+error['codigo']
+        if not error['registrado']:text+=' (registro técnico indisponível).'
+        h.send_json(500,{'ok':False,'erro':text,'codigo_erro':error['codigo'],'registro_tecnico':error['registrado']})
         return True

@@ -1,0 +1,10 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const code=fs.readFileSync(require.resolve('../js/juridico.js'),'utf8');
+const region=code.slice(code.indexOf('const technicalViews='),code.indexOf('function toast('));
+const c={S:{user:{id:2,role:'administrador'},owner:false,presentation:false}};vm.createContext(c);vm.runInContext(region,c);
+for(const view of ['proprietario','integracoes','coletas','servico','dados','diagnostico','controladoria','jusdown','conectores'])assert.equal(c.allowedView(view),false,view);
+for(const view of ['painel','processos','agenda','mandados','chat','planilhas'])assert.equal(c.allowedView(view),true,view);
+c.S.owner=true;assert.equal(c.allowedView('integracoes'),true);c.S.presentation=true;assert.equal(c.allowedView('integracoes'),false);assert.equal(c.allowedView('processos'),true);
+c.S.user=null;c.S.presentation=false;assert.equal(vm.runInContext("isOwner()",c),false);
+assert(!code.includes("api('controladoria/preencher',{automatico:true})"),'Abrir o sistema não inicia reprocessamento em lote');
+console.log('Navegação direta, prévia da equipe e ausência de lote automático no login verificadas.');

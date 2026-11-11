@@ -1,0 +1,21 @@
+ConectaAdv v60 — prazos com origem e área de mandados
+
+INSTALAÇÃO NO CONECTAADV (não é atualização do ConectaColetor)
+Pare o servidor. Faça uma cópia das pastas de dados atuais. Extraia a pasta djen do pacote sobre a instalação do sistema, substituindo arquivos do programa e preservando dados_juridico, dados_eproc e as demais pastas de dados. Execute INICIAR.bat. Use Ctrl+F5 e confirme Versão 60 no menu.
+
+VISÃO GERAL
+Os indicadores ficam no início. Clique em Detalhes para abrir a lista, depois em Origem e direcionamento para ver cada processo. A lista tem paginação de 100 em 100; o total considera todos os registros permitidos no perfil, não apenas a página exibida. Cada linha identifica CNJ, título do prazo, vencimento, responsável, tribunal, sistema, grau, comarca/vara e referência, quando disponíveis.
+
+DIRECIONAMENTO
+Um link de origem estável cadastrado pode ser aberto. Quando só houver identificação do portal, o botão abre o portal correto e oferece copiar o CNJ; isso não é apresentado como acesso direto aos autos. O tribunal pode exigir login. Links de sessão temporários não são persistidos como links permanentes. Dados de sistema ou grau não são adivinhados pelo número CNJ.
+
+Os novos imports eproc com tribunal definido pelos conectores existentes registram sistema e primeiro grau. Em nova importação, campos ausentes podem receber essa origem, preservando alterações manuais. Dados antigos incompletos não são alterados na entrada do dashboard. A ficha permite registrar sistema de origem, grau, comarca e link estável. Conflitos de origem ficam identificados e não direcionam ao grau errado.
+
+MANDADOS E BUSCA E APREENSÃO
+Área própria para o Relacionamento, com Fatalíssimo, vencidos, próximos sete dias e alertas para revisão. Detalhes das prioridades, histórico, relatório por período e alertas ficam recolhidos. Um prazo já registrado, ligado a mandados/busca e apreensão, também integra os totais gerais; os grupos se sobrepõem e não devem ser somados. Indício de mandado sem vencimento continua alerta para revisão, sem inventar prazo fatal ou confirmar vigência da ordem.
+
+LIMITES
+As contagens usam os dados existentes. Esta atualização não executa nova consulta judicial, não resolve dados que não foram coletados e não implementa os detalhes completos ou o envio do PJe pelo coletor independente. Não presume comarca, sistema, grau, cumprimento, vigência ou data fatal ausentes. Destinos de origem estão limitados aos portais explicitamente cadastrados nesta versão. Demais situações aparecem como origem/link pendente.
+
+VALIDAÇÃO
+353 testes Python passaram. 16 testes DOM passaram, incluindo detalhes recolhidos, direcionamento para o grau correto e paginação. A suíte usa bases temporárias e DOM simulado; não foi feita navegação real autenticada nos tribunais para validar os links do usuário.

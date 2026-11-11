@@ -178,7 +178,7 @@ class Collector:
                         history.append(entry)
                     except (OSError, ValueError):
                         continue
-            return {'ok': True, 'atual': dict(self.current) if self.current else None, 'historico': history[:100]}
+            return {'ok': True, 'em_execucao': bool(self.thread and self.thread.is_alive()), 'atual': dict(self.current) if self.current else None, 'historico': history[:100]}
 
     def update(self, **values):
         with self.lock:
@@ -198,10 +198,14 @@ class Collector:
 
     def start(self, actor=None, options=None):
         options=dict(options or {})
+        if type(options.get('invisivel',False)) is not bool:raise ValueError('Modo invisível inválido.')
         tribunal=options.get("tribunal","TJRS")
         tribunais.config(tribunal)
-        if not tribunais.enabled(tribunal):raise ValueError('TJSC temporariamente desativado. Selecione TJRS.')
+        teste_sc = ((tribunal == 'TJSC' and options.get('teste_sc') is True) or (tribunal == 'TJRJ' and options.get('teste_rj') is True)) and not options.get('automatico') and not options.get('monitorar_lista')
+        if not tribunais.enabled(tribunal) and not teste_sc:raise ValueError('Tribunal disponível para teste manual em Coleta eproc. Selecione o tribunal desejado.')
         options["tribunal"]=tribunal
+        key=options.get('autenticador_id')
+        if key is not None and (type(key) is not int or key<1):raise ValueError('Autenticador inválido.')
         if type(options.get('monitorar_lista',False))is not bool:raise ValueError('Seleção de monitoramento inválida.')
         if options.get('monitorar_lista'):options['modo']='completa'
         if options.get('monitorar_lista'):
@@ -220,6 +224,7 @@ class Collector:
                 raise ValueError('Já existe uma coleta em andamento.')
             run = dt.datetime.now().strftime('%Y%m%d-%H%M%S') + '-' + uuid.uuid4().hex[:8]
             (self.data / run).mkdir(parents=True)
+            self.login_steps={}
             self.options = options or {}
             self.actor = actor
             self.block_status = None
@@ -267,9 +272,12 @@ class Collector:
         if self.cancelled.is_set():
             raise InterruptedError()
 
+    def background(self):
+        return bool(self.options.get('automatico') or self.options.get('invisivel'))
+
     def wait_user(self, message):
-        if self.options.get('automatico'):
-            self.log('Coleta automática interrompida: acesso requer intervenção. Abra uma coleta manual para renovar a sessão.')
+        if self.background():
+            self.log('Coleta em segundo plano interrompida: acesso requer intervenção. Desmarque Modo invisível e inicie uma coleta para renovar a sessão ou selecionar o perfil.')
             raise RuntimeError('ACAO_HUMANA')
         self.resume.clear()
         self.update(estado='aguardando')
@@ -278,6 +286,20 @@ class Collector:
             self.check()
         self.check()
         self.update(estado='coletando')
+
+    def inspect_blocked(self, context):
+        """Keep an already blocked visible page open for inspection; never resume collection."""
+        if self.background():return
+        self.resume.clear()
+        self.update(estado='aguardando', bloqueio_http=self.block_status)
+        self.log('Coleta parada por HTTP '+str(self.block_status)+'. A janela ficará aberta para conferir a mensagem do tribunal. Cancelar ou Encerrar diagnóstico fecha esta tentativa; não retoma a coleta.')
+        # Do not call check(): the HTTP block must remain set throughout inspection.
+        while not self.resume.wait(0.25):
+            if self.cancelled.is_set():break
+            pages=[p for p in context.pages if not p.is_closed()]
+            if not pages:break
+            try:pages[0].wait_for_timeout(100)
+            except Exception:break
 
     @staticmethod
     def surfaces(context):
@@ -303,6 +325,8 @@ class Collector:
         return None
 
     def diagnostic(self, exc, stage):
+        import diagnostico
+        fault=diagnostico.capture(exc,'coletor',stage)
         # No exception text: Playwright errors can include auth URLs or typed secrets.
         names = {'TimeoutError': 'tempo de carregamento excedido',
                  'TargetClosedError': 'janela do navegador foi fechada',
@@ -310,32 +334,20 @@ class Collector:
         kind = type(exc).__name__
         location = traceback.extract_tb(exc.__traceback__)[-1] if exc.__traceback__ else None
         local = f' · linha {location.lineno}' if location and Path(location.filename).name == 'eproc.py' else ''
-        return f'{stage}: {names.get(kind, "falha na operação")} ({kind}{local}).'
+        return f'{stage}: {names.get(kind, "falha na operação")} ({kind}{local}). Código: {fault["codigo"]}'
 
     def open_login(self, context):
         page = context.pages[0] if context.pages else context.new_page()
-        self.log('Abrindo a entrada do eproc. A janela permanecerá aberta para o login.')
+        self.log('Acessando o eproc em segundo plano.' if self.background() else 'Abrindo a entrada do eproc. A janela permanecerá aberta para o login.')
         try:
             page.goto(tribunais.entry(self.options.get('tribunal','TJRS')), wait_until='domcontentloaded', timeout=60000)
         except Exception as exc:
             self.log(self.diagnostic(exc, 'Abertura do eproc') + ' Conclua o acesso na janela aberta.')
+        self.check()
         tribunal=self.options.get('tribunal','TJRS')
-        prefix='EPROC' if tribunal=='TJRS' else 'EPROC_TJSC'
-        username, password = os.environ.get(prefix+'_USUARIO'), os.environ.get(prefix+'_SENHA')
-        if username and password:
-            try:
-                host = urlsplit(page.url).hostname or ''
-                if host == tribunais.config(tribunal)['sso']:
-                    u, p = page.locator('input[name="username"]'), page.locator('input[name="password"]')
-                    submit = page.locator('#kc-login')
-                    if u.count() == p.count() == submit.count() == 1:
-                        u.fill(username, timeout=10000)
-                        p.fill(password, timeout=10000)
-                        submit.click(timeout=15000)
-                        self.log('Formulário de login enviado. Conclua eventual autenticação adicional.')
-            except Exception as exc:
-                self.log(self.diagnostic(exc, 'Preenchimento do login') + ' Você pode preencher manualmente.')
-        if self.options.get('automatico'):return
+        from eproc_login import step
+        step(self,context)
+        if self.background():return
         if self.options.get('monitorar_lista'):
             for frame in self.surfaces(context):
                 if urlsplit(frame.url).hostname!=tribunais.config(tribunal)['host']:continue
@@ -353,24 +365,15 @@ class Collector:
                 listing = self.find_list(context)
                 if listing:
                     return listing
-                for frame in self.surfaces(context):
-                    if urlsplit(frame.url).hostname!=tribunais.config(self.options.get('tribunal','TJRS'))['host']:continue
-                    profiles = frame.locator('button[data-descricao="ADVOGADO-TITULAR"]')
-                    if not profiles.count():profiles = frame.get_by_text('ADVOGADO-TITULAR', exact=True)
-                    if profiles.count() == 1 and profiles.first.is_visible():
-                        profiles.first.click(timeout=15000)
-                        self.log('Perfil ADVOGADO-TITULAR selecionado.')
-                        break
-                    if profiles.count() > 1:
-                        self.wait_user('Há mais de um perfil titular. Selecione a conta desejada na janela e clique em Continuar.')
-                        break
                 # Pump browser events: redirects and new frame/tab creation are asynchronous.
                 opened = False
-                for _ in range(40):
+                for _ in range(240):
                     self.check()
                     listing = self.find_list(context)
                     if listing:
                         return listing
+                    from eproc_login import step
+                    step(self,context)
                     if not opened:
                         opened = self.listing(context)
                     live_pages = [p for p in context.pages if not p.is_closed()]
@@ -380,9 +383,10 @@ class Collector:
             except InterruptedError:
                 raise
             except Exception as exc:
-                if str(exc) == 'JANELA_FECHADA':
+                if str(exc) in ('JANELA_FECHADA','ACAO_HUMANA'):
                     raise
                 self.log(self.diagnostic(exc, 'Localização do painel/lista'))
+            self.login_steps={}
             self.wait_user('O painel/lista ainda não foi localizado. A janela continua aberta: termine o login ou abra o painel do advogado e clique em Continuar novamente.')
 
     def collect_supplements(self, context, snapshot, number):
@@ -438,7 +442,7 @@ class Collector:
             except ImportError:
                 raise RuntimeError('DEPENDENCIA')
             with sync_playwright() as pw:
-                context = pw.chromium.launch_persistent_context(str(self.data / tribunais.config(self.options.get('tribunal','TJRS'))['sessao']), headless=bool(self.options.get('automatico')),
+                context = pw.chromium.launch_persistent_context(str(self.data / tribunais.config(self.options.get('tribunal','TJRS'))['sessao']), headless=self.background(),
                                                                accept_downloads=False)
                 context.on('response', self.observe_response)
                 try:
@@ -627,7 +631,9 @@ class Collector:
                     raise
                 except Exception as exc:
                     self.log(self.diagnostic(exc, 'Coleta'))
-                    if any(not p.is_closed() for p in context.pages):
+                    if self.block_status and not self.background() and any(not p.is_closed() for p in context.pages):
+                        self.inspect_blocked(context)
+                    elif not self.background() and not self.block_status and any(not p.is_closed() for p in context.pages):
                         self.wait_user('A coleta encontrou uma falha. A janela permanece aberta para você conferir. Clique em Cancelar para salvar os dados parciais, ou em Continuar para encerrar esta tentativa.')
                     raise
                 finally:
@@ -642,11 +648,16 @@ class Collector:
             outcome = 'cancelado'
             self.log('Cancelado pelo usuário. Os registros já lidos serão exportados.')
         except Exception as exc:
+            if str(exc)=='ACAO_HUMANA':outcome='requer_login'
+            if str(exc) in ('HTTP_403','HTTP_429'):
+                outcome='bloqueado_http'
+                self.log('Acesso recusado pelo tribunal (HTTP '+str(self.block_status)+'). Coleta interrompida antes de prosseguir. Confira o acesso pelo portal oficial; não haverá nova tentativa automática.')
             message = ('Instale as dependências pelo INSTALAR_EPROC.bat.' if str(exc) == 'DEPENDENCIA'
                        else ('A janela do eproc foi fechada. Inicie uma nova coleta e mantenha a janela aberta.' if str(exc) == 'JANELA_FECHADA' else self.diagnostic(exc, 'Encerramento da tentativa')))
+            if str(exc) in ('DEPENDENCIA','JANELA_FECHADA'):message+=' '+self.diagnostic(exc,'Encerramento da tentativa')
             self.log(message)
         finally:
-            if self.options.get('automatico') and any('acesso requer intervenção' in x.get('mensagem','') for x in (self.current or {}).get('log',[])):outcome='requer_login'
+            if self.background() and any('acesso requer intervenção' in x.get('mensagem','') for x in (self.current or {}).get('log',[])):outcome='requer_login'
             self.update(estado=outcome, fim=now())
             if self.options.get('monitorar_lista') and getattr(self,'actor',None):
                 import monitoramento

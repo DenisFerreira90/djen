@@ -1,0 +1,138 @@
+CONECTAADV V49 — SAÚDE DO SISTEMA E ATUALIZAÇÃO SEGURA
+
+INSTALAÇÃO SEM APAGAR DADOS
+1. Aguarde as coletas terminarem. Faça backup pelo sistema e uma cópia protegida
+   das pastas de dados, configurações e versão atual do programa.
+2. Feche o servidor que será atualizado. Não substitua arquivos Python enquanto
+   ele está em execução: isso pode misturar código antigo e novo.
+3. Copie os arquivos da pasta djen deste pacote para C:\projetos\djen,
+   substituindo arquivos do programa e preservando os bancos e configurações.
+4. Inicie pelo mesmo atalho que já usa. Faça Ctrl+F5 no navegador.
+Não use os comandos de limpeza das coletas e não exclua bancos.
+As estruturas de diagnóstico são criadas automaticamente em banco separado.
+
+ONDE ACESSAR
+Administração > Saúde do sistema.
+A conta proprietária do chat/instalação tem acesso inicial. No próprio painel,
+o proprietário pode conceder e retirar acesso à TI. Outros administradores
+não recebem acesso técnico automaticamente. A permissão inclui ver os detalhes,
+baixar relatórios e alterar o acompanhamento das falhas. Não concede acesso a
+conversas, RH, documentos ou 2FA. As permissões dessas áreas continuam próprias.
+Depois de conceder acesso a alguém, essa pessoa deve atualizar a página/entrar
+novamente para que o menu apareça. A API verifica a permissão em cada consulta;
+a retirada de acesso vale imediatamente para novas requisições.
+
+O QUE O PAINEL MOSTRA
+- Versão em execução e horário de verificação.
+- Histórico de versões observadas desde esta entrega (não histórico anterior).
+- Acesso local aos bancos, espaço livre e estado observado do coletor.
+- Chat integrado ou indicação de banco de chat separado.
+- Backups gerados pelo sistema a partir desta versão.
+- Grupos de falhas: código ERR, módulo, operação normalizada, tipo da exceção,
+  gravidade, primeira/última ocorrência e quantidade.
+- Filtros por módulo, situação, datas, código e tipo de exceção.
+- Responsável pela investigação, observações técnicas e situação:
+  novo, investigando ou resolvido. Uma nova ocorrência reabre um erro resolvido.
+- Relatório JSON do filtro atual, sem stack trace ou observações livres.
+
+Os horários técnicos são gravados em UTC com fuso; a interface usa a formatação
+já existente no sistema. As datas do filtro consideram a data UTC do registro.
+A lista retorna até 200 grupos; refine o período se houver mais resultados.
+
+O QUE OS INDICADORES NÃO COMPROVAM
+Banco acessível significa que uma pequena leitura local foi bem-sucedida.
+Não é uma verificação completa de integridade nem prova de que outro servidor
+HTTP esteja ativo. Não testa login, 2FA ou disponibilidade do tribunal.
+O monitoramento de portais continua no JUSDOWN.
+O backup registrado foi gerado pelo programa: isso não comprova download,
+cópia externa nem restauração. Backups antigos/externos não são descobertos.
+O coletor ainda roda dentro do servidor principal; não virou serviço autônomo.
+
+MENSAGENS PARA A EQUIPE E DETALHES PARA TI
+Falhas inesperadas da API mostram orientação e código ERR na tela, sem expor
+o stack trace. O código pode ser informado à TI e pesquisado no painel.
+O sistema não promete que toda operação falhou antes de gravar: confira o
+resultado antes de repetir ações como cadastro e lançamento financeiro.
+Validações conhecidas (AppError 4xx) continuam com a orientação normal.
+ValueError/TypeError não classificados recebem registro de aviso para depuração.
+AppError 5xx e exceções inesperadas recebem registro técnico protegido.
+Também há captura nas falhas diagnosticadas do coletor e na rotina do JUSDOWN.
+Não é uma captura retroativa nem cobre todo except/pass antigo do projeto.
+Não inclui captura global de erros JavaScript nos computadores dos colegas.
+
+STACK TRACE E MASCARAMENTO
+O detalhe autorizado guarda a cadeia de exceções, classe, arquivo de código,
+função, linha, versão e códigos estruturados de SO/SQLite, quando disponíveis.
+Não guarda valores locais, linhas de código-fonte, corpo do formulário,
+conteúdo do documento, cookie, senha, token ou texto livre da exceção.
+Esses textos podem conter credenciais ou dados de clientes; por isso são
+omitidos, em vez de apenas tentar reconhecê-los com expressões regulares.
+As rotas são normalizadas, removendo query string e identificadores numéricos.
+Observações manuais passam por mascaramento de e-mail, números longos,
+URLs e padrões de credenciais. Isso não reconhece todos os nomes pessoais:
+escreva somente providências técnicas, sem dados de clientes ou credenciais.
+Os logs HTTP no console também deixam de imprimir IP, URL e query string.
+O arquivo do diagnóstico e seus backups não têm criptografia própria: o TI
+deve restringir o acesso à pasta e proteger o disco do servidor.
+
+BANCO E RETENÇÃO
+Servidor principal: dados_diagnostico\diagnostico.sqlite3.
+Chat independente iniciado pelo atalho próprio: dados_diagnostico\chat.sqlite3.
+A separação mantém também as permissões técnicas independentes entre as duas
+instalações, cujas contas podem ter IDs diferentes. Veja o painel do serviço
+correspondente. Esta versão não reúne automaticamente os dois bancos em uma
+visão única. Chat integrado usa o diagnóstico do servidor principal.
+
+Falhas repetidas são agregadas; não há uma linha por processo judicial.
+Retenção: até 30 dias da última ocorrência, no máximo 1.000 grupos de falhas;
+acompanhamento técnico limitado a 3.000 registros e 30 dias. A limpeza ocorre
+na utilização do diagnóstico. Não altera a auditoria jurídica do sistema.
+A base tem limite de 8.192 páginas (aproximadamente 32 MB com páginas de 4 KB),
+sem contar arquivos temporários do SQLite. Falta de espaço, banco bloqueado ou
+arquivo inválido não deve interromper chat, cadastros ou coleta. Nesses casos,
+a mensagem informa que o registro técnico ficou indisponível. Registros
+podem ser perdidos durante uma indisponibilidade: não há fila externa durável.
+
+MODELO DE DADOS
+faults: código, impressão da falha, módulo, operação, tipo, gravidade,
+primeira/última ocorrência, contagem, situação, responsável, observação,
+detalhe técnico sanitizado e identificador numérico do usuário, se disponível.
+grants: contas autorizadas pelo proprietário.
+changes: concessão/retirada de acesso, consulta de detalhes e mudanças de situação.
+backup_checks: última geração registrada por banco.
+versions: primeira e última observação de uma versão por serviço.
+Os logs técnicos não substituem auditoria de negócio, prazos ou relatórios de coleta.
+
+ATUALIZAÇÕES URGENTES — PROCEDIMENTO
+1. Reproduzir o problema em uma cópia de teste protegida, preferindo dados fictícios.
+2. Testar a correção, fazer backup dos bancos e guardar o pacote anterior.
+3. Combinar uma pequena janela apenas para o serviço afetado.
+4. Pausar a coleta pelo fluxo normal, finalizar a rodada/checkpoint e fechar o
+   servidor afetado. Não matar o processo no meio de uma gravação.
+5. Atualizar e reiniciar, confirmar a versão e testar login, cadastro de teste,
+   agenda, chat e operação que apresentou falha. Conferir Saúde do sistema.
+6. Retomar as rotinas e acompanhar novas ocorrências pelo código ERR.
+
+Se o chat já estiver em serviço independente, ele pode continuar funcionando
+quando apenas o servidor jurídico é parado. Não substitua os arquivos comuns
+do chat enquanto seu processo está em execução. Para atualizar serviços em
+momentos diferentes, o TI deve manter diretórios de programa separados; o modo
+independente sozinho separa processo/banco, mas pode usar a mesma pasta de código.
+JUSDOWN possui banco separado, porém seu agendador ainda roda no processo principal.
+
+VOLTAR À VERSÃO ANTERIOR
+Feche o serviço, restaure os arquivos do programa anterior e reinicie.
+Esta V49 acrescenta seu próprio banco; não exige apagar ou migrar os bancos
+jurídicos/chat existentes. Guarde a pasta de diagnóstico para investigação.
+Se uma atualização futura alterar o banco de negócio, não basta trocar código:
+precisa de migração compatível ou restauração planejada. Restaurar um banco
+antigo descarta gravações feitas depois daquele backup; preserve a cópia atual.
+Não há implantação automática, balanceamento, hot reload ou garantia de parada
+zero nesta entrega. O caminho seguinte é separar coletor e JUSDOWN em workers,
+com protocolo de pausa/retomada, compatibilidade de versões e filas persistentes.
+
+VALIDAÇÃO
+Testes automatizados de mascaramento, cadeia técnica, repetição, reabertura,
+controle de acesso, CSRF, bloqueio/falha do banco isolado, retenção e HTTP.
+Painel e controles verificados em DOM simulado.
+A atualização em Windows e o piloto com colegas precisam de conferência local.

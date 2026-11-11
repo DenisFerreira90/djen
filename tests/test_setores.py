@@ -65,3 +65,32 @@ class SectorTests(unittest.TestCase):
  def test_chat_only_bootstrap_does_not_create_calendars(self):
   setores.bootstrap(self.store,with_calendar=False)
   with self.store.connect() as db:self.assertFalse(db.execute("SELECT 1 FROM sqlite_master WHERE name='calendars'").fetchone())
+ def test_individual_agenda_creation_scoped_and_revocable(self):
+  setores.bootstrap(self.store)
+  with self.assertRaises(legal.AppError):calendario.create(self.store,self.other,'Cível','civel')
+  setores.calendar_capabilities(self.store,self.admin,{'user_id':self.other['id'],'setores':['civel']})
+  cid=calendario.create(self.store,self.other,'Entrevistas cíveis','civel')['id']
+  self.assertEqual(next(c['permissao'] for c in calendario.calendars(self.store,self.other) if c['id']==cid),'gerenciar')
+  with self.assertRaises(legal.AppError):calendario.create(self.store,self.other,'Contratação','contratacao')
+  with self.assertRaises(legal.AppError):calendario.create(self.store,self.other,'RH','rh')
+  setores.calendar_capabilities(self.store,self.admin,{'user_id':self.other['id'],'setores':[]})
+  with self.assertRaises(legal.AppError):calendario.create(self.store,self.other,'Cível 2','civel')
+ def test_creation_does_not_grant_access_to_existing_agendas_or_group_members(self):
+  setores.bootstrap(self.store)
+  setores.members(self.store,self.admin,'civel',[self.rel['id']])
+  existing=calendario.create(self.store,self.admin,'Restrita','civel')['id']
+  setores.calendar_capabilities(self.store,self.admin,{'user_id':self.other['id'],'setores':['civel','contratacao']})
+  created=calendario.create(self.store,self.other,'Própria','civel')['id']
+  self.assertNotIn(existing,{c['id'] for c in calendario.calendars(self.store,self.other)})
+  self.assertNotIn(created,{c['id'] for c in calendario.calendars(self.store,self.rel)})
+  calendario.grants(self.store,self.other,created,[{'tipo':'usuario','principal_id':self.rel['id'],'papel':'ver'}])
+  self.assertEqual(next(c['permissao'] for c in calendario.calendars(self.store,self.rel) if c['id']==created),'ver')
+  body={'titulo':'Consulta','inicio':'2026-11-06T09:00:00-03:00','fim':'2026-11-06T09:30:00-03:00','responsavel_id':self.rel['id']}
+  with self.assertRaises(legal.AppError):calendario.save(self.store,self.rel,created,body)
+  calendario.grants(self.store,self.admin,created,[{'tipo':'usuario','principal_id':self.rel['id'],'papel':'agendar'}])
+  self.assertTrue(calendario.save(self.store,self.rel,created,body)['id'])
+ def test_calendar_capability_cannot_self_grant_or_elevate_reader(self):
+  with self.assertRaises(legal.AppError):setores.calendar_capabilities(self.store,self.other,{'user_id':self.other['id'],'setores':['civel']})
+  reader=self.store.create_user({'nome':'Leitor','login':'leitor','senha':'senha-forte-teste','role':'leitor'},self.admin)
+  with self.assertRaises(legal.AppError):setores.calendar_capabilities(self.store,self.admin,{'user_id':reader['id'],'setores':['civel']})
+  with self.assertRaises(legal.AppError):setores.calendar_capabilities(self.store,self.admin,{'user_id':self.other['id'],'setores':['rh']})

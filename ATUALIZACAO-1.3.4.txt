@@ -1,0 +1,27 @@
+ConectaColetor 1.3.4 — segundo formato de cancelamento observado no TJSC
+
+ATUALIZAR
+Encerre o coletor. Copie os arquivos do pacote para C:\projetos\ConectaColetor, substituindo os arquivos do programa e preservando dados e .venv. Esta é uma atualização do ConectaColetor.
+
+CONFERIR OS ARQUIVOS JÁ GRAVADOS
+Abra CONFERIR_HISTORICOS_TJSC.bat. Ele reanalisa o processos.json mais recentemente modificado das execuções TJSC, sem consultar o tribunal nem modificar a origem. O caminho escolhido é mostrado no terminal. Para escolher explicitamente outro arquivo:
+.\.venv\Scripts\python.exe .\coletor.py auditar-historicos "CAMINHO\processos.json"
+
+CAUSA CONFIRMADA
+O HTML da página de detalhes recebido mostra uma movimentação com o texto Cancelamento de Movimentação Processual, referindo-se expressamente ao número ausente. O leitor anterior reconhecia somente a redação Cancelada a movimentação processual. A nova versão aceita ambas as redações, mantendo os demais critérios e a exigência de referência exata ao evento cancelado.
+
+RESULTADO NA COLETA ENVIADA
+A reanálise dos 57 processos identificou 38 históricos com sequência contínua e 19 com todas as lacunas justificadas por referências explícitas de cancelamento. As 40 lacunas anteriormente sinalizadas possuem referência: sete na redação já reconhecida e 33 no segundo formato. Nenhuma lacuna ficou sem justificativa nesse conjunto de arquivos.
+
+ESCOPO DA CONFERÊNCIA
+O resultado significa conferência da tabela exibida e das referências de cancelamento presentes na captura. Não significa recuperação do conteúdo original de eventos cancelados, de anexos ou de documentos. Nenhuma linha de evento ausente é inventada. As tabelas e os arquivos originais permanecem inalterados, inclusive o estado histórico parcial gravado na rodada antiga.
+
+A reanálise não consulta o tribunal e não torna a captura antiga atualizada com fatos posteriores. Uma próxima coleta aplica a nova regra aos dados daquele momento. Pode usar o comando habitual:
+.\.venv\Scripts\python.exe .\coletor.py coletar TJSC --visivel --modo completa
+
+Cancelamento de boleto ou de audiência, exclusão de parte, referências ambíguas, paginação não conferida e lacunas sem referência continuam sem certificação de leitura completa. A correção não remove alertas indiscriminadamente.
+
+VALIDAÇÃO
+86 testes do coletor passaram e oito testes adicionais de regressão de relatórios e eventos passaram. O teste novo reproduz o segundo formato observado e comprova que o cancelamento de boleto isolado não é usado como justificativa de uma lacuna de evento.
+
+O HTML recebido foi analisado offline, sem execução de seus scripts e sem navegação nos links. O arquivo processos.json original foi preservado. A execução autenticada da versão nova ainda precisa de validação na instalação Windows do usuário.

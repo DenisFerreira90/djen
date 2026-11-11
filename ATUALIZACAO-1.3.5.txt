@@ -1,0 +1,29 @@
+ConectaColetor 1.3.5 — paginação conferida
+
+ATUALIZAR
+Encerre o coletor. Copie o conteúdo deste pacote para C:\projetos\ConectaColetor, substituindo os arquivos do programa. Preserve as pastas dados e .venv. Este pacote é do coletor; não vai na pasta do ConectaAdv.
+
+TESTAR O RIO GRANDE DO SUL
+Abra COLETAR_TJRS_COMPLETO.bat ou execute no PowerShell, na pasta do coletor:
+.\.venv\Scripts\python.exe .\coletor.py coletar TJRS --visivel --modo completa
+Se o portal pedir acesso, entre e selecione Advogado Titular. Pressione ENTER no terminal somente após chegar ao painel, conforme solicitado pelo coletor.
+
+O QUE MUDOU
+Listas do eproc: além do total, confere os intervalos anunciados na legenda. Uma página de 1 a 300 precisa conter 300 ocorrências; a seguinte precisa começar em 301. Os registros repetidos do mesmo processo continuam preservados. O total da primeira lista pode substituir o número antigo do painel; uma mudança posterior do total deixa a execução parcial.
+
+A espera pela próxima página compara as linhas da tabela e exige três observações estáveis. Uma mudança do texto de carregamento não basta. Páginas repetidas, intervalos pulados ou sobrepostos, linhas faltantes e tabela sem avanço ficam registrados como pendências. A coleta não entra em tentativas automáticas infinitas.
+
+Eventos: o contador precisa avançar junto com a preservação dos eventos anteriores e o acréscimo de novos eventos visíveis. Um contador que muda sozinho não confirma a leitura. Lacunas com cancelamento explicitamente referenciado continuam sendo tratadas conforme a versão 1.3.4.
+
+PJe: a espera também observa a lista, em vez do texto geral da tela. Controles de paginação ambíguos continuam pendentes. O leitor do PJe permanece experimental, sem leitura integral de autos/documentos.
+
+COMO CONFERIR
+O terminal e execucao.json informam paginacao_lista: páginas aceitas, registros, total esperado, intervalos e motivo. Para a lista de 1.570 registros enviada do RS, o formato observado exige seis páginas quando mantido o tamanho de 300 registros por página. A quantidade real pode mudar no portal.
+
+A regra de detalhes permanece: até 500 processos distintos, todos elegíveis; acima de 500, janela de 20 dias, preservando vencidos e sem data. A paginação das listas precede a aplicação dessa regra. Uma lista incompleta não comprova o inventário total.
+
+LIMITES
+Esta atualização não acrescenta categorias novas do painel, movimentações preparadas ou download integral de documentos. A conferência da lista e dos eventos não é uma garantia de coleta de todo o acervo do tribunal. Dados já capturados são preservados; falhas de navegação mantêm a execução parcial. Há proteção de até 1.000 páginas por lista/expansão; ao atingir o limite, a paginação fica pendente, nunca completa.
+
+VALIDAÇÃO
+102 testes automatizados do coletor e oito testes adicionais de regressão passaram. Incluem percurso sintético de seis páginas/1.570 registros, duplicidades de processos, intervalos inválidos, tabela parada, total alterado, carregamento parcial e preservação de pausa manual. O HTML real do RS foi analisado offline: primeira página com 300/1.570 registros e detalhes com 100 eventos, de 19 a 118, faltando carregar outra página. Não houve execução dos scripts ou navegação dos links recebidos. Falta validar a navegação autenticada no Windows.

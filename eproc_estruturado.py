@@ -125,7 +125,7 @@ def detail(record):
     return {'validado':True,'numero':number,'campos':{k:v for k,v in fields.items() if v},'partes':parties,'eventos':events,'prazos':deadlines,'avisos':list(dict.fromkeys(warnings))}
 
 
-def enrich(store,db,payload,actor,import_id):
+def enrich(store,db,payload,actor,import_id,active_deadlines=None):
     import gestao
     db.execute('CREATE TABLE IF NOT EXISTS source_events(id INTEGER PRIMARY KEY,case_id INTEGER REFERENCES records(id),numero TEXT,data TEXT,payload TEXT,signature TEXT,import_id TEXT,UNIQUE(case_id,numero,signature))')
     db.execute('CREATE TABLE IF NOT EXISTS source_complements(id INTEGER PRIMARY KEY,case_id INTEGER REFERENCES records(id),tipo TEXT,payload TEXT,signature TEXT,import_id TEXT,UNIQUE(case_id,tipo,signature))')
@@ -200,7 +200,8 @@ def enrich(store,db,payload,actor,import_id):
             occurrences[signature]=occurrences.get(signature,0)+1
             data['ocorrencia_lista']=occurrences[signature]
             key='prazo:eproc:lista:'+str(rid)+':'+signature+':'+str(occurrences[signature])
-            _,new=gestao.insert(store,db,'prazos',data,actor,rid,key);summary['prazos']+=new
+            deadline_id,new=gestao.insert(store,db,'prazos',data,actor,rid,key);summary['prazos']+=new
+            if active_deadlines is not None:active_deadlines.append(deadline_id)
         gestao.ensure_review(store,db,db.execute('SELECT * FROM records WHERE id=?',(rid,)).fetchone(),actor)
     import eproc_relatorios
     summary['relatorios']=eproc_relatorios.save_reports(store,db,payload,import_id)

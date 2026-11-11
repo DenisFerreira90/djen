@@ -1,0 +1,7 @@
+ConectaAdv v55 — resposta do botão Iniciar coleta
+
+O botão mostra Enviando durante a solicitação e bloqueia cliques duplicados. Só mostra Execução criada depois de receber o identificador do servidor. Erros permanecem visíveis acima do botão. Cancelar só fica disponível quando a thread de coleta está em execução; Continuar aparece apenas quando há uma execução aguardando intervenção. Tribunal e autenticador selecionados são lembrados neste navegador por usuário.
+O modo invisível informa quando o formulário de login não possui credenciais configuradas. O A1 instalado ainda não autentica automaticamente este coletor.
+Correção de concorrência: uma tentativa de início rejeitada por coleta em andamento não apaga mais o estado de autenticação dessa coleta.
+Validado: 40 testes Python incluindo o endpoint HTTP autenticado com as opções de SC, e 3 verificações JavaScript do clique, erro e confirmação de execução. Acesso real ao TJSC ainda depende da sessão e autenticação no computador do usuário.
+Instale com o servidor parado sobre a pasta atual, preservando os dados, e execute INICIAR.bat. Confirme Versão 55 no menu e use Ctrl+F5.

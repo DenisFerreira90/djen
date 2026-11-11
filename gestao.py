@@ -319,6 +319,8 @@ def backup(store,actor):
             with zipfile.ZipFile(out,'w',zipfile.ZIP_DEFLATED) as archive:
                 archive.write(path,'juridico.sqlite3')
                 archive.writestr('manifesto.json',legal.dumps({'formato':'ara-backup-v1','data':legal.now(),'inclui':'Cadastros, usuários, auditoria, evidências e controle incremental. Não inclui a sessão do eproc nem arquivos da pasta dados_eproc.'}))
+            import diagnostico
+            diagnostico.backup_confirmed('banco_chat' if store.path.parent.name=='dados_chat' else 'banco_principal')
             return out.getvalue()
 
 

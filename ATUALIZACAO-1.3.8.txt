@@ -1,0 +1,23 @@
+ConectaColetor 1.3.8 — Advogado Titular automático
+
+ATUALIZAR
+Feche o coletor e seu navegador. Extraia o conteúdo do pacote em C:\projetos\ConectaColetor, substituindo os arquivos do programa e preservando dados e .venv. Esta versão inclui as alterações anteriores de paginação e categorias.
+
+EXECUTAR NO TERMINAL DO VS CODE
+Set-Location C:\projetos\ConectaColetor
+.\.venv\Scripts\python.exe .\coletor.py acessar TJRS
+
+Faça o login e o 2FA se solicitados. Ao aparecer a seleção de perfil, o coletor procura um único Advogado Titular. Quando o painel abrir, pressione ENTER no terminal para confirmar e salvar a sessão. O fluxo acessar inicia a coleta depois de salvar e liberar o navegador, salvo se você usar --somente-login.
+
+CAUSA E AJUSTE
+O HTML recebido contém a identificação da conta antes de / ADVOGADO-TITULAR no atributo data-descricao. O seletor antigo esperava apenas ADVOGADO-TITULAR. A nova leitura aceita o prefixo de registro observado, mantendo o formato antigo. Não há registro profissional fixo no código.
+
+O comando acessar passa a verificar o perfil enquanto aguarda a entrada no terminal, na mesma thread que controla o navegador. A coleta visível também processa os eventos do navegador e verifica o perfil durante a espera pelo login. O motor em segundo plano reutiliza a mesma seleção.
+
+A área do rótulo do perfil é usada para não acionar a opção interna Definir como padrão. Se houver mais de um titular visível, o coletor pede escolha manual na janela do tribunal. Se uma tentativa de seleção falhar, informa a necessidade de conferência e não fica repetindo o clique automaticamente. Outros papéis e perfis de outro tribunal não são escolhidos.
+
+ESCOPO
+O ajuste seleciona o papel dentro da sessão de acesso. Não substitui certificado, senha ou 2FA e não garante duração ilimitada da sessão. Não altera o perfil padrão no tribunal. A confirmação por ENTER continua necessária para verificar o painel e gravar a sessão.
+
+VALIDAÇÃO
+126 testes Python do coletor e 13 regressões de login/relatórios/eventos passaram. Os testes incluem descrição com prefixo de conta, dois perfis titulares, tribunal divergente, outros papéis, falha de clique, ausência de repetição e processamento do navegador na thread correta durante a espera. O HTML real foi analisado offline e contém um perfil titular correspondente. Não houve navegação autenticada ou clique no tribunal nesta validação. Falta testar no Windows do usuário.

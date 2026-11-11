@@ -61,14 +61,18 @@ def message(db,actor,mid):
  chat.schema(db);schema(db)
  row=db.execute('SELECT m.*,r.tipo FROM chat_messages m JOIN chat_rooms r ON r.id=m.room_id WHERE m.id=?',(mid,)).fetchone()
  if not row:raise legal.AppError('Mensagem não encontrada.',404)
- member(db,actor,row['room_id']);return row
+ member(db,actor,row['room_id'])
+ import chat_produtividade as work
+ if not work.visible(db,actor['id'],row['room_id'],mid):raise legal.AppError('Mensagem anterior à sua entrada na conversa.',403)
+ return row
 
 def enrich(db,actor,d):
  schema(db);mid=d['id'];meta=db.execute('SELECT * FROM chat_meta WHERE message_id=?',(mid,)).fetchone()
  d['encaminhada']=bool(meta and meta['forwarded']);d['resposta']=None
  if meta and meta['reply_id']:
   r=db.execute('SELECT m.id,m.texto,u.nome FROM chat_messages m JOIN users u ON u.id=m.sender_id WHERE m.id=? AND m.room_id=?',(meta['reply_id'],d['room_id'])).fetchone()
-  if r:d['resposta']=dict(r)
+  import chat_produtividade as work
+  if r and work.visible(db,actor['id'],d['room_id'],r['id']):d['resposta']=dict(r)
  d['reacoes']=[dict(r) for r in db.execute('SELECT r.emoji,u.id AS user_id,u.nome FROM chat_reactions r JOIN users u ON u.id=r.user_id WHERE message_id=?',(mid,))]
  p=db.execute('SELECT * FROM chat_polls WHERE message_id=?',(mid,)).fetchone()
  if p:

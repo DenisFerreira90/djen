@@ -1,0 +1,5 @@
+ConectaAdv v56 — Fatalíssimo
+
+O indicador Fatais de hoje passa a se chamar Fatalíssimo. O cálculo, a data e os filtros permanecem iguais.
+A conexão de coleta autenticada PJe ainda depende de definir o tribunal e o grau; esta versão não implementa nem anuncia coleta PJe.
+Instale com o servidor parado sobre a pasta atual, preservando dados, e execute INICIAR.bat.

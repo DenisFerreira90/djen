@@ -1,0 +1,673 @@
+{"data": "2026-11-04T17:43:28-03:00", "mensagem": "Abrindo a entrada do eproc. A janela permanecerá aberta para o login."}
+{"data": "2026-11-04T17:43:29-03:00", "mensagem": "Faça o login na janela do eproc, sem limite de tempo. Quando chegar ao perfil ou painel, volte ao nosso sistema e clique em Continuar após login / seleção."}
+{"data": "2026-11-04T17:44:13-03:00", "mensagem": "Lista localizada. Lendo páginas e preservando as linhas originais."}
+{"data": "2026-11-04T17:44:13-03:00", "mensagem": "Etapa: relatório prazos_a_encerrar."}
+{"data": "2026-11-04T17:44:14-03:00", "mensagem": "prazos_a_encerrar: página 1, 9 / 9 registros."}
+{"data": "2026-11-04T17:44:14-03:00", "mensagem": "Etapa: relatório agravos_distribuidos."}
+{"data": "2026-11-04T17:44:16-03:00", "mensagem": "agravos_distribuidos: página 1, 50 / 151 registros."}
+{"data": "2026-11-04T17:44:18-03:00", "mensagem": "agravos_distribuidos: página 2, 100 / 151 registros."}
+{"data": "2026-11-04T17:44:19-03:00", "mensagem": "agravos_distribuidos: página 3, 150 / 151 registros."}
+{"data": "2026-11-04T17:44:20-03:00", "mensagem": "agravos_distribuidos: página 4, 151 / 151 registros."}
+{"data": "2026-11-04T17:44:20-03:00", "mensagem": "Etapa: lista de prazos abertos."}
+{"data": "2026-11-04T17:44:21-03:00", "mensagem": "Página 1: 53 processos; 188 únicos até agora."}
+{"data": "2026-11-04T17:44:21-03:00", "mensagem": "Total de registros da lista confirmado; processos repetidos representam intimações distintas."}
+{"data": "2026-11-04T17:44:21-03:00", "mensagem": "Lista gravada no sistema: 188 processos com dados básicos disponíveis antes dos detalhes."}
+{"data": "2026-11-04T17:44:21-03:00", "mensagem": "Etapa: leitura de detalhes dos processos."}
+{"data": "2026-11-04T17:44:21-03:00", "mensagem": "Prioridade de acompanhamento: 9 processos; só os encontrados na lista atual do eproc poderão ser consultados."}
+{"data": "2026-11-04T17:44:22-03:00", "mensagem": "Fila persistente: 188 processos elegíveis nesta rodada."}
+{"data": "2026-11-04T17:44:22-03:00", "mensagem": "5000372-94.2026.8.24.0069: Reconsulta prioritária da lista de acompanhamento.."}
+{"data": "2026-11-04T17:44:22-03:00", "mensagem": "Etapa: detalhes do processo 5000372-94.2026.8.24.0069."}
+{"data": "2026-11-04T17:44:26-03:00", "mensagem": "5000372-94.2026.8.24.0069: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:44:29-03:00", "mensagem": "5000372-94.2026.8.24.0069: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:29-03:00", "mensagem": "5000372-94.2026.8.24.0069: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:44:32-03:00", "mensagem": "5000372-94.2026.8.24.0069: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:32-03:00", "mensagem": "5000372-94.2026.8.24.0069: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:32-03:00", "mensagem": "5000372-94.2026.8.24.0069: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:32-03:00", "mensagem": "Processo 5000372-94.2026.8.24.0069: pagina_lida_requer_conferencia (1/188)."}
+{"data": "2026-11-04T17:44:34-03:00", "mensagem": "5001794-10.2026.8.24.0068: Reconsulta prioritária da lista de acompanhamento.."}
+{"data": "2026-11-04T17:44:34-03:00", "mensagem": "Etapa: detalhes do processo 5001794-10.2026.8.24.0068."}
+{"data": "2026-11-04T17:44:37-03:00", "mensagem": "5001794-10.2026.8.24.0068: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:44:37-03:00", "mensagem": "5001794-10.2026.8.24.0068: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:44:40-03:00", "mensagem": "5001794-10.2026.8.24.0068: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:40-03:00", "mensagem": "5001794-10.2026.8.24.0068: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:44:43-03:00", "mensagem": "5001794-10.2026.8.24.0068: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:43-03:00", "mensagem": "5001794-10.2026.8.24.0068: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:43-03:00", "mensagem": "5001794-10.2026.8.24.0068: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:43-03:00", "mensagem": "Processo 5001794-10.2026.8.24.0068: historico_parcial (2/188)."}
+{"data": "2026-11-04T17:44:45-03:00", "mensagem": "5004424-54.2025.8.24.0042: Reconsulta prioritária da lista de acompanhamento.."}
+{"data": "2026-11-04T17:44:45-03:00", "mensagem": "Etapa: detalhes do processo 5004424-54.2025.8.24.0042."}
+{"data": "2026-11-04T17:44:49-03:00", "mensagem": "5004424-54.2025.8.24.0042: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:44:49-03:00", "mensagem": "5004424-54.2025.8.24.0042: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:44:52-03:00", "mensagem": "5004424-54.2025.8.24.0042: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:52-03:00", "mensagem": "5004424-54.2025.8.24.0042: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:44:55-03:00", "mensagem": "5004424-54.2025.8.24.0042: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:55-03:00", "mensagem": "5004424-54.2025.8.24.0042: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:55-03:00", "mensagem": "5004424-54.2025.8.24.0042: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:44:55-03:00", "mensagem": "Processo 5004424-54.2025.8.24.0042: historico_parcial (3/188)."}
+{"data": "2026-11-04T17:44:57-03:00", "mensagem": "5020340-56.2024.8.24.0045: Reconsulta prioritária da lista de acompanhamento.."}
+{"data": "2026-11-04T17:44:57-03:00", "mensagem": "Etapa: detalhes do processo 5020340-56.2024.8.24.0045."}
+{"data": "2026-11-04T17:45:00-03:00", "mensagem": "5020340-56.2024.8.24.0045: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:45:04-03:00", "mensagem": "5020340-56.2024.8.24.0045: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:04-03:00", "mensagem": "5020340-56.2024.8.24.0045: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:45:06-03:00", "mensagem": "5020340-56.2024.8.24.0045: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:06-03:00", "mensagem": "5020340-56.2024.8.24.0045: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:06-03:00", "mensagem": "5020340-56.2024.8.24.0045: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:07-03:00", "mensagem": "Processo 5020340-56.2024.8.24.0045: pagina_lida_requer_conferencia (4/188)."}
+{"data": "2026-11-04T17:45:09-03:00", "mensagem": "5026319-89.2026.8.24.0930: Reconsulta prioritária da lista de acompanhamento.."}
+{"data": "2026-11-04T17:45:09-03:00", "mensagem": "Etapa: detalhes do processo 5026319-89.2026.8.24.0930."}
+{"data": "2026-11-04T17:45:12-03:00", "mensagem": "5026319-89.2026.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:45:12-03:00", "mensagem": "5026319-89.2026.8.24.0930: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:45:15-03:00", "mensagem": "5026319-89.2026.8.24.0930: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:15-03:00", "mensagem": "5026319-89.2026.8.24.0930: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:45:18-03:00", "mensagem": "5026319-89.2026.8.24.0930: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:18-03:00", "mensagem": "5026319-89.2026.8.24.0930: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:18-03:00", "mensagem": "5026319-89.2026.8.24.0930: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:18-03:00", "mensagem": "Processo 5026319-89.2026.8.24.0930: historico_parcial (5/188)."}
+{"data": "2026-11-04T17:45:20-03:00", "mensagem": "5027593-88.2026.8.24.0930: Reconsulta prioritária da lista de acompanhamento.."}
+{"data": "2026-11-04T17:45:20-03:00", "mensagem": "Etapa: detalhes do processo 5027593-88.2026.8.24.0930."}
+{"data": "2026-11-04T17:45:23-03:00", "mensagem": "5027593-88.2026.8.24.0930: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:45:26-03:00", "mensagem": "5027593-88.2026.8.24.0930: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:26-03:00", "mensagem": "5027593-88.2026.8.24.0930: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:45:29-03:00", "mensagem": "5027593-88.2026.8.24.0930: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:29-03:00", "mensagem": "5027593-88.2026.8.24.0930: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:29-03:00", "mensagem": "5027593-88.2026.8.24.0930: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:29-03:00", "mensagem": "Processo 5027593-88.2026.8.24.0930: pagina_lida_requer_conferencia (6/188)."}
+{"data": "2026-11-04T17:45:31-03:00", "mensagem": "5045604-73.2026.8.24.0023: Reconsulta prioritária da lista de acompanhamento.."}
+{"data": "2026-11-04T17:45:32-03:00", "mensagem": "Etapa: detalhes do processo 5045604-73.2026.8.24.0023."}
+{"data": "2026-11-04T17:45:35-03:00", "mensagem": "5045604-73.2026.8.24.0023: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:45:35-03:00", "mensagem": "5045604-73.2026.8.24.0023: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:45:38-03:00", "mensagem": "5045604-73.2026.8.24.0023: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:38-03:00", "mensagem": "5045604-73.2026.8.24.0023: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:45:41-03:00", "mensagem": "5045604-73.2026.8.24.0023: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:41-03:00", "mensagem": "5045604-73.2026.8.24.0023: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:41-03:00", "mensagem": "5045604-73.2026.8.24.0023: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:41-03:00", "mensagem": "Processo 5045604-73.2026.8.24.0023: historico_parcial (7/188)."}
+{"data": "2026-11-04T17:45:43-03:00", "mensagem": "5146537-49.2026.8.24.0930: Reconsulta prioritária da lista de acompanhamento.."}
+{"data": "2026-11-04T17:45:43-03:00", "mensagem": "Etapa: detalhes do processo 5146537-49.2026.8.24.0930."}
+{"data": "2026-11-04T17:45:46-03:00", "mensagem": "5146537-49.2026.8.24.0930: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:45:49-03:00", "mensagem": "5146537-49.2026.8.24.0930: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:49-03:00", "mensagem": "5146537-49.2026.8.24.0930: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:45:52-03:00", "mensagem": "5146537-49.2026.8.24.0930: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:52-03:00", "mensagem": "5146537-49.2026.8.24.0930: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:52-03:00", "mensagem": "5146537-49.2026.8.24.0930: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:45:52-03:00", "mensagem": "Processo 5146537-49.2026.8.24.0930: pagina_lida_requer_conferencia (8/188)."}
+{"data": "2026-11-04T17:45:55-03:00", "mensagem": "5146543-56.2026.8.24.0930: Reconsulta prioritária da lista de acompanhamento.."}
+{"data": "2026-11-04T17:45:55-03:00", "mensagem": "Etapa: detalhes do processo 5146543-56.2026.8.24.0930."}
+{"data": "2026-11-04T17:45:58-03:00", "mensagem": "5146543-56.2026.8.24.0930: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:46:01-03:00", "mensagem": "5146543-56.2026.8.24.0930: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:01-03:00", "mensagem": "5146543-56.2026.8.24.0930: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:46:04-03:00", "mensagem": "5146543-56.2026.8.24.0930: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:04-03:00", "mensagem": "5146543-56.2026.8.24.0930: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:04-03:00", "mensagem": "5146543-56.2026.8.24.0930: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:04-03:00", "mensagem": "Processo 5146543-56.2026.8.24.0930: pagina_lida_requer_conferencia (9/188)."}
+{"data": "2026-11-04T17:46:06-03:00", "mensagem": "0302791-56.2016.8.24.0035: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:46:06-03:00", "mensagem": "Etapa: detalhes do processo 0302791-56.2016.8.24.0035."}
+{"data": "2026-11-04T17:46:10-03:00", "mensagem": "Carregando próxima página de movimentações do processo."}
+{"data": "2026-11-04T17:46:11-03:00", "mensagem": "Carregando próxima página de movimentações do processo."}
+{"data": "2026-11-04T17:46:11-03:00", "mensagem": "Carregando próxima página de movimentações do processo."}
+{"data": "2026-11-04T17:46:12-03:00", "mensagem": "0302791-56.2016.8.24.0035: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:46:12-03:00", "mensagem": "0302791-56.2016.8.24.0035: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:46:15-03:00", "mensagem": "0302791-56.2016.8.24.0035: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:15-03:00", "mensagem": "0302791-56.2016.8.24.0035: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:46:18-03:00", "mensagem": "0302791-56.2016.8.24.0035: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:18-03:00", "mensagem": "0302791-56.2016.8.24.0035: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:18-03:00", "mensagem": "0302791-56.2016.8.24.0035: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:18-03:00", "mensagem": "Processo 0302791-56.2016.8.24.0035: historico_parcial (10/188)."}
+{"data": "2026-11-04T17:46:20-03:00", "mensagem": "5001264-72.2026.8.24.0046: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:46:20-03:00", "mensagem": "Etapa: detalhes do processo 5001264-72.2026.8.24.0046."}
+{"data": "2026-11-04T17:46:23-03:00", "mensagem": "5001264-72.2026.8.24.0046: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:46:23-03:00", "mensagem": "5001264-72.2026.8.24.0046: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:46:27-03:00", "mensagem": "5001264-72.2026.8.24.0046: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:27-03:00", "mensagem": "5001264-72.2026.8.24.0046: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:46:30-03:00", "mensagem": "5001264-72.2026.8.24.0046: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:30-03:00", "mensagem": "5001264-72.2026.8.24.0046: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:30-03:00", "mensagem": "5001264-72.2026.8.24.0046: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:30-03:00", "mensagem": "Processo 5001264-72.2026.8.24.0046: historico_parcial (11/188)."}
+{"data": "2026-11-04T17:46:32-03:00", "mensagem": "5002045-62.2026.8.24.0089: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:46:32-03:00", "mensagem": "Etapa: detalhes do processo 5002045-62.2026.8.24.0089."}
+{"data": "2026-11-04T17:46:35-03:00", "mensagem": "5002045-62.2026.8.24.0089: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:46:35-03:00", "mensagem": "5002045-62.2026.8.24.0089: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:46:38-03:00", "mensagem": "5002045-62.2026.8.24.0089: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:38-03:00", "mensagem": "5002045-62.2026.8.24.0089: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:46:41-03:00", "mensagem": "5002045-62.2026.8.24.0089: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:41-03:00", "mensagem": "5002045-62.2026.8.24.0089: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:41-03:00", "mensagem": "5002045-62.2026.8.24.0089: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:41-03:00", "mensagem": "Processo 5002045-62.2026.8.24.0089: historico_parcial (12/188)."}
+{"data": "2026-11-04T17:46:43-03:00", "mensagem": "5005224-48.2026.8.24.0139: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:46:43-03:00", "mensagem": "Etapa: detalhes do processo 5005224-48.2026.8.24.0139."}
+{"data": "2026-11-04T17:46:47-03:00", "mensagem": "5005224-48.2026.8.24.0139: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:46:47-03:00", "mensagem": "5005224-48.2026.8.24.0139: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:46:50-03:00", "mensagem": "5005224-48.2026.8.24.0139: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:50-03:00", "mensagem": "5005224-48.2026.8.24.0139: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:46:53-03:00", "mensagem": "5005224-48.2026.8.24.0139: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:53-03:00", "mensagem": "5005224-48.2026.8.24.0139: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:53-03:00", "mensagem": "5005224-48.2026.8.24.0139: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:46:53-03:00", "mensagem": "Processo 5005224-48.2026.8.24.0139: historico_parcial (13/188)."}
+{"data": "2026-11-04T17:46:55-03:00", "mensagem": "5026326-81.2026.8.24.0930: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:46:55-03:00", "mensagem": "Etapa: detalhes do processo 5026326-81.2026.8.24.0930."}
+{"data": "2026-11-04T17:46:58-03:00", "mensagem": "5026326-81.2026.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:46:59-03:00", "mensagem": "5026326-81.2026.8.24.0930: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:47:02-03:00", "mensagem": "5026326-81.2026.8.24.0930: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:02-03:00", "mensagem": "5026326-81.2026.8.24.0930: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:47:05-03:00", "mensagem": "5026326-81.2026.8.24.0930: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:05-03:00", "mensagem": "5026326-81.2026.8.24.0930: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:05-03:00", "mensagem": "5026326-81.2026.8.24.0930: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:05-03:00", "mensagem": "Processo 5026326-81.2026.8.24.0930: historico_parcial (14/188)."}
+{"data": "2026-11-04T17:47:07-03:00", "mensagem": "5028309-61.2024.8.24.0033: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:47:07-03:00", "mensagem": "Etapa: detalhes do processo 5028309-61.2024.8.24.0033."}
+{"data": "2026-11-04T17:47:10-03:00", "mensagem": "Carregando próxima página de movimentações do processo."}
+{"data": "2026-11-04T17:47:11-03:00", "mensagem": "5028309-61.2024.8.24.0033: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:47:11-03:00", "mensagem": "5028309-61.2024.8.24.0033: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:47:14-03:00", "mensagem": "5028309-61.2024.8.24.0033: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:14-03:00", "mensagem": "5028309-61.2024.8.24.0033: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:47:17-03:00", "mensagem": "5028309-61.2024.8.24.0033: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:17-03:00", "mensagem": "5028309-61.2024.8.24.0033: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:17-03:00", "mensagem": "5028309-61.2024.8.24.0033: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:17-03:00", "mensagem": "Processo 5028309-61.2024.8.24.0033: historico_parcial (15/188)."}
+{"data": "2026-11-04T17:47:19-03:00", "mensagem": "5104390-42.2025.8.24.0930: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:47:19-03:00", "mensagem": "Etapa: detalhes do processo 5104390-42.2025.8.24.0930."}
+{"data": "2026-11-04T17:47:23-03:00", "mensagem": "5104390-42.2025.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:47:23-03:00", "mensagem": "5104390-42.2025.8.24.0930: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:47:26-03:00", "mensagem": "5104390-42.2025.8.24.0930: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:26-03:00", "mensagem": "5104390-42.2025.8.24.0930: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:47:29-03:00", "mensagem": "5104390-42.2025.8.24.0930: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:29-03:00", "mensagem": "5104390-42.2025.8.24.0930: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:29-03:00", "mensagem": "5104390-42.2025.8.24.0930: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:29-03:00", "mensagem": "Processo 5104390-42.2025.8.24.0930: historico_parcial (16/188)."}
+{"data": "2026-11-04T17:47:31-03:00", "mensagem": "5104391-27.2025.8.24.0930: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:47:31-03:00", "mensagem": "Etapa: detalhes do processo 5104391-27.2025.8.24.0930."}
+{"data": "2026-11-04T17:47:35-03:00", "mensagem": "5104391-27.2025.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:47:35-03:00", "mensagem": "5104391-27.2025.8.24.0930: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:47:38-03:00", "mensagem": "5104391-27.2025.8.24.0930: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:38-03:00", "mensagem": "5104391-27.2025.8.24.0930: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:47:41-03:00", "mensagem": "5104391-27.2025.8.24.0930: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:41-03:00", "mensagem": "5104391-27.2025.8.24.0930: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:41-03:00", "mensagem": "5104391-27.2025.8.24.0930: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:41-03:00", "mensagem": "Processo 5104391-27.2025.8.24.0930: historico_parcial (17/188)."}
+{"data": "2026-11-04T17:47:43-03:00", "mensagem": "5112075-03.2025.8.24.0930: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:47:43-03:00", "mensagem": "Etapa: detalhes do processo 5112075-03.2025.8.24.0930."}
+{"data": "2026-11-04T17:47:46-03:00", "mensagem": "5112075-03.2025.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:47:46-03:00", "mensagem": "5112075-03.2025.8.24.0930: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:47:50-03:00", "mensagem": "5112075-03.2025.8.24.0930: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:50-03:00", "mensagem": "5112075-03.2025.8.24.0930: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:47:53-03:00", "mensagem": "5112075-03.2025.8.24.0930: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:53-03:00", "mensagem": "5112075-03.2025.8.24.0930: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:53-03:00", "mensagem": "5112075-03.2025.8.24.0930: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:47:53-03:00", "mensagem": "Processo 5112075-03.2025.8.24.0930: historico_parcial (18/188)."}
+{"data": "2026-11-04T17:47:55-03:00", "mensagem": "0303145-59.2016.8.24.0010: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:47:55-03:00", "mensagem": "Etapa: detalhes do processo 0303145-59.2016.8.24.0010."}
+{"data": "2026-11-04T17:47:58-03:00", "mensagem": "0303145-59.2016.8.24.0010: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:48:01-03:00", "mensagem": "0303145-59.2016.8.24.0010: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:01-03:00", "mensagem": "0303145-59.2016.8.24.0010: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:48:04-03:00", "mensagem": "0303145-59.2016.8.24.0010: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:04-03:00", "mensagem": "0303145-59.2016.8.24.0010: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:04-03:00", "mensagem": "0303145-59.2016.8.24.0010: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:04-03:00", "mensagem": "Processo 0303145-59.2016.8.24.0010: pagina_lida_requer_conferencia (19/188)."}
+{"data": "2026-11-04T17:48:06-03:00", "mensagem": "5000040-73.2025.8.24.0066: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:48:06-03:00", "mensagem": "Etapa: detalhes do processo 5000040-73.2025.8.24.0066."}
+{"data": "2026-11-04T17:48:10-03:00", "mensagem": "5000040-73.2025.8.24.0066: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:48:10-03:00", "mensagem": "5000040-73.2025.8.24.0066: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:48:13-03:00", "mensagem": "5000040-73.2025.8.24.0066: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:13-03:00", "mensagem": "5000040-73.2025.8.24.0066: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:48:16-03:00", "mensagem": "5000040-73.2025.8.24.0066: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:16-03:00", "mensagem": "5000040-73.2025.8.24.0066: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:16-03:00", "mensagem": "5000040-73.2025.8.24.0066: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:16-03:00", "mensagem": "Processo 5000040-73.2025.8.24.0066: historico_parcial (20/188)."}
+{"data": "2026-11-04T17:48:18-03:00", "mensagem": "5000043-84.2022.8.24.0049: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:48:18-03:00", "mensagem": "Etapa: detalhes do processo 5000043-84.2022.8.24.0049."}
+{"data": "2026-11-04T17:48:22-03:00", "mensagem": "5000043-84.2022.8.24.0049: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:48:25-03:00", "mensagem": "5000043-84.2022.8.24.0049: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:25-03:00", "mensagem": "5000043-84.2022.8.24.0049: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:48:28-03:00", "mensagem": "5000043-84.2022.8.24.0049: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:28-03:00", "mensagem": "5000043-84.2022.8.24.0049: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:28-03:00", "mensagem": "5000043-84.2022.8.24.0049: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:28-03:00", "mensagem": "Processo 5000043-84.2022.8.24.0049: pagina_lida_requer_conferencia (21/188)."}
+{"data": "2026-11-04T17:48:30-03:00", "mensagem": "5000065-06.2025.8.24.0028: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:48:30-03:00", "mensagem": "Etapa: detalhes do processo 5000065-06.2025.8.24.0028."}
+{"data": "2026-11-04T17:48:34-03:00", "mensagem": "Carregando próxima página de movimentações do processo."}
+{"data": "2026-11-04T17:48:34-03:00", "mensagem": "5000065-06.2025.8.24.0028: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:48:34-03:00", "mensagem": "5000065-06.2025.8.24.0028: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:48:37-03:00", "mensagem": "5000065-06.2025.8.24.0028: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:37-03:00", "mensagem": "5000065-06.2025.8.24.0028: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:48:40-03:00", "mensagem": "5000065-06.2025.8.24.0028: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:40-03:00", "mensagem": "5000065-06.2025.8.24.0028: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:40-03:00", "mensagem": "5000065-06.2025.8.24.0028: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:40-03:00", "mensagem": "Processo 5000065-06.2025.8.24.0028: historico_parcial (22/188)."}
+{"data": "2026-11-04T17:48:43-03:00", "mensagem": "5000096-33.2022.8.24.0189: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:48:43-03:00", "mensagem": "Etapa: detalhes do processo 5000096-33.2022.8.24.0189."}
+{"data": "2026-11-04T17:48:46-03:00", "mensagem": "5000096-33.2022.8.24.0189: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:48:49-03:00", "mensagem": "5000096-33.2022.8.24.0189: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:49-03:00", "mensagem": "5000096-33.2022.8.24.0189: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:48:52-03:00", "mensagem": "5000096-33.2022.8.24.0189: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:52-03:00", "mensagem": "5000096-33.2022.8.24.0189: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:52-03:00", "mensagem": "5000096-33.2022.8.24.0189: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:48:52-03:00", "mensagem": "Processo 5000096-33.2022.8.24.0189: pagina_lida_requer_conferencia (23/188)."}
+{"data": "2026-11-04T17:48:54-03:00", "mensagem": "5000370-27.2026.8.24.0069: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:48:54-03:00", "mensagem": "Etapa: detalhes do processo 5000370-27.2026.8.24.0069."}
+{"data": "2026-11-04T17:48:58-03:00", "mensagem": "5000370-27.2026.8.24.0069: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:48:58-03:00", "mensagem": "5000370-27.2026.8.24.0069: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:49:01-03:00", "mensagem": "5000370-27.2026.8.24.0069: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:01-03:00", "mensagem": "5000370-27.2026.8.24.0069: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:49:04-03:00", "mensagem": "5000370-27.2026.8.24.0069: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:04-03:00", "mensagem": "5000370-27.2026.8.24.0069: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:04-03:00", "mensagem": "5000370-27.2026.8.24.0069: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:04-03:00", "mensagem": "Processo 5000370-27.2026.8.24.0069: historico_parcial (24/188)."}
+{"data": "2026-11-04T17:49:06-03:00", "mensagem": "5000419-34.2026.8.24.0048: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:49:06-03:00", "mensagem": "Etapa: detalhes do processo 5000419-34.2026.8.24.0048."}
+{"data": "2026-11-04T17:49:10-03:00", "mensagem": "5000419-34.2026.8.24.0048: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:49:10-03:00", "mensagem": "5000419-34.2026.8.24.0048: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:49:14-03:00", "mensagem": "5000419-34.2026.8.24.0048: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:14-03:00", "mensagem": "5000419-34.2026.8.24.0048: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:49:17-03:00", "mensagem": "5000419-34.2026.8.24.0048: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:17-03:00", "mensagem": "5000419-34.2026.8.24.0048: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:17-03:00", "mensagem": "5000419-34.2026.8.24.0048: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:17-03:00", "mensagem": "Processo 5000419-34.2026.8.24.0048: historico_parcial (25/188)."}
+{"data": "2026-11-04T17:49:19-03:00", "mensagem": "5000624-14.2022.8.24.0045: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:49:19-03:00", "mensagem": "Etapa: detalhes do processo 5000624-14.2022.8.24.0045."}
+{"data": "2026-11-04T17:49:23-03:00", "mensagem": "5000624-14.2022.8.24.0045: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:49:26-03:00", "mensagem": "5000624-14.2022.8.24.0045: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:26-03:00", "mensagem": "5000624-14.2022.8.24.0045: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:49:29-03:00", "mensagem": "5000624-14.2022.8.24.0045: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:29-03:00", "mensagem": "5000624-14.2022.8.24.0045: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:29-03:00", "mensagem": "5000624-14.2022.8.24.0045: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:29-03:00", "mensagem": "Processo 5000624-14.2022.8.24.0045: pagina_lida_requer_conferencia (26/188)."}
+{"data": "2026-11-04T17:49:31-03:00", "mensagem": "5000625-96.2022.8.24.0045: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:49:31-03:00", "mensagem": "Etapa: detalhes do processo 5000625-96.2022.8.24.0045."}
+{"data": "2026-11-04T17:49:35-03:00", "mensagem": "5000625-96.2022.8.24.0045: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:49:38-03:00", "mensagem": "5000625-96.2022.8.24.0045: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:38-03:00", "mensagem": "5000625-96.2022.8.24.0045: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:49:41-03:00", "mensagem": "5000625-96.2022.8.24.0045: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:41-03:00", "mensagem": "5000625-96.2022.8.24.0045: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:41-03:00", "mensagem": "5000625-96.2022.8.24.0045: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:41-03:00", "mensagem": "Processo 5000625-96.2022.8.24.0045: pagina_lida_requer_conferencia (27/188)."}
+{"data": "2026-11-04T17:49:44-03:00", "mensagem": "5000707-61.2019.8.24.0004: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:49:44-03:00", "mensagem": "Etapa: detalhes do processo 5000707-61.2019.8.24.0004."}
+{"data": "2026-11-04T17:49:47-03:00", "mensagem": "5000707-61.2019.8.24.0004: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:49:48-03:00", "mensagem": "5000707-61.2019.8.24.0004: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:49:51-03:00", "mensagem": "5000707-61.2019.8.24.0004: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:51-03:00", "mensagem": "5000707-61.2019.8.24.0004: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:49:54-03:00", "mensagem": "5000707-61.2019.8.24.0004: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:54-03:00", "mensagem": "5000707-61.2019.8.24.0004: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:54-03:00", "mensagem": "5000707-61.2019.8.24.0004: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:49:54-03:00", "mensagem": "Processo 5000707-61.2019.8.24.0004: historico_parcial (28/188)."}
+{"data": "2026-11-04T17:49:57-03:00", "mensagem": "5000734-96.2022.8.24.0082: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:49:57-03:00", "mensagem": "Etapa: detalhes do processo 5000734-96.2022.8.24.0082."}
+{"data": "2026-11-04T17:50:00-03:00", "mensagem": "5000734-96.2022.8.24.0082: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:50:04-03:00", "mensagem": "5000734-96.2022.8.24.0082: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:04-03:00", "mensagem": "5000734-96.2022.8.24.0082: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:50:07-03:00", "mensagem": "5000734-96.2022.8.24.0082: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:07-03:00", "mensagem": "5000734-96.2022.8.24.0082: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:07-03:00", "mensagem": "5000734-96.2022.8.24.0082: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:07-03:00", "mensagem": "Processo 5000734-96.2022.8.24.0082: pagina_lida_requer_conferencia (29/188)."}
+{"data": "2026-11-04T17:50:09-03:00", "mensagem": "5000971-64.2019.8.24.0235: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:50:09-03:00", "mensagem": "Etapa: detalhes do processo 5000971-64.2019.8.24.0235."}
+{"data": "2026-11-04T17:50:13-03:00", "mensagem": "5000971-64.2019.8.24.0235: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:50:13-03:00", "mensagem": "5000971-64.2019.8.24.0235: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:50:16-03:00", "mensagem": "5000971-64.2019.8.24.0235: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:16-03:00", "mensagem": "5000971-64.2019.8.24.0235: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:50:19-03:00", "mensagem": "5000971-64.2019.8.24.0235: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:19-03:00", "mensagem": "5000971-64.2019.8.24.0235: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:19-03:00", "mensagem": "5000971-64.2019.8.24.0235: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:20-03:00", "mensagem": "Processo 5000971-64.2019.8.24.0235: historico_parcial (30/188)."}
+{"data": "2026-11-04T17:50:22-03:00", "mensagem": "5001038-13.2024.8.24.0119: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:50:22-03:00", "mensagem": "Etapa: detalhes do processo 5001038-13.2024.8.24.0119."}
+{"data": "2026-11-04T17:50:25-03:00", "mensagem": "5001038-13.2024.8.24.0119: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:50:29-03:00", "mensagem": "5001038-13.2024.8.24.0119: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:29-03:00", "mensagem": "5001038-13.2024.8.24.0119: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:50:32-03:00", "mensagem": "5001038-13.2024.8.24.0119: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:32-03:00", "mensagem": "5001038-13.2024.8.24.0119: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:32-03:00", "mensagem": "5001038-13.2024.8.24.0119: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:32-03:00", "mensagem": "Processo 5001038-13.2024.8.24.0119: pagina_lida_requer_conferencia (31/188)."}
+{"data": "2026-11-04T17:50:34-03:00", "mensagem": "5001121-02.2026.8.24.0073: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:50:34-03:00", "mensagem": "Etapa: detalhes do processo 5001121-02.2026.8.24.0073."}
+{"data": "2026-11-04T17:50:38-03:00", "mensagem": "5001121-02.2026.8.24.0073: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:50:42-03:00", "mensagem": "5001121-02.2026.8.24.0073: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:42-03:00", "mensagem": "5001121-02.2026.8.24.0073: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:50:45-03:00", "mensagem": "5001121-02.2026.8.24.0073: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:45-03:00", "mensagem": "5001121-02.2026.8.24.0073: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:45-03:00", "mensagem": "5001121-02.2026.8.24.0073: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:45-03:00", "mensagem": "Processo 5001121-02.2026.8.24.0073: pagina_lida_requer_conferencia (32/188)."}
+{"data": "2026-11-04T17:50:47-03:00", "mensagem": "5001245-80.2022.8.24.0119: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:50:47-03:00", "mensagem": "Etapa: detalhes do processo 5001245-80.2022.8.24.0119."}
+{"data": "2026-11-04T17:50:51-03:00", "mensagem": "5001245-80.2022.8.24.0119: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:50:54-03:00", "mensagem": "5001245-80.2022.8.24.0119: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:54-03:00", "mensagem": "5001245-80.2022.8.24.0119: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:50:57-03:00", "mensagem": "5001245-80.2022.8.24.0119: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:57-03:00", "mensagem": "5001245-80.2022.8.24.0119: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:57-03:00", "mensagem": "5001245-80.2022.8.24.0119: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:50:57-03:00", "mensagem": "Processo 5001245-80.2022.8.24.0119: pagina_lida_requer_conferencia (33/188)."}
+{"data": "2026-11-04T17:50:59-03:00", "mensagem": "5001248-44.2024.8.24.0061: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:50:59-03:00", "mensagem": "Etapa: detalhes do processo 5001248-44.2024.8.24.0061."}
+{"data": "2026-11-04T17:51:03-03:00", "mensagem": "5001248-44.2024.8.24.0061: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:51:06-03:00", "mensagem": "5001248-44.2024.8.24.0061: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:06-03:00", "mensagem": "5001248-44.2024.8.24.0061: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:51:09-03:00", "mensagem": "5001248-44.2024.8.24.0061: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:09-03:00", "mensagem": "5001248-44.2024.8.24.0061: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:09-03:00", "mensagem": "5001248-44.2024.8.24.0061: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:09-03:00", "mensagem": "Processo 5001248-44.2024.8.24.0061: pagina_lida_requer_conferencia (34/188)."}
+{"data": "2026-11-04T17:51:11-03:00", "mensagem": "5001378-96.2021.8.24.0139: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:51:11-03:00", "mensagem": "Etapa: detalhes do processo 5001378-96.2021.8.24.0139."}
+{"data": "2026-11-04T17:51:15-03:00", "mensagem": "5001378-96.2021.8.24.0139: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:51:18-03:00", "mensagem": "5001378-96.2021.8.24.0139: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:18-03:00", "mensagem": "5001378-96.2021.8.24.0139: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:51:21-03:00", "mensagem": "5001378-96.2021.8.24.0139: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:21-03:00", "mensagem": "5001378-96.2021.8.24.0139: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:21-03:00", "mensagem": "5001378-96.2021.8.24.0139: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:21-03:00", "mensagem": "Processo 5001378-96.2021.8.24.0139: pagina_lida_requer_conferencia (35/188)."}
+{"data": "2026-11-04T17:51:24-03:00", "mensagem": "5001379-81.2021.8.24.0139: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:51:24-03:00", "mensagem": "Etapa: detalhes do processo 5001379-81.2021.8.24.0139."}
+{"data": "2026-11-04T17:51:28-03:00", "mensagem": "5001379-81.2021.8.24.0139: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:51:31-03:00", "mensagem": "5001379-81.2021.8.24.0139: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:31-03:00", "mensagem": "5001379-81.2021.8.24.0139: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:51:34-03:00", "mensagem": "5001379-81.2021.8.24.0139: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:34-03:00", "mensagem": "5001379-81.2021.8.24.0139: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:34-03:00", "mensagem": "5001379-81.2021.8.24.0139: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:34-03:00", "mensagem": "Processo 5001379-81.2021.8.24.0139: pagina_lida_requer_conferencia (36/188)."}
+{"data": "2026-11-04T17:51:36-03:00", "mensagem": "5001489-19.2026.8.24.0038: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:51:36-03:00", "mensagem": "Etapa: detalhes do processo 5001489-19.2026.8.24.0038."}
+{"data": "2026-11-04T17:51:40-03:00", "mensagem": "5001489-19.2026.8.24.0038: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:51:40-03:00", "mensagem": "5001489-19.2026.8.24.0038: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:51:43-03:00", "mensagem": "5001489-19.2026.8.24.0038: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:43-03:00", "mensagem": "5001489-19.2026.8.24.0038: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:51:46-03:00", "mensagem": "5001489-19.2026.8.24.0038: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:46-03:00", "mensagem": "5001489-19.2026.8.24.0038: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:46-03:00", "mensagem": "5001489-19.2026.8.24.0038: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:46-03:00", "mensagem": "Processo 5001489-19.2026.8.24.0038: historico_parcial (37/188)."}
+{"data": "2026-11-04T17:51:48-03:00", "mensagem": "5001493-56.2026.8.24.0038: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:51:48-03:00", "mensagem": "Etapa: detalhes do processo 5001493-56.2026.8.24.0038."}
+{"data": "2026-11-04T17:51:51-03:00", "mensagem": "5001493-56.2026.8.24.0038: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:51:54-03:00", "mensagem": "5001493-56.2026.8.24.0038: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:54-03:00", "mensagem": "5001493-56.2026.8.24.0038: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:51:57-03:00", "mensagem": "5001493-56.2026.8.24.0038: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:57-03:00", "mensagem": "5001493-56.2026.8.24.0038: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:57-03:00", "mensagem": "5001493-56.2026.8.24.0038: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:51:57-03:00", "mensagem": "Processo 5001493-56.2026.8.24.0038: pagina_lida_requer_conferencia (38/188)."}
+{"data": "2026-11-04T17:51:59-03:00", "mensagem": "5001894-12.2021.8.24.0012: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:51:59-03:00", "mensagem": "Etapa: detalhes do processo 5001894-12.2021.8.24.0012."}
+{"data": "2026-11-04T17:52:03-03:00", "mensagem": "5001894-12.2021.8.24.0012: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:52:06-03:00", "mensagem": "5001894-12.2021.8.24.0012: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:06-03:00", "mensagem": "5001894-12.2021.8.24.0012: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:52:09-03:00", "mensagem": "5001894-12.2021.8.24.0012: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:09-03:00", "mensagem": "5001894-12.2021.8.24.0012: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:09-03:00", "mensagem": "5001894-12.2021.8.24.0012: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:09-03:00", "mensagem": "Processo 5001894-12.2021.8.24.0012: pagina_lida_requer_conferencia (39/188)."}
+{"data": "2026-11-04T17:52:11-03:00", "mensagem": "5002059-51.2026.8.24.0055: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:52:11-03:00", "mensagem": "Etapa: detalhes do processo 5002059-51.2026.8.24.0055."}
+{"data": "2026-11-04T17:52:14-03:00", "mensagem": "5002059-51.2026.8.24.0055: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:52:14-03:00", "mensagem": "5002059-51.2026.8.24.0055: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:52:18-03:00", "mensagem": "5002059-51.2026.8.24.0055: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:18-03:00", "mensagem": "5002059-51.2026.8.24.0055: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:52:21-03:00", "mensagem": "5002059-51.2026.8.24.0055: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:21-03:00", "mensagem": "5002059-51.2026.8.24.0055: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:21-03:00", "mensagem": "5002059-51.2026.8.24.0055: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:21-03:00", "mensagem": "Processo 5002059-51.2026.8.24.0055: historico_parcial (40/188)."}
+{"data": "2026-11-04T17:52:23-03:00", "mensagem": "5002129-58.2024.8.24.0081: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:52:23-03:00", "mensagem": "Etapa: detalhes do processo 5002129-58.2024.8.24.0081."}
+{"data": "2026-11-04T17:52:26-03:00", "mensagem": "5002129-58.2024.8.24.0081: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:52:29-03:00", "mensagem": "5002129-58.2024.8.24.0081: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:29-03:00", "mensagem": "5002129-58.2024.8.24.0081: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:52:32-03:00", "mensagem": "5002129-58.2024.8.24.0081: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:32-03:00", "mensagem": "5002129-58.2024.8.24.0081: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:32-03:00", "mensagem": "5002129-58.2024.8.24.0081: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:32-03:00", "mensagem": "Processo 5002129-58.2024.8.24.0081: pagina_lida_requer_conferencia (41/188)."}
+{"data": "2026-11-04T17:52:35-03:00", "mensagem": "5002130-18.2024.8.24.0930: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:52:35-03:00", "mensagem": "Etapa: detalhes do processo 5002130-18.2024.8.24.0930."}
+{"data": "2026-11-04T17:52:38-03:00", "mensagem": "Carregando próxima página de movimentações do processo."}
+{"data": "2026-11-04T17:52:39-03:00", "mensagem": "5002130-18.2024.8.24.0930: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:52:42-03:00", "mensagem": "5002130-18.2024.8.24.0930: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:42-03:00", "mensagem": "5002130-18.2024.8.24.0930: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:52:45-03:00", "mensagem": "5002130-18.2024.8.24.0930: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:45-03:00", "mensagem": "5002130-18.2024.8.24.0930: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:45-03:00", "mensagem": "5002130-18.2024.8.24.0930: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:45-03:00", "mensagem": "Processo 5002130-18.2024.8.24.0930: pagina_lida_requer_conferencia (42/188)."}
+{"data": "2026-11-04T17:52:47-03:00", "mensagem": "5002400-23.2026.8.24.0073: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:52:47-03:00", "mensagem": "Etapa: detalhes do processo 5002400-23.2026.8.24.0073."}
+{"data": "2026-11-04T17:52:50-03:00", "mensagem": "5002400-23.2026.8.24.0073: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:52:53-03:00", "mensagem": "5002400-23.2026.8.24.0073: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:53-03:00", "mensagem": "5002400-23.2026.8.24.0073: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:52:56-03:00", "mensagem": "5002400-23.2026.8.24.0073: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:56-03:00", "mensagem": "5002400-23.2026.8.24.0073: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:56-03:00", "mensagem": "5002400-23.2026.8.24.0073: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:52:56-03:00", "mensagem": "Processo 5002400-23.2026.8.24.0073: pagina_lida_requer_conferencia (43/188)."}
+{"data": "2026-11-04T17:52:59-03:00", "mensagem": "5002581-82.2019.8.24.0036: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:52:59-03:00", "mensagem": "Etapa: detalhes do processo 5002581-82.2019.8.24.0036."}
+{"data": "2026-11-04T17:53:02-03:00", "mensagem": "5002581-82.2019.8.24.0036: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:53:05-03:00", "mensagem": "5002581-82.2019.8.24.0036: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:05-03:00", "mensagem": "5002581-82.2019.8.24.0036: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:53:08-03:00", "mensagem": "5002581-82.2019.8.24.0036: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:08-03:00", "mensagem": "5002581-82.2019.8.24.0036: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:08-03:00", "mensagem": "5002581-82.2019.8.24.0036: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:08-03:00", "mensagem": "Processo 5002581-82.2019.8.24.0036: pagina_lida_requer_conferencia (44/188)."}
+{"data": "2026-11-04T17:53:10-03:00", "mensagem": "5002994-83.2025.8.24.0069: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:53:10-03:00", "mensagem": "Etapa: detalhes do processo 5002994-83.2025.8.24.0069."}
+{"data": "2026-11-04T17:53:14-03:00", "mensagem": "5002994-83.2025.8.24.0069: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:53:14-03:00", "mensagem": "5002994-83.2025.8.24.0069: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:53:17-03:00", "mensagem": "5002994-83.2025.8.24.0069: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:17-03:00", "mensagem": "5002994-83.2025.8.24.0069: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:53:20-03:00", "mensagem": "5002994-83.2025.8.24.0069: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:20-03:00", "mensagem": "5002994-83.2025.8.24.0069: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:20-03:00", "mensagem": "5002994-83.2025.8.24.0069: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:20-03:00", "mensagem": "Processo 5002994-83.2025.8.24.0069: historico_parcial (45/188)."}
+{"data": "2026-11-04T17:53:22-03:00", "mensagem": "5003111-74.2025.8.24.0069: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:53:22-03:00", "mensagem": "Etapa: detalhes do processo 5003111-74.2025.8.24.0069."}
+{"data": "2026-11-04T17:53:26-03:00", "mensagem": "5003111-74.2025.8.24.0069: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:53:29-03:00", "mensagem": "5003111-74.2025.8.24.0069: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:29-03:00", "mensagem": "5003111-74.2025.8.24.0069: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:53:32-03:00", "mensagem": "5003111-74.2025.8.24.0069: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:32-03:00", "mensagem": "5003111-74.2025.8.24.0069: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:32-03:00", "mensagem": "5003111-74.2025.8.24.0069: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:32-03:00", "mensagem": "Processo 5003111-74.2025.8.24.0069: pagina_lida_requer_conferencia (46/188)."}
+{"data": "2026-11-04T17:53:34-03:00", "mensagem": "5003288-45.2023.8.24.0930: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:53:34-03:00", "mensagem": "Etapa: detalhes do processo 5003288-45.2023.8.24.0930."}
+{"data": "2026-11-04T17:53:38-03:00", "mensagem": "5003288-45.2023.8.24.0930: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:53:41-03:00", "mensagem": "5003288-45.2023.8.24.0930: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:41-03:00", "mensagem": "5003288-45.2023.8.24.0930: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:53:44-03:00", "mensagem": "5003288-45.2023.8.24.0930: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:44-03:00", "mensagem": "5003288-45.2023.8.24.0930: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:44-03:00", "mensagem": "5003288-45.2023.8.24.0930: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:44-03:00", "mensagem": "Processo 5003288-45.2023.8.24.0930: pagina_lida_requer_conferencia (47/188)."}
+{"data": "2026-11-04T17:53:46-03:00", "mensagem": "5003405-61.2020.8.24.0018: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:53:46-03:00", "mensagem": "Etapa: detalhes do processo 5003405-61.2020.8.24.0018."}
+{"data": "2026-11-04T17:53:50-03:00", "mensagem": "5003405-61.2020.8.24.0018: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:53:50-03:00", "mensagem": "5003405-61.2020.8.24.0018: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:53:53-03:00", "mensagem": "5003405-61.2020.8.24.0018: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:53-03:00", "mensagem": "5003405-61.2020.8.24.0018: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:53:56-03:00", "mensagem": "5003405-61.2020.8.24.0018: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:56-03:00", "mensagem": "5003405-61.2020.8.24.0018: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:56-03:00", "mensagem": "5003405-61.2020.8.24.0018: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:53:56-03:00", "mensagem": "Processo 5003405-61.2020.8.24.0018: historico_parcial (48/188)."}
+{"data": "2026-11-04T17:53:58-03:00", "mensagem": "5003500-41.2025.8.24.0075: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:53:58-03:00", "mensagem": "Etapa: detalhes do processo 5003500-41.2025.8.24.0075."}
+{"data": "2026-11-04T17:54:02-03:00", "mensagem": "5003500-41.2025.8.24.0075: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:54:02-03:00", "mensagem": "5003500-41.2025.8.24.0075: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:54:05-03:00", "mensagem": "5003500-41.2025.8.24.0075: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:05-03:00", "mensagem": "5003500-41.2025.8.24.0075: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:54:08-03:00", "mensagem": "5003500-41.2025.8.24.0075: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:08-03:00", "mensagem": "5003500-41.2025.8.24.0075: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:08-03:00", "mensagem": "5003500-41.2025.8.24.0075: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:08-03:00", "mensagem": "Processo 5003500-41.2025.8.24.0075: historico_parcial (49/188)."}
+{"data": "2026-11-04T17:54:10-03:00", "mensagem": "5004228-82.2025.8.24.0075: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:54:10-03:00", "mensagem": "Etapa: detalhes do processo 5004228-82.2025.8.24.0075."}
+{"data": "2026-11-04T17:54:13-03:00", "mensagem": "5004228-82.2025.8.24.0075: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:54:13-03:00", "mensagem": "5004228-82.2025.8.24.0075: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:54:17-03:00", "mensagem": "5004228-82.2025.8.24.0075: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:17-03:00", "mensagem": "5004228-82.2025.8.24.0075: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:54:20-03:00", "mensagem": "5004228-82.2025.8.24.0075: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:20-03:00", "mensagem": "5004228-82.2025.8.24.0075: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:20-03:00", "mensagem": "5004228-82.2025.8.24.0075: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:20-03:00", "mensagem": "Processo 5004228-82.2025.8.24.0075: historico_parcial (50/188)."}
+{"data": "2026-11-04T17:54:22-03:00", "mensagem": "5004284-91.2022.8.24.0020: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:54:22-03:00", "mensagem": "Etapa: detalhes do processo 5004284-91.2022.8.24.0020."}
+{"data": "2026-11-04T17:54:26-03:00", "mensagem": "5004284-91.2022.8.24.0020: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:54:29-03:00", "mensagem": "5004284-91.2022.8.24.0020: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:29-03:00", "mensagem": "5004284-91.2022.8.24.0020: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:54:32-03:00", "mensagem": "5004284-91.2022.8.24.0020: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:32-03:00", "mensagem": "5004284-91.2022.8.24.0020: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:32-03:00", "mensagem": "5004284-91.2022.8.24.0020: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:32-03:00", "mensagem": "Processo 5004284-91.2022.8.24.0020: pagina_lida_requer_conferencia (51/188)."}
+{"data": "2026-11-04T17:54:34-03:00", "mensagem": "5004407-71.2025.8.24.0089: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:54:34-03:00", "mensagem": "Etapa: detalhes do processo 5004407-71.2025.8.24.0089."}
+{"data": "2026-11-04T17:54:37-03:00", "mensagem": "5004407-71.2025.8.24.0089: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:54:40-03:00", "mensagem": "5004407-71.2025.8.24.0089: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:40-03:00", "mensagem": "5004407-71.2025.8.24.0089: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:54:43-03:00", "mensagem": "5004407-71.2025.8.24.0089: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:43-03:00", "mensagem": "5004407-71.2025.8.24.0089: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:43-03:00", "mensagem": "5004407-71.2025.8.24.0089: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:43-03:00", "mensagem": "Processo 5004407-71.2025.8.24.0089: pagina_lida_requer_conferencia (52/188)."}
+{"data": "2026-11-04T17:54:45-03:00", "mensagem": "5004412-93.2025.8.24.0089: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:54:46-03:00", "mensagem": "Etapa: detalhes do processo 5004412-93.2025.8.24.0089."}
+{"data": "2026-11-04T17:54:49-03:00", "mensagem": "5004412-93.2025.8.24.0089: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:54:49-03:00", "mensagem": "5004412-93.2025.8.24.0089: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:54:52-03:00", "mensagem": "5004412-93.2025.8.24.0089: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:52-03:00", "mensagem": "5004412-93.2025.8.24.0089: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:54:55-03:00", "mensagem": "5004412-93.2025.8.24.0089: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:55-03:00", "mensagem": "5004412-93.2025.8.24.0089: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:55-03:00", "mensagem": "5004412-93.2025.8.24.0089: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:54:55-03:00", "mensagem": "Processo 5004412-93.2025.8.24.0089: historico_parcial (53/188)."}
+{"data": "2026-11-04T17:54:57-03:00", "mensagem": "5004413-78.2025.8.24.0089: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:54:57-03:00", "mensagem": "Etapa: detalhes do processo 5004413-78.2025.8.24.0089."}
+{"data": "2026-11-04T17:55:01-03:00", "mensagem": "5004413-78.2025.8.24.0089: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:55:01-03:00", "mensagem": "5004413-78.2025.8.24.0089: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:55:04-03:00", "mensagem": "5004413-78.2025.8.24.0089: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:04-03:00", "mensagem": "5004413-78.2025.8.24.0089: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:55:07-03:00", "mensagem": "5004413-78.2025.8.24.0089: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:07-03:00", "mensagem": "5004413-78.2025.8.24.0089: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:07-03:00", "mensagem": "5004413-78.2025.8.24.0089: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:07-03:00", "mensagem": "Processo 5004413-78.2025.8.24.0089: historico_parcial (54/188)."}
+{"data": "2026-11-04T17:55:09-03:00", "mensagem": "5004414-63.2025.8.24.0089: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:55:09-03:00", "mensagem": "Etapa: detalhes do processo 5004414-63.2025.8.24.0089."}
+{"data": "2026-11-04T17:55:13-03:00", "mensagem": "5004414-63.2025.8.24.0089: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:55:13-03:00", "mensagem": "5004414-63.2025.8.24.0089: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:55:16-03:00", "mensagem": "5004414-63.2025.8.24.0089: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:16-03:00", "mensagem": "5004414-63.2025.8.24.0089: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:55:19-03:00", "mensagem": "5004414-63.2025.8.24.0089: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:19-03:00", "mensagem": "5004414-63.2025.8.24.0089: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:19-03:00", "mensagem": "5004414-63.2025.8.24.0089: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:19-03:00", "mensagem": "Processo 5004414-63.2025.8.24.0089: historico_parcial (55/188)."}
+{"data": "2026-11-04T17:55:22-03:00", "mensagem": "5004478-18.2025.8.24.0075: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:55:22-03:00", "mensagem": "Etapa: detalhes do processo 5004478-18.2025.8.24.0075."}
+{"data": "2026-11-04T17:55:25-03:00", "mensagem": "Carregando próxima página de movimentações do processo."}
+{"data": "2026-11-04T17:55:26-03:00", "mensagem": "5004478-18.2025.8.24.0075: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:55:29-03:00", "mensagem": "5004478-18.2025.8.24.0075: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:29-03:00", "mensagem": "5004478-18.2025.8.24.0075: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:55:32-03:00", "mensagem": "5004478-18.2025.8.24.0075: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:32-03:00", "mensagem": "5004478-18.2025.8.24.0075: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:32-03:00", "mensagem": "5004478-18.2025.8.24.0075: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:32-03:00", "mensagem": "Processo 5004478-18.2025.8.24.0075: pagina_lida_requer_conferencia (56/188)."}
+{"data": "2026-11-04T17:55:35-03:00", "mensagem": "5004620-22.2025.8.24.0075: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:55:35-03:00", "mensagem": "Etapa: detalhes do processo 5004620-22.2025.8.24.0075."}
+{"data": "2026-11-04T17:55:38-03:00", "mensagem": "5004620-22.2025.8.24.0075: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:55:38-03:00", "mensagem": "5004620-22.2025.8.24.0075: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:55:42-03:00", "mensagem": "5004620-22.2025.8.24.0075: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:42-03:00", "mensagem": "5004620-22.2025.8.24.0075: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:55:45-03:00", "mensagem": "5004620-22.2025.8.24.0075: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:45-03:00", "mensagem": "5004620-22.2025.8.24.0075: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:45-03:00", "mensagem": "5004620-22.2025.8.24.0075: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:45-03:00", "mensagem": "Processo 5004620-22.2025.8.24.0075: historico_parcial (57/188)."}
+{"data": "2026-11-04T17:55:47-03:00", "mensagem": "5004737-31.2025.8.24.0069: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:55:47-03:00", "mensagem": "Etapa: detalhes do processo 5004737-31.2025.8.24.0069."}
+{"data": "2026-11-04T17:55:50-03:00", "mensagem": "5004737-31.2025.8.24.0069: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:55:50-03:00", "mensagem": "5004737-31.2025.8.24.0069: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:55:54-03:00", "mensagem": "5004737-31.2025.8.24.0069: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:54-03:00", "mensagem": "5004737-31.2025.8.24.0069: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:55:57-03:00", "mensagem": "5004737-31.2025.8.24.0069: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:57-03:00", "mensagem": "5004737-31.2025.8.24.0069: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:57-03:00", "mensagem": "5004737-31.2025.8.24.0069: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:55:57-03:00", "mensagem": "Processo 5004737-31.2025.8.24.0069: historico_parcial (58/188)."}
+{"data": "2026-11-04T17:55:59-03:00", "mensagem": "5005381-30.2026.8.24.0039: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:55:59-03:00", "mensagem": "Etapa: detalhes do processo 5005381-30.2026.8.24.0039."}
+{"data": "2026-11-04T17:56:03-03:00", "mensagem": "5005381-30.2026.8.24.0039: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:56:06-03:00", "mensagem": "5005381-30.2026.8.24.0039: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:06-03:00", "mensagem": "5005381-30.2026.8.24.0039: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:56:09-03:00", "mensagem": "5005381-30.2026.8.24.0039: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:09-03:00", "mensagem": "5005381-30.2026.8.24.0039: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:09-03:00", "mensagem": "5005381-30.2026.8.24.0039: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:09-03:00", "mensagem": "Processo 5005381-30.2026.8.24.0039: pagina_lida_requer_conferencia (59/188)."}
+{"data": "2026-11-04T17:56:11-03:00", "mensagem": "5005454-67.2024.8.24.0040: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:56:11-03:00", "mensagem": "Etapa: detalhes do processo 5005454-67.2024.8.24.0040."}
+{"data": "2026-11-04T17:56:15-03:00", "mensagem": "5005454-67.2024.8.24.0040: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:56:15-03:00", "mensagem": "5005454-67.2024.8.24.0040: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:56:18-03:00", "mensagem": "5005454-67.2024.8.24.0040: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:18-03:00", "mensagem": "5005454-67.2024.8.24.0040: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:56:22-03:00", "mensagem": "5005454-67.2024.8.24.0040: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:22-03:00", "mensagem": "5005454-67.2024.8.24.0040: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:22-03:00", "mensagem": "5005454-67.2024.8.24.0040: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:22-03:00", "mensagem": "Processo 5005454-67.2024.8.24.0040: historico_parcial (60/188)."}
+{"data": "2026-11-04T17:56:24-03:00", "mensagem": "5005594-82.2021.8.24.0048: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:56:24-03:00", "mensagem": "Etapa: detalhes do processo 5005594-82.2021.8.24.0048."}
+{"data": "2026-11-04T17:56:28-03:00", "mensagem": "5005594-82.2021.8.24.0048: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:56:31-03:00", "mensagem": "5005594-82.2021.8.24.0048: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:31-03:00", "mensagem": "5005594-82.2021.8.24.0048: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:56:34-03:00", "mensagem": "5005594-82.2021.8.24.0048: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:34-03:00", "mensagem": "5005594-82.2021.8.24.0048: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:34-03:00", "mensagem": "5005594-82.2021.8.24.0048: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:34-03:00", "mensagem": "Processo 5005594-82.2021.8.24.0048: pagina_lida_requer_conferencia (61/188)."}
+{"data": "2026-11-04T17:56:36-03:00", "mensagem": "5005811-13.2026.8.24.0061: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:56:36-03:00", "mensagem": "Etapa: detalhes do processo 5005811-13.2026.8.24.0061."}
+{"data": "2026-11-04T17:56:40-03:00", "mensagem": "5005811-13.2026.8.24.0061: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:56:43-03:00", "mensagem": "5005811-13.2026.8.24.0061: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:43-03:00", "mensagem": "5005811-13.2026.8.24.0061: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:56:46-03:00", "mensagem": "5005811-13.2026.8.24.0061: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:46-03:00", "mensagem": "5005811-13.2026.8.24.0061: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:46-03:00", "mensagem": "5005811-13.2026.8.24.0061: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:46-03:00", "mensagem": "Processo 5005811-13.2026.8.24.0061: pagina_lida_requer_conferencia (62/188)."}
+{"data": "2026-11-04T17:56:48-03:00", "mensagem": "5006199-38.2025.8.24.0064: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:56:48-03:00", "mensagem": "Etapa: detalhes do processo 5006199-38.2025.8.24.0064."}
+{"data": "2026-11-04T17:56:52-03:00", "mensagem": "5006199-38.2025.8.24.0064: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:56:55-03:00", "mensagem": "5006199-38.2025.8.24.0064: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:55-03:00", "mensagem": "5006199-38.2025.8.24.0064: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:56:58-03:00", "mensagem": "5006199-38.2025.8.24.0064: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:58-03:00", "mensagem": "5006199-38.2025.8.24.0064: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:58-03:00", "mensagem": "5006199-38.2025.8.24.0064: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:56:58-03:00", "mensagem": "Processo 5006199-38.2025.8.24.0064: pagina_lida_requer_conferencia (63/188)."}
+{"data": "2026-11-04T17:57:00-03:00", "mensagem": "5006206-09.2022.8.24.0008: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:57:00-03:00", "mensagem": "Etapa: detalhes do processo 5006206-09.2022.8.24.0008."}
+{"data": "2026-11-04T17:57:05-03:00", "mensagem": "5006206-09.2022.8.24.0008: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:57:08-03:00", "mensagem": "5006206-09.2022.8.24.0008: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:08-03:00", "mensagem": "5006206-09.2022.8.24.0008: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:57:11-03:00", "mensagem": "5006206-09.2022.8.24.0008: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:11-03:00", "mensagem": "5006206-09.2022.8.24.0008: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:11-03:00", "mensagem": "5006206-09.2022.8.24.0008: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:12-03:00", "mensagem": "Processo 5006206-09.2022.8.24.0008: pagina_lida_requer_conferencia (64/188)."}
+{"data": "2026-11-04T17:57:14-03:00", "mensagem": "5006714-11.2020.8.24.0012: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:57:14-03:00", "mensagem": "Etapa: detalhes do processo 5006714-11.2020.8.24.0012."}
+{"data": "2026-11-04T17:57:18-03:00", "mensagem": "5006714-11.2020.8.24.0012: histórico não confirmado; ficará pendente de nova consulta."}
+{"data": "2026-11-04T17:57:18-03:00", "mensagem": "5006714-11.2020.8.24.0012: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:57:21-03:00", "mensagem": "5006714-11.2020.8.24.0012: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:21-03:00", "mensagem": "5006714-11.2020.8.24.0012: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:57:25-03:00", "mensagem": "5006714-11.2020.8.24.0012: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:25-03:00", "mensagem": "5006714-11.2020.8.24.0012: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:25-03:00", "mensagem": "5006714-11.2020.8.24.0012: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:25-03:00", "mensagem": "Processo 5006714-11.2020.8.24.0012: historico_parcial (65/188)."}
+{"data": "2026-11-04T17:57:27-03:00", "mensagem": "5006852-97.2025.8.24.0045: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:57:27-03:00", "mensagem": "Etapa: detalhes do processo 5006852-97.2025.8.24.0045."}
+{"data": "2026-11-04T17:57:30-03:00", "mensagem": "Carregando próxima página de movimentações do processo."}
+{"data": "2026-11-04T17:57:31-03:00", "mensagem": "5006852-97.2025.8.24.0045: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:57:34-03:00", "mensagem": "5006852-97.2025.8.24.0045: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:34-03:00", "mensagem": "5006852-97.2025.8.24.0045: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:57:37-03:00", "mensagem": "5006852-97.2025.8.24.0045: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:37-03:00", "mensagem": "5006852-97.2025.8.24.0045: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:37-03:00", "mensagem": "5006852-97.2025.8.24.0045: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:37-03:00", "mensagem": "Processo 5006852-97.2025.8.24.0045: pagina_lida_requer_conferencia (66/188)."}
+{"data": "2026-11-04T17:57:40-03:00", "mensagem": "5007443-46.2026.8.24.0038: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:57:40-03:00", "mensagem": "Etapa: detalhes do processo 5007443-46.2026.8.24.0038."}
+{"data": "2026-11-04T17:57:43-03:00", "mensagem": "5007443-46.2026.8.24.0038: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:57:47-03:00", "mensagem": "5007443-46.2026.8.24.0038: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:47-03:00", "mensagem": "5007443-46.2026.8.24.0038: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:57:50-03:00", "mensagem": "5007443-46.2026.8.24.0038: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:50-03:00", "mensagem": "5007443-46.2026.8.24.0038: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:50-03:00", "mensagem": "5007443-46.2026.8.24.0038: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:50-03:00", "mensagem": "Processo 5007443-46.2026.8.24.0038: pagina_lida_requer_conferencia (67/188)."}
+{"data": "2026-11-04T17:57:52-03:00", "mensagem": "5007688-07.2024.8.24.0045: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:57:52-03:00", "mensagem": "Etapa: detalhes do processo 5007688-07.2024.8.24.0045."}
+{"data": "2026-11-04T17:57:55-03:00", "mensagem": "5007688-07.2024.8.24.0045: consultando listagem audiencias em modo de leitura."}
+{"data": "2026-11-04T17:57:59-03:00", "mensagem": "5007688-07.2024.8.24.0045: listagem pericias não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:57:59-03:00", "mensagem": "5007688-07.2024.8.24.0045: consultando listagem documentos em modo de leitura."}
+{"data": "2026-11-04T17:58:02-03:00", "mensagem": "5007688-07.2024.8.24.0045: listagem alvaras não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:58:02-03:00", "mensagem": "5007688-07.2024.8.24.0045: listagem custas não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:58:02-03:00", "mensagem": "5007688-07.2024.8.24.0045: listagem depositos não localizada entre os links da página atual."}
+{"data": "2026-11-04T17:58:02-03:00", "mensagem": "Processo 5007688-07.2024.8.24.0045: pagina_lida_requer_conferencia (68/188)."}
+{"data": "2026-11-04T17:58:04-03:00", "mensagem": "5008039-26.2022.8.24.0020: Pendência da fila persistente.."}
+{"data": "2026-11-04T17:58:04-03:00", "mensagem": "Etapa: detalhes do processo 5008039-26.2022.8.24.0020."}
+{"data": "2026-11-04T17:58:08-03:00", "mensagem": "Cancelado pelo usuário. Os registros já lidos serão exportados."}
+{"data": "2026-11-04T17:58:09-03:00", "mensagem": "Importação no sistema: 0 novos processos e 188 existentes; dados aguardam conferência."}

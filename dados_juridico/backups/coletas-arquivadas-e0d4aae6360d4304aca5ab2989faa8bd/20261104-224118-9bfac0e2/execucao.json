@@ -1,0 +1,286 @@
+{
+  "id": "20261104-224118-9bfac0e2",
+  "tribunal": "TJRS",
+  "inicio": "2026-11-04T22:41:18-03:00",
+  "fim": "2026-11-04T22:43:38-03:00",
+  "estado": "parcial",
+  "lidos": 15,
+  "encontrados": 0,
+  "relatorios": [
+    {
+      "tipo": "prazos_a_encerrar",
+      "paginas": 1,
+      "registros": 24,
+      "esperados": 24,
+      "completo": true,
+      "motivo": "total_conferido"
+    }
+  ],
+  "historicos_pendentes": 2,
+  "esperados": 0,
+  "falhas": 0,
+  "ignorados": 0,
+  "modo": "incremental",
+  "registros_lista": 0,
+  "salvos_sistema": 15,
+  "mensagem": "Importação no sistema: 0 novos processos e 24 existentes; dados aguardam conferência.",
+  "log": [
+    {
+      "data": "2026-11-04T22:41:19-03:00",
+      "mensagem": "Abrindo a entrada do eproc. A janela permanecerá aberta para o login."
+    },
+    {
+      "data": "2026-11-04T22:41:21-03:00",
+      "mensagem": "Faça o login na janela do eproc, sem limite de tempo. Quando chegar ao perfil ou painel, volte ao nosso sistema e clique em Continuar após login / seleção."
+    },
+    {
+      "data": "2026-11-04T22:41:55-03:00",
+      "mensagem": "Lista localizada. Lendo páginas e preservando as linhas originais."
+    },
+    {
+      "data": "2026-11-04T22:41:55-03:00",
+      "mensagem": "Etapa: relatório prazos_a_encerrar."
+    },
+    {
+      "data": "2026-11-04T22:41:59-03:00",
+      "mensagem": "prazos_a_encerrar: página 1, 24 / 24 registros."
+    },
+    {
+      "data": "2026-11-04T22:41:59-03:00",
+      "mensagem": "Etapa: lista de prazos abertos."
+    },
+    {
+      "data": "2026-11-04T22:42:00-03:00",
+      "mensagem": "Lista vazia ou página repetida: coleta marcada como parcial para conferência."
+    },
+    {
+      "data": "2026-11-04T22:42:00-03:00",
+      "mensagem": "Lista gravada no sistema: 24 processos com dados básicos disponíveis antes dos detalhes."
+    },
+    {
+      "data": "2026-11-04T22:42:00-03:00",
+      "mensagem": "Etapa: leitura de detalhes dos processos."
+    },
+    {
+      "data": "2026-11-04T22:42:01-03:00",
+      "mensagem": "Prioridade de acompanhamento: 24 processos; só os encontrados na lista atual do eproc poderão ser consultados."
+    },
+    {
+      "data": "2026-11-04T22:42:02-03:00",
+      "mensagem": "Fila persistente: 15 processos elegíveis nesta rodada."
+    },
+    {
+      "data": "2026-11-04T22:42:02-03:00",
+      "mensagem": "5008428-59.2026.8.21.0018: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:42:02-03:00",
+      "mensagem": "Etapa: detalhes do processo 5008428-59.2026.8.21.0018."
+    },
+    {
+      "data": "2026-11-04T22:42:06-03:00",
+      "mensagem": "Processo 5008428-59.2026.8.21.0018: pagina_lida_requer_conferencia (1/24)."
+    },
+    {
+      "data": "2026-11-04T22:42:08-03:00",
+      "mensagem": "5009426-37.2024.8.21.0005: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:42:08-03:00",
+      "mensagem": "Etapa: detalhes do processo 5009426-37.2024.8.21.0005."
+    },
+    {
+      "data": "2026-11-04T22:42:13-03:00",
+      "mensagem": "Carregando próxima página de movimentações do processo."
+    },
+    {
+      "data": "2026-11-04T22:42:14-03:00",
+      "mensagem": "Processo 5009426-37.2024.8.21.0005: pagina_lida_requer_conferencia (2/24)."
+    },
+    {
+      "data": "2026-11-04T22:42:16-03:00",
+      "mensagem": "5009921-45.2024.8.21.0017: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:42:16-03:00",
+      "mensagem": "Etapa: detalhes do processo 5009921-45.2024.8.21.0017."
+    },
+    {
+      "data": "2026-11-04T22:42:20-03:00",
+      "mensagem": "Processo 5009921-45.2024.8.21.0017: pagina_lida_requer_conferencia (3/24)."
+    },
+    {
+      "data": "2026-11-04T22:42:22-03:00",
+      "mensagem": "5011768-81.2025.8.21.0006: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:42:22-03:00",
+      "mensagem": "Etapa: detalhes do processo 5011768-81.2025.8.21.0006."
+    },
+    {
+      "data": "2026-11-04T22:42:27-03:00",
+      "mensagem": "Processo 5011768-81.2025.8.21.0006: pagina_lida_requer_conferencia (4/24)."
+    },
+    {
+      "data": "2026-11-04T22:42:29-03:00",
+      "mensagem": "5014054-25.2025.8.21.0073: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:42:29-03:00",
+      "mensagem": "Etapa: detalhes do processo 5014054-25.2025.8.21.0073."
+    },
+    {
+      "data": "2026-11-04T22:42:33-03:00",
+      "mensagem": "Processo 5014054-25.2025.8.21.0073: pagina_lida_requer_conferencia (5/24)."
+    },
+    {
+      "data": "2026-11-04T22:42:35-03:00",
+      "mensagem": "5027500-33.2024.8.21.0008: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:42:35-03:00",
+      "mensagem": "Etapa: detalhes do processo 5027500-33.2024.8.21.0008."
+    },
+    {
+      "data": "2026-11-04T22:42:38-03:00",
+      "mensagem": "5027500-33.2024.8.21.0008: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T22:42:38-03:00",
+      "mensagem": "Processo 5027500-33.2024.8.21.0008: historico_parcial (6/24)."
+    },
+    {
+      "data": "2026-11-04T22:42:41-03:00",
+      "mensagem": "5030940-70.2023.8.21.0073: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:42:41-03:00",
+      "mensagem": "Etapa: detalhes do processo 5030940-70.2023.8.21.0073."
+    },
+    {
+      "data": "2026-11-04T22:42:44-03:00",
+      "mensagem": "Carregando próxima página de movimentações do processo."
+    },
+    {
+      "data": "2026-11-04T22:42:46-03:00",
+      "mensagem": "5030940-70.2023.8.21.0073: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T22:42:46-03:00",
+      "mensagem": "Processo 5030940-70.2023.8.21.0073: historico_parcial (7/24)."
+    },
+    {
+      "data": "2026-11-04T22:42:48-03:00",
+      "mensagem": "5035217-49.2026.8.21.0001: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:42:48-03:00",
+      "mensagem": "Etapa: detalhes do processo 5035217-49.2026.8.21.0001."
+    },
+    {
+      "data": "2026-11-04T22:42:52-03:00",
+      "mensagem": "Processo 5035217-49.2026.8.21.0001: pagina_lida_requer_conferencia (8/24)."
+    },
+    {
+      "data": "2026-11-04T22:42:54-03:00",
+      "mensagem": "5037524-73.2026.8.21.0001: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:42:54-03:00",
+      "mensagem": "Etapa: detalhes do processo 5037524-73.2026.8.21.0001."
+    },
+    {
+      "data": "2026-11-04T22:42:58-03:00",
+      "mensagem": "Processo 5037524-73.2026.8.21.0001: pagina_lida_requer_conferencia (9/24)."
+    },
+    {
+      "data": "2026-11-04T22:43:00-03:00",
+      "mensagem": "5072533-96.2026.8.21.0001: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:43:00-03:00",
+      "mensagem": "Etapa: detalhes do processo 5072533-96.2026.8.21.0001."
+    },
+    {
+      "data": "2026-11-04T22:43:04-03:00",
+      "mensagem": "Processo 5072533-96.2026.8.21.0001: pagina_lida_requer_conferencia (10/24)."
+    },
+    {
+      "data": "2026-11-04T22:43:06-03:00",
+      "mensagem": "5116089-85.2025.8.21.0001: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:43:06-03:00",
+      "mensagem": "Etapa: detalhes do processo 5116089-85.2025.8.21.0001."
+    },
+    {
+      "data": "2026-11-04T22:43:10-03:00",
+      "mensagem": "Processo 5116089-85.2025.8.21.0001: pagina_lida_requer_conferencia (11/24)."
+    },
+    {
+      "data": "2026-11-04T22:43:12-03:00",
+      "mensagem": "5210345-54.2024.8.21.0001: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:43:12-03:00",
+      "mensagem": "Etapa: detalhes do processo 5210345-54.2024.8.21.0001."
+    },
+    {
+      "data": "2026-11-04T22:43:16-03:00",
+      "mensagem": "Processo 5210345-54.2024.8.21.0001: pagina_lida_requer_conferencia (12/24)."
+    },
+    {
+      "data": "2026-11-04T22:43:19-03:00",
+      "mensagem": "5233431-20.2025.8.21.0001: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:43:19-03:00",
+      "mensagem": "Etapa: detalhes do processo 5233431-20.2025.8.21.0001."
+    },
+    {
+      "data": "2026-11-04T22:43:23-03:00",
+      "mensagem": "Processo 5233431-20.2025.8.21.0001: pagina_lida_requer_conferencia (13/24)."
+    },
+    {
+      "data": "2026-11-04T22:43:25-03:00",
+      "mensagem": "5253958-27.2024.8.21.0001: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:43:25-03:00",
+      "mensagem": "Etapa: detalhes do processo 5253958-27.2024.8.21.0001."
+    },
+    {
+      "data": "2026-11-04T22:43:29-03:00",
+      "mensagem": "Processo 5253958-27.2024.8.21.0001: pagina_lida_requer_conferencia (14/24)."
+    },
+    {
+      "data": "2026-11-04T22:43:31-03:00",
+      "mensagem": "5325810-14.2024.8.21.0001: Reconsulta prioritária da lista de acompanhamento.."
+    },
+    {
+      "data": "2026-11-04T22:43:31-03:00",
+      "mensagem": "Etapa: detalhes do processo 5325810-14.2024.8.21.0001."
+    },
+    {
+      "data": "2026-11-04T22:43:36-03:00",
+      "mensagem": "Processo 5325810-14.2024.8.21.0001: pagina_lida_requer_conferencia (15/24)."
+    },
+    {
+      "data": "2026-11-04T22:43:38-03:00",
+      "mensagem": "Leitura encerrada. Confira as tabelas originais; associações de partes e prazos ainda não foram validadas neste layout."
+    },
+    {
+      "data": "2026-11-04T22:43:39-03:00",
+      "mensagem": "Importação no sistema: 0 novos processos e 24 existentes; dados aguardam conferência."
+    }
+  ],
+  "validacao": "Layout interno ainda requer conferência com o eproc.",
+  "relatorio_em_leitura": {
+    "tipo": "prazos_a_encerrar",
+    "paginas": 1,
+    "registros": 24,
+    "esperados": 24,
+    "completo": false,
+    "motivo": "relatorio_nao_localizado"
+  }
+}

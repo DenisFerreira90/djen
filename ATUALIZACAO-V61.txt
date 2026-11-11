@@ -1,0 +1,22 @@
+ConectaAdv v61 — Gestão de agendamentos
+
+INSTALAÇÃO
+Atualização do ConectaAdv, não do ConectaColetor. Pare o servidor do ConectaAdv, faça uma cópia das pastas de dados e extraia a pasta djen sobre a instalação. Substitua arquivos do programa e preserve dados_juridico, dados_eproc e as demais pastas de dados. Inicie novamente e use Ctrl+F5. O menu deve indicar Versão 61.
+
+PERMISSÕES INDIVIDUAIS
+Em Administração > Setores e permissões > Gestão de agendamentos, um administrador escolhe quem pode criar agendas para Cível, Contratação ou ambos. A pessoa não precisa integrar esses setores. Nenhum novo setor é criado por esta funcionalidade.
+
+Criar agendas: autoriza criar novas agendas do setor selecionado; quem cria pode gerenciar os acessos da nova agenda. Não abre automaticamente as demais agendas do setor. Retirar essa permissão impede novas criações, preservando delegações já concedidas. Para retirar acesso a uma agenda existente, altere as delegações dela.
+
+Em Calendários, selecione uma agenda e use Delegar acesso a pessoas / setores:
+- Visualizar agenda: consultar compromissos.
+- Agendar atendimentos: consultar, criar e alterar compromissos.
+- Gerenciar acessos e atendimentos: também conceder e retirar acessos.
+
+Novas agendas de Cível e Contratação não liberam consulta para todo o grupo automaticamente. Escolha as pessoas autorizadas, ou conceda acesso ao grupo explicitamente. Administradores continuam tendo acesso administrativo; perfis Leitor não podem criar agendas ou alterar compromissos. Os conflitos de horário e o controle de versão continuam ativos.
+
+VALIDAÇÃO DESTA ALTERAÇÃO
+11 testes de setores/permissões, 4 testes de calendários, 1 teste HTTP e 2 verificações DOM. Testes usam bases temporárias e interfaces simuladas. Não houve teste na instalação Windows do usuário.
+
+ESCOPO
+Esta atualização implementa as permissões de agendamento. Não conecta o outro site, não sincroniza com Google Agenda e não implementa a ficha de contratação. Também não altera os coletores nem executa coletas no computador do usuário. Os limites do PJe descritos na atualização v60 permanecem.

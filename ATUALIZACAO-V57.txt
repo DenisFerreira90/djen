@@ -1,0 +1,10 @@
+ConectaAdv v57 — eproc TJRJ primeiro grau em teste manual
+
+Entrada oficial: https://eproc1g.tjrj.jus.br/eproc/
+O endereço temporário de login enviado não é salvo; o portal gera uma nova sessão. A autenticação pode passar por eproc-sso.tjrj.jus.br e sso.cloud.pje.jus.br. Isso não implementa o coletor dos processos que permanecem no PJe.
+Em Coleta eproc selecione TJRJ — Rio de Janeiro · 1º grau (teste manual). Selecione o autenticador da conta, quando exigido. Sessão local separada: sessao_tjrj.
+Para primeiro acesso, desmarque Modo invisível e autentique na janela do coletor. Depois de salvar uma sessão válida, pode testar o modo invisível. Login automático por certificado A1 não implementado.
+Para login e senha em memória, execute py -3 INICIAR_COM_ACESSO.py e escolha TJRJ; usa EPROC_TJRJ_USUARIO e EPROC_TJRJ_SENHA sem reutilizar as credenciais SC ou RS. Nenhuma senha é gravada pelo iniciador.
+TJRJ não é ativado em agendamentos nem listas de todos os tribunais. Relatórios extras ficam desmarcados para o primeiro teste.
+HTTP 403/429 interrompe a execução sem pedir Continuar nem repetir automaticamente. O bloqueio do TJRS é independente desta inclusão.
+Adaptador validado localmente quanto a escopo, sessão, credenciais e início; coleta real no TJ ainda precisa de validação. Instale com servidor parado, preserve dados e reinicie. Confirme Versão 57.

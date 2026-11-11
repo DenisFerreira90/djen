@@ -1,0 +1,30 @@
+ConectaColetor 1.3.10 — continuar no mesmo navegador
+
+O QUE FOI AJUSTADO
+A coleta eproc do agente independente deixa de reiniciar o navegador apenas porque venceu o intervalo de controle, desde que tenha ocorrido avanço nas leituras. O motor renova o intervalo, preserva o contexto do navegador e continua a fila atual. Não relê as listas a cada 50 minutos por esse motivo e não pede OK por causa desse intervalo.
+
+Acesso recusado pelo tribunal e pausa manual continuam interrompendo. Se um intervalo inteiro não registrar novas leituras, ele não é renovado indefinidamente. Operações travadas fora do controle do motor não ganham garantia de recuperação automática por esta alteração.
+
+No modo visível, um painel autenticado reconhecido permite continuar sem confirmação inicial. O motor aguarda até 30 segundos pelas transições de autenticação/perfil antes de usar o fluxo manual existente. Não tenta evitar login ou 2FA exigidos pelo tribunal. Tela não reconhecida, sessão expirada e múltiplos titulares ainda podem exigir intervenção.
+
+OS 20 DIAS
+Para mais de 500 processos distintos descobertos, o limite de 20 dias se aplica à data final dos prazos na origem. Não é seleção por data de ajuizamento nem filtro que corta o histórico de eventos nos últimos 20 dias. Um processo antigo com prazo próximo permanece elegível.
+
+A política atual preserva vencidos e registros sem data/data inválida para conferência. Por isso pode deixar muitos processos elegíveis. Não houve exclusão silenciosa desses registros nesta atualização. A versão imprime os grupos e salva resumo_filtro em execucao.json: candidatos da etapa, vencidos, até a data-limite, sem data/data inválida e posteriores. As categorias são exclusivas: um processo com qualquer registro sem data fica nesse grupo, mesmo quando possui outra data. Até 500 processos, permanece a leitura sem filtro automático.
+
+ATUALIZAR SEM RECOMEÇAR DO ZERO
+1. No terminal da coleta atual, pressione Ctrl+C uma vez. Aguarde salvar e voltar ao prompt PS. Não substitua arquivos enquanto o coletor ainda estiver executando.
+2. Feche o navegador do coletor. Extraia o pacote em C:\projetos\ConectaColetor, substituindo o programa e preservando dados e .venv.
+3. No terminal do VS Code:
+
+Set-Location C:\projetos\ConectaColetor
+.\.venv\Scripts\python.exe .\coletor.py retomar
+.\.venv\Scripts\python.exe .\coletor.py coletar TJRS --visivel --retomar-rodada
+
+A retomada combina as identidades salvas na etapa anterior e no checkpoint da etapa que acabou de ser interrompida. Confira o número informado no início. Ele pode ser maior que 1.410 se houve avanço desde o último resumo. As falhas anteriores continuam registradas; processos já tentados, inclusive falhas, são pulados nessa retomada. A revisão das falhas é uma etapa posterior.
+
+ESCOPO E LIMITES
+Esta alteração resolve o reinício periódico por orçamento e expõe a seleção por datas. Não há garantia de tempo total: depende de volume, rede, tribunal, eventos e páginas por processo. A leitura dos detalhes continua incluindo o histórico de eventos previsto no motor. Agravos não foram ativados na coleta padrão e a integração das iniciais preparadas com o ConectaAdv continua pendente.
+
+VALIDAÇÃO
+141 testes Python do coletor e oito regressões adicionais passaram. Novos testes conferem manutenção da sessão no intervalo, ausência de renovação infinita sem avanço, precedência da pausa/acesso recusado, continuação com painel reconhecido, rejeição da tela de seleção de perfil como painel e classificação dos motivos sem mudar a regra de 20 dias. Não houve teste autenticado no tribunal/Windows; é necessário validar a execução real.

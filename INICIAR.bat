@@ -4,11 +4,11 @@ cd /d "%~dp0"
 title ConectaAdv - Gestao juridica local
 where py >nul 2>&1
 if not errorlevel 1 (
-  py -3 servidor.py
+  py -3 INICIAR_VERIFICADO.py
 ) else (
   where python >nul 2>&1
   if not errorlevel 1 (
-    python servidor.py
+    python INICIAR_VERIFICADO.py
   ) else (
     echo ERRO: Python nao encontrado.
     echo Instale Python 3.10 ou superior e marque "Add Python to PATH".

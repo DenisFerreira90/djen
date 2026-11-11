@@ -15,6 +15,7 @@ def classify(text):
     if not re.search(r'\bmandad[oa]s?\b|busca e apreensao|restricao.*(?:veicul|renajud)',t):return None
     if re.search(r'\bmandato\b',t) and not re.search(r'mandado|busca e apreensao|renajud',t):return None
     if re.search(r'negativ|nao expedid|nao cumprid|indefer|revog|suspend|cancelad|recolhim',t):return 'revisar_negativa_ou_alteracao'
+    if re.search(r'\b(?:pedido|requerimento|solicitacao|requer\w*)\b.{0,55}(?:mandad[oa]s?|busca e apreensao)|\bmandad[oa]s?\s+solicitad',t):return 'possivel_pedido'
     if re.search(r'cumprid|apreendid',t):return 'possivel_cumprimento'
     if re.search(r'expedid|expedicao',t):return 'possivel_expedicao'
     return 'revisar_mencao'
@@ -60,7 +61,8 @@ def case_summaries(db, watched_only=False):
     for r in db.execute(sql):
         number=json.loads(r['case_data']).get('numero','')
         if watched_only and number not in watched:continue
-        case=cases.setdefault(r['case_id'],{'numero':number,'case_id':r['case_id'],'events':[]})
+        from origem_registros import provenance
+        case=cases.setdefault(r['case_id'],{'numero':number,'case_id':r['case_id'],'origem':provenance(json.loads(r['case_data']),case_id=r['case_id']),'events':[]})
         event=json.loads(r['payload']);event['numero']=r['numero'];event['data']=r['data'];case['events'].append(event)
     import mandados_documentos
     result=[]
@@ -83,7 +85,9 @@ def status(store):
         where=" WHERE numero IN (SELECT numero FROM mandate_watchlist)" if scope else ''
         numbers=[r[0] for r in db.execute('SELECT numero FROM mandate_watchlist ORDER BY numero')]
         known={json.loads(r[0]).get('numero') for r in db.execute("SELECT data FROM records WHERE kind='processos'")}
-        return {'itens':[dict(r) for r in db.execute('SELECT * FROM mandate_alerts'+where+' ORDER BY revisado IS NOT NULL,id DESC LIMIT 200')],
+        from origem_registros import provenance
+        origins={r['id']:provenance(json.loads(r['data']),case_id=r['id']) for r in db.execute("SELECT id,data FROM records WHERE kind='processos'")}
+        return {'itens':[{**dict(r),'origem':origins.get(r['case_id'],{})} for r in db.execute('SELECT * FROM mandate_alerts'+where+' ORDER BY revisado IS NOT NULL,id DESC LIMIT 200')],
                 'pendentes':db.execute('SELECT COUNT(*) FROM mandate_alerts'+where+(' AND ' if scope else ' WHERE ')+'revisado IS NULL').fetchone()[0],
                 'resumos':case_summaries(db, watched_only=scope),'estado':state,'numeros':numbers,'sem_cadastro':[n for n in numbers if n not in known],
                 'cobertura':'Eventos importados. Documentos não lidos; ausência de alerta não comprova ausência de mandado. A varredura local não consulta o tribunal.'}
@@ -109,6 +113,7 @@ def start(store):
             try:
                 scan(store)
                 import email_alertas
+                email_alertas.process_mandates(store)
                 email_alertas.process(store)
             except Exception:
                 import logging;logging.exception('Falha na triagem de mandados')

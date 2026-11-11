@@ -1,0 +1,28 @@
+FINALIZAR OS PENDENTES DO TJRS EM UMA EXECUCAO
+
+Feche o coletor antes de atualizar. Extraia esta atualizacao na pasta
+C:\projetos\ConectaColetor, substituindo os arquivos do programa.
+Preserve as pastas dados e .venv: elas contem o banco, a fila e o ambiente.
+
+No terminal do VS Code, dentro dessa pasta, execute:
+    .\FINALIZAR_COLETA_TJRS.bat
+
+O modo pendentes preserva leituras concluidas no banco local, mesmo quando
+a lista mudou ou a leitura ficou antiga. Busca os ainda nao lidos e tenta
+novamente as falhas. Nao e o modo de atualizacao diaria de processos.
+Nao combine com --retomar-rodada, que pularia falhas ja tentadas.
+
+A auditoria anterior encontrou 46 processos nao tentados e 5 falhas.
+O total atual depende das listas do tribunal e do banco preservado.
+A regra de ate 500 processos / acima de 500 janela de 20 dias permanece.
+Vencidos e casos sem data continuam prioritarios. Historicos dos casos
+selecionados nao sao limitados a 20 dias.
+
+Os intervalos com progresso continuam no mesmo navegador sem pedir OK.
+Se uma categoria estiver ausente na lista, o coletor tenta recuperar seus
+links pelo Painel do Advogado observado na sessao atual. Nao inventa hash.
+Login/2FA, bloqueio do tribunal, pausa ou ausencia de progresso ainda podem
+exigir intervencao. Relatorio nao localizado continua marcado incompleto.
+
+Validacao automatizada local aprovada. A coleta autenticada no TJRS ainda
+precisa ser conferida no computador do usuario.

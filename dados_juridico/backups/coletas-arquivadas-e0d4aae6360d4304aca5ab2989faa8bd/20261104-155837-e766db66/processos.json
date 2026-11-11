@@ -1,0 +1,30 @@
+{
+  "execucao": {
+    "id": "20261104-155837-e766db66",
+    "tribunal": "TJSC",
+    "inicio": "2026-11-04T15:58:37-03:00",
+    "fim": "2026-11-04T15:58:38-03:00",
+    "estado": "erro",
+    "lidos": 0,
+    "encontrados": 0,
+    "relatorios": [],
+    "historicos_pendentes": 0,
+    "esperados": null,
+    "falhas": 0,
+    "ignorados": 0,
+    "modo": "incremental",
+    "registros_lista": 0,
+    "salvos_sistema": 0,
+    "mensagem": "Encerramento da tentativa: navegação ou página mudou durante a operação (Error). Código: ERR-C0687AB896",
+    "log": [
+      {
+        "data": "2026-11-04T15:58:38-03:00",
+        "mensagem": "Encerramento da tentativa: navegação ou página mudou durante a operação (Error). Código: ERR-C0687AB896"
+      }
+    ],
+    "validacao": "Layout interno ainda requer conferência com o eproc."
+  },
+  "processos": [],
+  "paginas_da_lista": [],
+  "observacao": "Leitura das páginas visíveis. Não inclui anexos, documentos, abas fechadas ou cálculo de prazos. Campos e associações entre partes dependem da validação do layout."
+}

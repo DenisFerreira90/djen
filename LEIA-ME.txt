@@ -1,3 +1,11 @@
+V51: importação de autenticadores pela câmera ou imagens de QR. Veja GUIA-V51-IMPORTAR-QR.txt.
+
+ATUALIZAÇÃO V50: veja GUIA-V50-AUTENTICADOR.txt para o autenticador, CPF e aplicação da atualização.
+
+ATUALIZAÇÃO V49: veja GUIA-V49-DIAGNOSTICO.txt para diagnóstico, permissões e atualização segura.
+
+ATUALIZAÇÃO V48: veja GUIA-V48-CHAT.txt para as melhorias do chat e instalação sem apagar dados.
+
 ARA — GESTÃO JURÍDICA LOCAL + COLETA EPROC / CONSULTA DJEN
 =======================================================
 Versão: 6, 27/10/2026. Reprocessamento local, gravação progressiva e API.

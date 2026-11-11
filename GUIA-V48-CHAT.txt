@@ -1,0 +1,111 @@
+CONECTAADV V48 — CHAT E ORGANIZAÇÃO DO TRABALHO
+
+COMO ATUALIZAR
+1. Aguarde uma coleta em andamento terminar antes de parar o servidor.
+2. Faça o backup atual pelo sistema e guarde uma cópia das pastas de dados.
+3. Feche o servidor principal e, se estiver usando, o servidor do chat.
+4. Copie o conteúdo da pasta djen deste ZIP para C:\projetos\djen,
+   substituindo os arquivos do programa. Preserve todas as pastas de dados,
+   bancos, configurações locais e sessões que já existem no computador.
+   Não apague o banco e não execute os comandos de limpeza das coletas.
+5. Inicie pelo mesmo atalho usado atualmente. INICIAR.bat é o padrão;
+   quem já separou o chat deve continuar com os atalhos do chat independente.
+6. Atualize a página com Ctrl+F5 para carregar os arquivos novos.
+As tabelas novas são criadas automaticamente no banco do chat em uso.
+Não é preciso migrar novamente um chat que já foi separado.
+Este pacote não contém bancos, senhas, certificados ou sessões de usuários.
+
+CONVERSA MAIS LIMPA
+- Recentes mostra até dez conversas na ordem de atividade, mais fixadas,
+  não lidas e a conversa atual. Grupos sem mensagens não lotam a lista inicial.
+- Todas, Pessoas, Grupos e Avisos continuam disponíveis nos filtros.
+- Pesquisar pelo nome também localiza conversas fora do recorte de Recentes.
+- Anexar, Gravar áudio e Enviar ficam visíveis no campo de composição.
+  Figurinhas, seleção de tipo de arquivo, emojis e enquete ficam em Mais opções.
+- Enter envia; Shift+Enter quebra a linha. Esc recolhe o painel lateral.
+- O botão de expandir leva o chat para a página inteira.
+- Fixar mantém o chat ao lado do trabalho e reserva espaço em telas largas.
+- Largura, altura e posição do painel solto ficam nas preferências do usuário.
+  Ao mudar o tamanho da tela, a posição se ajusta para continuar acessível.
+- Mensagens recebidas exibem uma prévia discreta, respeitando a privacidade.
+  A notificação abre a conversa correta; não abre janelas sozinha.
+- O painel de 2FA permanece separado, com suas permissões anteriores.
+
+ENVIO E CONEXÃO
+O chat indica envio em andamento e erro de confirmação. Tentar novamente
+reutiliza o identificador e o conteúdo daquele envio. Se o servidor já gravou
+a mensagem mas a resposta se perdeu, ele devolve a mesma mensagem.
+Enquanto aguarda confirmação, o conteúdo fica protegido de edição.
+A conversa mostra a perda de conexão e tenta reconectar gradualmente.
+
+IMPORTANTE: o envio pendente fica na memória daquela página. Não há fila
+que sobreviva ao fechamento ou recarregamento do navegador. Confirme o envio
+antes de sair, ou copie o texto antes de recarregar uma página com erro.
+Históricos enviados, salvos, notas, demandas e preferências ficam no servidor
+e podem ser vistos em outro computador entrando na mesma conta e servidor.
+
+BUSCA, ITENS SALVOS E NOTAS
+Em Opções e administração:
+- Buscar mensagens: texto, número de processo mencionado no texto, pessoa,
+  conversa/setor, período e mensagens com anexos. Busca também nome de arquivo.
+  Não pesquisa o conteúdo interno de PDF, imagem ou áudio.
+- Meus salvos: guardar mensagens e referências aos arquivos da conversa.
+- Minhas notas: bloco pessoal com criação, edição e exclusão de notas.
+A busca retorna até cem mensagens por vez; refine os filtros se houver mais.
+O acesso continua condicionado à participação no grupo e à regra de histórico.
+Ser administrador comum não permite pesquisar conversas privadas alheias.
+Salvos não dão acesso permanente a uma conversa da qual a pessoa foi retirada.
+Notas são privadas na interface; os bancos e backups não têm criptografia de
+ponta a ponta. As regras existentes de administração e backup continuam válidas.
+
+DEMANDA A PARTIR DA MENSAGEM
+No menu da mensagem, use Criar demanda. Informe o título, responsável
+participante da conversa, prazo e número de processo opcional.
+A mensagem de origem fica vinculada como contexto.
+Em Minhas demandas, solicitante e responsável podem concluir ou reabrir.
+A demanda pertence ao chat: funciona inclusive no banco independente.
+Ela não cria prazo judicial, não peticiona e não altera dados do tribunal.
+A lista só exibe demandas cuja mensagem de origem continua acessível.
+
+AVISOS COM CIÊNCIA EXPLÍCITA
+A administração do chat pode solicitar “Li e estou ciente” em mensagens do
+Geral e dos comunicados. O destinatário confirma clicando no botão.
+Abrir ou visualizar a mensagem não confirma ciência automaticamente.
+A administração acompanha nomes, horários e pendências.
+A lista de destinatários é registrada na solicitação; adicionar pessoas depois
+não altera essa lista. Para atingir novos destinatários, publique novo aviso.
+
+HISTÓRICO DE NOVOS INTEGRANTES
+O proprietário encontra a opção em Detalhes e ferramentas da conversa:
+- Todo o histórico (padrão preservado para conversas existentes).
+- Somente mensagens posteriores à entrada no grupo.
+A regra vale para próximas inclusões, inclusive uma pessoa removida e reincluída.
+Não muda o acesso dos integrantes atuais. A restrição vale também para anexos,
+busca, salvos, referências de respostas, reações, encaminhamento e confirmações.
+Ela se aplica a grupos e comunicados; não altera conversas individuais ou Geral.
+Documentos já baixados por uma pessoa não podem ser apagados do computador dela.
+
+NOTIFICAÇÕES
+Nas configurações pessoais, selecione início e fim do silêncio pelo horário
+local do computador. Durante o silêncio, mensagens e contador continuam chegando,
+mas não há som, aviso flutuante ou notificação do computador.
+Fora do silêncio, a prévia prioriza menção textual @Nome completo, mensagem
+direta e aviso, nessa ordem. As demais mensagens continuam no histórico e contador.
+Não há seletor de menções ainda: escreva @ seguido do nome cadastrado completo.
+Som exige uma interação inicial; notificações do computador exigem autorização
+no navegador e HTTPS ou localhost. O sistema precisa permanecer aberto.
+
+TESTE COM COLEGAS
+Use contas individuais em duas máquinas conectadas ao mesmo servidor.
+Teste: mensagem e áudio, grupo reservado, envio interrompido e retry, ciência de
+aviso, demanda atribuída, busca, retirada do grupo e tentativa de abrir anexo antigo.
+Teste a fixação enquanto o colega usa uma tela de processos e uma agenda.
+Para acesso em rede, use a configuração HTTPS/LAN/VPN existente da V47.
+Não migre bancos de novo apenas para testar e não exponha a porta à internet.
+
+VALIDAÇÃO DESTA ENTREGA
+Testes automatizados de permissões, HTTP, reenvio, histórico, anexos, busca,
+ciência, demandas, notas e migração para o chat independente.
+Controles de envio, atalhos e telas verificados em DOM simulado.
+A apresentação visual, microfone e notificações em Windows com colegas ainda
+precisam do teste no ambiente real; não foram certificados por estes testes.

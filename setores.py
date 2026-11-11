@@ -3,6 +3,7 @@ import unicodedata
 import juridico as legal
 
 SETORES=(('contratacao','Contratação'),('arquivo','Arquivo'),('acordos','Acordos'),('financeiro','Financeiro'),('cobranca','Cobrança'),('previdenciario','Previdenciário'),('controladoria','Controladoria'),('consignados','Consignados'),('bancario','Bancário'),('civel','Cível'),('relacionamento','Relacionamento'),('secretarias','Secretarias'),('rh','RH'),('gerencia','Gerência'),('ti','TI'))
+AGENDAMENTO_SETORES=('civel','contratacao')
 
 def normalized(value):return ''.join(c for c in unicodedata.normalize('NFKD',str(value).lower()) if c.isalnum())
 
@@ -11,6 +12,32 @@ def schema(db):
     CREATE TABLE IF NOT EXISTS office_capabilities(user_id INTEGER PRIMARY KEY,secretaria INTEGER NOT NULL DEFAULT 0,alterado_por INTEGER,alterado_em TEXT);
     CREATE TABLE IF NOT EXISTS calendar_sectors(calendar_id INTEGER PRIMARY KEY,codigo TEXT NOT NULL,criado_por INTEGER);
     CREATE TABLE IF NOT EXISTS office_defaults(chave TEXT PRIMARY KEY,valor TEXT NOT NULL);''')
+    db.execute('CREATE TABLE IF NOT EXISTS office_calendar_capabilities(user_id INTEGER NOT NULL,setor TEXT NOT NULL,criar INTEGER NOT NULL DEFAULT 0,alterado_por INTEGER,alterado_em TEXT,PRIMARY KEY(user_id,setor))')
+
+def can_create_agenda_db(db,actor,sector):
+    if actor['role']=='leitor':return False
+    if actor['role']=='administrador':return True
+    if sector=='relacionamento':return can_create_db(db,actor)
+    if sector not in AGENDAMENTO_SETORES:return False
+    return bool(db.execute('SELECT 1 FROM office_calendar_capabilities WHERE user_id=? AND setor=? AND criar=1',(actor['id'],sector)).fetchone())
+
+def calendar_capabilities(store,actor,body=None):
+    if actor['role']!='administrador':raise legal.AppError('Só administradores gerenciam a Gestão de agendamentos.',403)
+    bootstrap(store)
+    with store.lock,store.connect() as db:
+        if body is not None:
+            uid=body.get('user_id');sectors=body.get('setores')
+            if type(uid)is not int or not isinstance(sectors,list) or any(type(s)is not str or s not in AGENDAMENTO_SETORES for s in sectors) or len(set(sectors))!=len(sectors):raise legal.AppError('Permissões de agendamento inválidas.')
+            user=db.execute('SELECT role FROM users WHERE id=? AND ativo=1',(uid,)).fetchone()
+            if not user:raise legal.AppError('Usuário não encontrado.',404)
+            if user['role']=='leitor' and sectors:raise legal.AppError('O perfil Leitor não pode criar agendas.',403)
+            db.execute('DELETE FROM office_calendar_capabilities WHERE user_id=?',(uid,))
+            db.executemany('INSERT INTO office_calendar_capabilities VALUES(?,?,?,?,?)',[(uid,s,1,actor['id'],legal.now()) for s in sectors])
+            store.audit(db,actor,'gestao_agendamentos','usuario',uid,after={'criar_agendas':sectors})
+        users=[]
+        for u in db.execute('SELECT id,nome,role FROM users WHERE ativo=1 ORDER BY nome').fetchall():
+            users.append({**dict(u),'setores':[s for s in AGENDAMENTO_SETORES if can_create_agenda_db(db,dict(u),s)]})
+        return {'usuarios':users,'setores':[{'codigo':s,'nome':dict(SETORES)[s]} for s in AGENDAMENTO_SETORES]}
 
 def can_create_db(db,actor):
     if actor['role']=='administrador':return True
@@ -49,7 +76,7 @@ def bootstrap(store,with_calendar=True):
 
 def access(store,actor):
     bootstrap(store)
-    with store.lock,store.connect() as db:return {'pode_criar_agenda_relacionamento':can_create_db(db,actor),'administrador':actor['role']=='administrador'}
+    with store.lock,store.connect() as db:return {'pode_criar_agenda_relacionamento':can_create_db(db,actor),'administrador':actor['role']=='administrador','criar_agendas_setores':[s for s in AGENDAMENTO_SETORES if can_create_agenda_db(db,actor,s)]}
 
 def directory(store,actor):
     import chat_recursos as features

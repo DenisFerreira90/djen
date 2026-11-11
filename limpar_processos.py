@@ -87,7 +87,7 @@ def clean(store,actor,expected=None,restart=False):
    db.execute('DELETE FROM records WHERE id IN (SELECT id FROM cleanup_ids)')
    if restart:
     # Somente estado da coleta; identidade, RH, chat e histórico de envio permanecem.
-    for table in ('mandate_alerts','source_events','source_complements','mandate_reports','monitor_results','monitor_job_courts','monitor_jobs','monitor_runs','monitor_baselines','monitor_watch_context','monitor_watch_meta','monitor_repeat','monitor_config','mandate_watchlist','mandate_state','email_review_drafts','email_digest_parts','email_digest_batches','email_digest_state','collection_queue','sync_state','collection_schedule'):
+    for table in ('mandate_alerts','source_events','source_complements','mandate_reports','monitor_results','monitor_job_courts','monitor_jobs','monitor_runs','monitor_baselines','monitor_watch_context','monitor_watch_meta','monitor_repeat','monitor_config','mandate_watchlist','mandate_state','email_review_drafts','email_digest_parts','email_digest_batches','email_digest_state','collection_queue','sync_state','collection_schedule','tjrs_lista_atual'):
      if table in names:db.execute('DELETE FROM '+table)
     if 'imports' in names:db.execute('DELETE FROM imports WHERE NOT EXISTS(SELECT 1 FROM evidence e WHERE e.import_id=imports.id)')
     if 'mandate_state' in names:db.execute("INSERT INTO mandate_state VALUES('somente_lista','1')")

@@ -1,0 +1,7 @@
+ConectaAdv v52 — teste manual TJSC
+
+Em Coleta eproc, selecione TJSC — Santa Catarina (teste manual).
+Clique em Iniciar coleta. Na janela do coletor, entre usando o A1, selecione Advogado Titular e abra Processos com prazo em aberto. Volte ao ConectaAdv e clique em Continuar após login.
+A coleta manual usa somente o TJSC de primeiro grau, com sessão separada do TJRS. A rotina automática continua com a configuração anterior; o teste não altera essa rotina. O teste coleta a listagem de prazos abertos e os detalhes acessíveis, não necessariamente todos os processos do acervo.
+O certificado A1 deve estar disponível no computador da execução. Login feito em outro navegador não é reaproveitado automaticamente.
+Instale sobre a pasta atual preservando os dados locais e reinicie o servidor.

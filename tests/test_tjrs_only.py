@@ -1,6 +1,6 @@
 import sys,tempfile,unittest,json
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock,patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import juridico as legal,monitoramento as m,eproc,eproc_tribunais as courts
 from test_busca_lista import FakeCollector,RS,SC
@@ -16,7 +16,18 @@ class RSOnlyTests(unittest.TestCase):
   with self.assertRaises(legal.AppError):m.search_list(self.store,self.actor,self.collector,{'numeros':[SC],'nonce':'onlysc-1234'})
   self.assertEqual(self.collector.started,[])
  def test_direct_sc_collector_blocked(self):
-  with self.assertRaisesRegex(ValueError,'desativado'):eproc.Collector().start(self.actor,{'tribunal':'TJSC'})
+  with self.assertRaisesRegex(ValueError,'teste manual'):eproc.Collector().start(self.actor,{'tribunal':'TJSC'})
+ def test_sc_explicit_manual_test_isolated(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   c=eproc.Collector(tmp)
+   with patch.object(eproc.threading,'Thread') as thread:
+    result=c.start(self.actor,{'tribunal':'TJSC','teste_sc':True})
+   self.assertEqual(c.options['tribunal'],'TJSC');self.assertEqual(c.current['tribunal'],'TJSC')
+   self.assertTrue(thread.return_value.start.called)
+ def test_sc_automatic_cannot_use_manual_test_flag(self):
+  for options in ({'automatico':True},{'monitorar_lista':True}):
+   with self.assertRaisesRegex(ValueError,'teste manual'):
+    eproc.Collector().start(self.actor,dict(options,tribunal='TJSC',teste_sc=True))
  def test_sc_history_identity_preserved(self):
   self.assertEqual(courts.from_number(SC),'TJSC');self.assertFalse(courts.enabled('TJSC'));self.assertTrue(courts.enabled('TJRS'))
 if __name__=='__main__':unittest.main()

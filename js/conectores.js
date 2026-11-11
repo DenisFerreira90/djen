@@ -5,7 +5,7 @@ window.Conectores={async render(){
  const data=await api('conectores');const box=card();
  box.append(el('p','callout',data.aviso));
  table(['Fonte','Tribunal','Disponibilidade','Dados disponíveis','Acesso'],data.itens.map(r=>[
-  r.sistema,r.tribunal,r.estado==='instalado'?'Conector instalado':r.estado==='desativado_temporariamente'?'Temporariamente desativado':'Integração futura',
+  r.sistema,r.tribunal,r.estado==='teste_manual'?'Teste manual — validar acesso e coleta':r.estado==='instalado'?'Conector instalado':r.estado==='desativado_temporariamente'?'Temporariamente desativado':'Integração futura',
   Object.entries(r.capacidades).filter(([,v])=>v).map(([k])=>({cadastro:'Cadastro',eventos:'Eventos',documentos:'Documentos',incremental:'Leitura incremental'}[k])).join(' · ')||'Ainda sem coleta',r.acesso
  ]),box);
  const detail=el('details','ui-disclosure');detail.append(el('summary','','Detalhes das integrações'));

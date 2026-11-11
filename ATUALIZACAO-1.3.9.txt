@@ -1,0 +1,28 @@
+ConectaColetor 1.3.9 — tabela pronta antes de coletar e retomada salva
+
+SITUAÇÃO
+O log recebido mostra 925 processos tentados e quatro falhas acumuladas. Após abrir outra etapa, o motor não reconheceu a tabela e encerrou como parcial com zero naquela etapa. Isso não significa que os dados anteriores tenham sido apagados nem que o tribunal tenha zero processos. O log não comprova suspensão do computador.
+
+AJUSTE
+O endereço da lista sozinho não é mais aceito como prova de tabela pronta. O coletor aguarda até 60 segundos por uma tabela reconhecida com dados compatíveis com a legenda e três observações estáveis. Se a tabela não aparecer no modo visível, conserva a janela para conferência e solicita ENTER/Continuar depois que o usuário abrir o painel/lista. Não considera uma tela sem tabela como zero confirmado. Uma tabela com cabeçalhos e legenda explícita de zero continua podendo ser conferida como vazia.
+
+Os relatórios também esperam a tabela carregar. Os links das categorias são lembrados apenas em memória antes de abrir a lista de prazos, sem salvar URLs ou hashes no banco, no checkpoint ou no pacote. Falhas de navegação não são tratadas como sucesso e não há tentativas automáticas infinitas de acesso recusado.
+
+RETOMAR A RODADA QUE ENCERROU
+1. Feche o coletor e o navegador dele.
+2. Extraia o pacote em C:\projetos\ConectaColetor, substituindo os arquivos do programa. Preserve dados e .venv.
+3. No terminal do VS Code:
+
+Set-Location C:\projetos\ConectaColetor
+.\.venv\Scripts\python.exe .\coletor.py coletar TJRS --visivel --retomar-rodada
+
+O primeiro resumo informa a quantidade de processos já tentados recuperada. Para a sequência de logs recebida, espera-se que a última etapa tenha as 925 identidades anteriores em suas opções salvas. O comando usa o banco e, quando disponível, o arquivo de coleta/checkpoint da última etapa para recuperar as identidades; não depende de um número digitado manualmente.
+
+O modo de retomada conserva as regras da rodada salva, incluindo janela de dias/modo. Exclui os processos já tentados, inclusive as falhas, para continuar os restantes. Essas falhas continuam registradas e exigem uma revisão posterior. A quantidade de processos atual pode mudar no tribunal; não há promessa de um número fixo de detalhes restantes.
+
+A retomada é específica do tribunal e não mistura TJRS/TJSC/TJRJ. Se não houver trabalho anterior, ou se a última rodada terminou como coletado_revisar, o comando informa a situação em vez de inventar uma retomada. Não abra outra coleta em paralelo. Para uma nova rodada completa, use o comando habitual sem --retomar-rodada.
+
+A pausa por orçamento ainda pode abrir outra etapa e pedir confirmação no modo visível. Esta versão não elimina essa troca de navegador. O ajuste trata a espera pela tabela e a recuperação da rodada após encerramento. Falhas e históricos pendentes acumulados também impedem considerar a etapa final como coleta conferida sem revisão.
+
+VALIDAÇÃO
+134 testes Python do coletor e oito regressões adicionais passaram. Incluem tabela atrasada, tela que nunca carrega, interrupção manual, janela preservada, links restritos ao tribunal, ausência de confirmação duplicada e recuperação de 925 identidades/quatro falhas após uma etapa vazia. Os testes de retomada também combinam o checkpoint mais recente e isolam tribunais. Não houve navegação autenticada no Windows nesta validação. A correção precisa ser testada na instalação do usuário; o log não determina sozinho por que a tela não carregou naquele momento.

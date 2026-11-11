@@ -1,0 +1,1742 @@
+//OBSERVACAO: Se fizer modificacoes nesse arquivo, é necessário modificar o PaginaEproc.php,
+//incrementando o último número da constante NR_VERSAO_EPROC. Essa constante é utilizada na funcao adicionarJavascript(),
+//bem como na funcao getNumVersao(), e evita problemas que ocorrem quando o cache do navegador nao atualiza o javascript.
+
+/* arquivo js para funcoes comuns no cadastramento de minutas */
+
+
+function listarModelo(prefixo){
+    prefixo = (prefixo === undefined ? '': prefixo);
+	if(prefixo.length<=0 && document.getElementById('divGrupoTextosIniciais')) document.getElementById('divGrupoTextosIniciais').innerHTML = '';
+	document.getElementById(prefixo+'txtModelo').value = '';
+	document.getElementById(prefixo+'hdnIdModelo').value='';
+	document.getElementById(prefixo+'txtModelo').focus();
+	eval(prefixo+'objAjaxModelo').executar();
+	document.getElementById(prefixo+'txtDocumentoBase').style.visibility = 'hidden';
+	document.getElementById(prefixo+'imgLupaDocumentoBase').style.visibility = 'hidden';
+	document.getElementById(prefixo+'imgExcluirLupaDocumentoBase').style.visibility = 'hidden';
+	document.getElementById('btnBuscarDocsRelacionados').style.visibility = 'hidden';
+	document.getElementById(prefixo+'txtDocumentoBase').value = '';
+  document.getElementById('divTextoPadrao').style.visibility = 'hidden';
+  document.getElementById('divTextoPadrao').innerHTML = '';
+  $('#imgLoadingModelo').css('display','inline');
+}
+function limparModeloMatrizTextoPadraoEBase(prefixo){
+    prefixo = (prefixo === undefined ? '': prefixo);
+	if (retVar('acao')!='minuta_editar_lote')
+	{
+		//na edição de lote, não limpar o campo modelo
+		document.getElementById(prefixo+'txtModelo').value='';
+		document.getElementById(prefixo+'hdnIdModelo').value='';
+	}
+	document.getElementById(prefixo+'txtDocumentoBase').style.visibility = 'hidden';
+	document.getElementById(prefixo+'imgLupaDocumentoBase').style.visibility = 'hidden';
+	document.getElementById(prefixo+'imgExcluirLupaDocumentoBase').style.visibility = 'hidden';
+	document.getElementById(prefixo+'txtDocumentoBase').value = '';
+	document.getElementById(prefixo+'optDocumentoBase').checked=false;
+	document.getElementById('btnBuscarDocsRelacionados').style.visibility = 'hidden';
+  document.getElementById('divTextoPadrao').style.visibility = 'hidden';
+  document.getElementById('divTextoPadrao').innerHTML = '';
+  document.getElementById(prefixo+'lblTextoPadrao1').style.display = 'none';
+	document.getElementById(prefixo+'txtTextoPadrao1').style.display = 'none';
+	document.getElementById(prefixo+'txtTextoPadrao1').value = '';
+	document.getElementById(prefixo+'imgLupaTexto1').style.display = 'none';
+	document.getElementById(prefixo+'imgExcluirLupaTexto1').style.display = 'none';
+	document.getElementById(prefixo+'lblTextoPadrao2').style.display = 'none';
+	document.getElementById(prefixo+'txtTextoPadrao2').style.display = 'none';
+	document.getElementById(prefixo+'txtTextoPadrao2').value = '';
+	document.getElementById(prefixo+'imgLupaTexto2').style.display = 'none';
+	document.getElementById(prefixo+'imgExcluirLupaTexto2').style.display = 'none';
+	document.getElementById(prefixo+'optTextoPadrao').checked=false;
+	document.getElementById(prefixo+'optTextoPadrao').style.visibility = 'hidden';
+	document.getElementById(prefixo+'lblTextoPadrao').style.visibility = 'hidden';
+	document.getElementById(prefixo+'optDocumentoBase').style.visibility = 'hidden';
+	document.getElementById(prefixo+'lblDocumentoBase').style.visibility = 'hidden';
+	if (document.getElementById('divPrecedenteRelevante')!==null){
+		document.getElementById('divPrecedenteRelevante').style.display = 'none';
+	}
+    if (document.getElementById('divProtocoloJulgamentoPerspectivaGenero')!==null){
+        document.getElementById('divProtocoloJulgamentoPerspectivaGenero').style.display = 'none';
+    }
+    if (document.getElementById('divProtocoloJulgamentoPerspectivaRacial')!==null){
+        document.getElementById('divProtocoloJulgamentoPerspectivaRacial').style.display = 'none';
+    }
+    if (document.getElementById('divJurisprudencia')!==null){
+        document.getElementById('divJurisprudencia').style.display = 'none';
+    }
+}
+function esconderTextoPadraoEBase(prefixo){
+    prefixo = (prefixo === undefined ? '': prefixo);
+  document.getElementById(prefixo+'txtDocumentoBase').style.visibility = 'hidden';
+  document.getElementById(prefixo+'imgLupaDocumentoBase').style.visibility = 'hidden';
+  document.getElementById(prefixo+'imgExcluirLupaDocumentoBase').style.visibility = 'hidden';
+  document.getElementById(prefixo+'txtDocumentoBase').value = '';
+  document.getElementById(prefixo+'optDocumentoBase').checked=false;
+	document.getElementById('btnBuscarDocsRelacionados').style.visibility = 'hidden';
+	document.getElementById('divTextoPadrao').style.visibility = 'hidden';
+  document.getElementById('divTextoPadrao').innerHTML = '';
+  document.getElementById(prefixo+'lblTextoPadrao1').style.display = 'none';
+  document.getElementById(prefixo+'txtTextoPadrao1').style.display = 'none';
+  document.getElementById(prefixo+'txtTextoPadrao1').value = '';
+  document.getElementById(prefixo+'imgLupaTexto1').style.display = 'none';
+  document.getElementById(prefixo+'imgExcluirLupaTexto1').style.display = 'none';
+  document.getElementById(prefixo+'lblTextoPadrao2').style.display = 'none';
+  document.getElementById(prefixo+'txtTextoPadrao2').style.display = 'none';
+  document.getElementById(prefixo+'txtTextoPadrao2').value = '';
+  document.getElementById(prefixo+'imgLupaTexto2').style.display = 'none';
+  document.getElementById(prefixo+'imgExcluirLupaTexto2').style.display = 'none';
+  document.getElementById(prefixo+'optTextoPadrao').checked=false;
+  document.getElementById(prefixo+'optTextoPadrao').style.visibility = 'hidden';
+  document.getElementById(prefixo+'lblTextoPadrao').style.visibility = 'hidden';
+  document.getElementById(prefixo+'optDocumentoBase').style.visibility = 'hidden';
+  document.getElementById(prefixo+'lblDocumentoBase').style.visibility = 'hidden';
+  if (document.getElementById('divPrecedenteRelevante')!==null){
+    document.getElementById('divPrecedenteRelevante').style.display = 'none';
+  }
+  if (document.getElementById('divProtocoloJulgamentoPerspectivaGenero')!==null){
+    document.getElementById('divProtocoloJulgamentoPerspectivaGenero').style.display = 'none';
+  }
+  if (document.getElementById('divProtocoloJulgamentoPerspectivaRacial')!==null){
+      document.getElementById('divProtocoloJulgamentoPerspectivaRacial').style.display = 'none';
+  }
+  if (document.getElementById('divJurisprudencia')!==null){
+      document.getElementById('divJurisprudencia').style.display = 'none';
+  }
+}
+function limparTextoPadraoEBase(prefixo){
+    prefixo = (prefixo === undefined ? '': prefixo);
+	document.getElementById(prefixo+'txtDocumentoBase').style.visibility = 'hidden';
+	document.getElementById(prefixo+'imgLupaDocumentoBase').style.visibility = 'hidden';
+	document.getElementById(prefixo+'imgExcluirLupaDocumentoBase').style.visibility = 'hidden';
+	document.getElementById(prefixo+'txtDocumentoBase').value = '';
+	//document.getElementById('btnBuscarDocsRelacionados').style.visibility = 'hidden';
+	//document.getElementById('selTratamento').value = 'null';
+  document.getElementById('divTextoPadrao').style.visibility = 'hidden';
+  document.getElementById('divTextoPadrao').innerHTML = '';
+}
+
+function limparModeloPadrao(prefixo){
+    prefixo = (prefixo === undefined ? '': prefixo);
+	document.getElementById(prefixo+'txtModeloPadrao').value = '';
+	document.getElementById(prefixo+'hdnModeloPadrao').value = '';	
+	//document.getElementById('selTratamento').value = 'null';
+  document.getElementById(prefixo+'divTextoPadraoOuBase').style.display = 'block';
+  document.getElementById(prefixo+'divDocumentoBase').style.display = 'block';
+	document.getElementById(prefixo+'optTextoPadrao').style.visibility = 'visible';
+	document.getElementById(prefixo+'lblTextoPadrao').style.visibility = 'visible';
+	document.getElementById(prefixo+'optDocumentoBase').style.visibility = 'visible';
+	document.getElementById(prefixo+'lblDocumentoBase').style.visibility = 'visible';
+	if (document.getElementById('divPrecedenteRelevante')!==null){
+		document.getElementById('divPrecedenteRelevante').style.display = 'none';
+	}
+    if (document.getElementById('divProtocoloJulgamentoPerspectivaGenero')!==null){
+        document.getElementById('divProtocoloJulgamentoPerspectivaGenero').style.display = 'none';
+    }
+    if (document.getElementById('divProtocoloJulgamentoPerspectivaRacial')!==null){
+        document.getElementById('divProtocoloJulgamentoPerspectivaRacial').style.display = 'none';
+    }
+    if (document.getElementById('divJurisprudencia')!==null){
+        document.getElementById('divJurisprudencia').style.display = 'none';
+    }
+}
+
+$(function() {
+    const strLinkCitacaoMontarSelectAberturaPrazoLitisconsorcio = $(
+        '#strLinkCitacaoMontarSelectAberturaPrazoLitisconsorcio').val();
+    const acao = $(
+        '#acao').val();
+    ajustarAlturaDivTextoInicialSeContextoLLM();
+    if (strLinkCitacaoMontarSelectAberturaPrazoLitisconsorcio) {
+        carregarSelectAberturaPrazoLitisconsorcioCitacaoCadastrar(strLinkCitacaoMontarSelectAberturaPrazoLitisconsorcio, acao);
+    }
+});
+
+function carregarSelectAberturaPrazoLitisconsorcioCitacaoCadastrar(url, acao) {
+
+    if (!url || url.trim() === '') {
+        return;
+    }
+
+    const divAberturaPrazoLitisconsorcioCitacao = $('#divAberturaPrazoLitisconsorcioCitacao');
+
+    divAberturaPrazoLitisconsorcioCitacao.empty();
+
+    $.ajax({
+        type: 'POST',
+        dataType: 'text',
+        url: url,
+        data: {
+            numProcesso: $('#hdnNumProcesso').val(),
+            acao: acao
+        },
+        success: function(response) {
+            if (response !== '') {
+                divAberturaPrazoLitisconsorcioCitacao.show();
+                divAberturaPrazoLitisconsorcioCitacao.html(response);
+            }
+
+        },
+    });
+}
+function ajustarAlturaDivTextoInicialSeContextoLLM() {
+    if (!getIdLogDemandaLLM()) {
+        return;
+    }
+
+    $("#divTextoInicial").css("height","16em");
+}
+
+function getIdLogDemandaLLM() {
+    return $('[id$="hdnIdLogDemandaLLM"]').val()
+}
+
+function desmarcarRadioButtonTextoGeradoPorIA(prefixo) {
+    $(`input[name='rdoTextoInicial'][value='IA']`).prop('checked', false);
+}
+
+function removerComponentesDocumentoBase(prefixo) {
+    document.getElementById(prefixo+'txtDocumentoBase').style.visibility = 'hidden';
+    document.getElementById(prefixo+'imgLupaDocumentoBase').style.visibility = 'hidden';
+    document.getElementById(prefixo+'imgExcluirLupaDocumentoBase').style.visibility = 'hidden';
+    document.getElementById(prefixo+'txtDocumentoBase').value='';
+    document.getElementById('btnBuscarDocsRelacionados').style.visibility = 'hidden';
+}
+
+function removerComponentesDocumentoPadrao(prefixo) {
+    document.getElementById('divTextoPadrao').style.visibility = 'hidden';
+    document.getElementById('divTextoPadrao').innerHTML = '';
+    document.getElementById(prefixo+'lblTextoPadrao1').style.display = 'none';
+    document.getElementById(prefixo+'txtTextoPadrao1').style.display = 'none';
+    document.getElementById(prefixo+'txtTextoPadrao1').value='';
+    document.getElementById(prefixo+'imgLupaTexto1').style.display = 'none';
+    document.getElementById(prefixo+'imgExcluirLupaTexto1').style.display = 'none';
+    document.getElementById(prefixo+'lblTextoPadrao2').style.display = 'none';
+    document.getElementById(prefixo+'txtTextoPadrao2').style.display = 'none';
+    document.getElementById(prefixo+'txtTextoPadrao2').value='';
+    document.getElementById(prefixo+'imgLupaTexto2').style.display = 'none';
+    document.getElementById(prefixo+'imgExcluirLupaTexto2').style.display = 'none';
+    document.getElementById(prefixo+'lblTextoPadrao3').style.display = 'none';
+    document.getElementById(prefixo+'txtTextoPadrao3').style.display = 'none';
+    document.getElementById(prefixo+'txtTextoPadrao3').value='';
+    document.getElementById(prefixo+'imgLupaTexto3').style.display = 'none';
+    document.getElementById(prefixo+'imgExcluirLupaTexto3').style.display = 'none';
+}
+
+function configurarTextoInicial(textosPadrao,prefixo)
+{
+    prefixo = (prefixo === undefined ? '': prefixo);
+
+  if(typeof textosPadrao === "undefined") {
+	  textosPadrao='';
+  }
+  
+  if ( document.getElementById(prefixo+'hdnIdModelo').value!='' && document.getElementById(prefixo+'txtModelo').value !=''){
+		if (document.getElementById(prefixo+'optTextoPadrao').checked && document.getElementById(prefixo+'hdnIdModelo').value!=''){
+
+			var ajax = infraAjaxCriarRequest();
+
+			ajax.open("POST", linkAjaxTextoPadraoListaSecoesEditaveis, true);
+
+			ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+			ajax.onreadystatechange = function()
+			{
+				if(ajax.readyState == 4)
+				{
+					var retorno = ajax.responseText;
+					if (retorno.indexOf('Erro:') >= 0)
+					{
+						alert(retorno.trim());
+					}
+					else
+					{
+						if (retorno.trim() != '')
+						{
+							// busca os nomes das seções do modelo de texto
+							var resultado = retorno.split("|");
+							var secao = new Array();
+							var nome_secao = new Array();
+							for (var i=0; i< resultado.length; i++) {
+								for (var a=0; a< 2; a++) {
+									var nome = resultado[i].split(";");
+									if (a==0) {
+										secao[i] = nome[a];
+									} else if (a==1) {
+										nome_secao[i] = nome[a];
+									}
+								}
+							}
+							var arrTextosPadrao = textosPadrao.split(',');
+							var arrInfoTextoPadrao = [];
+							var arrCodTextoPadrao = [];
+							var arrIdTextoPadrao = [];
+							for (var i=0; i<arrTextosPadrao.length; i++)
+							{
+								var arrInfoTextoPadrao = arrTextosPadrao[i].split('|');
+								arrCodTextoPadrao[arrInfoTextoPadrao[0]] = arrInfoTextoPadrao[1];
+								arrIdTextoPadrao[arrInfoTextoPadrao[0]] = arrInfoTextoPadrao[2];
+							}
+							var limite = 3;
+							for (var i=0; i< limite; i++) {
+								var num = i+1;
+								if (secao[i] != undefined)
+								{
+									document.getElementById(prefixo+"lblTextoPadrao"+num).innerHTML = secao[i];
+									document.getElementById(prefixo+"lblTextoPadrao"+num).style.display="block";
+									document.getElementById(prefixo+"txtTextoPadrao"+num).style.display="inline-block";
+									document.getElementById(prefixo+"imgLupaTexto"+num).style.display="block";
+									document.getElementById(prefixo+"imgExcluirLupaTexto"+num).style.display="block";
+								}
+								if (nome_secao[i] != undefined)
+								{
+									document.getElementById(prefixo+"hdnNomeSecao"+num).value = nome_secao[i];
+									if (arrCodTextoPadrao[nome_secao[i]] != undefined)
+									{
+										document.getElementById(prefixo+"txtTextoPadrao"+num).value=arrCodTextoPadrao[nome_secao[i]];
+									}
+								}
+							}
+							document.getElementById(prefixo+'txtTextoPadrao1').focus();
+						}
+					}
+				}
+			};
+			var params = "idModeloMatriz="+document.getElementById(prefixo+'hdnIdModelo').value;
+
+			ajax.send(params);
+
+			document.getElementById('divTextoPadrao').style.visibility = 'visible';
+            removerComponentesDocumentoBase(prefixo);
+
+		} else if (document.getElementById(prefixo+'optDocumentoBase').checked) {
+			 if (retVar('acao') == 'minuta_editar_lote')
+			 {
+				 if ($("#hdnModeloPadraoLote").val()!='' || $("#hdnTextosPadraoLote").val()!='')
+				 {
+					alert("ATENÇÃO!! As Minutas deste lote foram geradas a partir de um ou mais Textos/Modelo Padrão.\n" +
+							"A utilização de um Documento Base implicará na cópia EXATA deste documento SEM considerar as TAG's originais" +
+							"contidas nos Textos/Modelo Padrão utilizados na sua geração!");
+				 }
+			 }
+			 document.getElementById(prefixo+'txtDocumentoBase').style.visibility = 'visible';
+			 document.getElementById(prefixo+'imgLupaDocumentoBase').style.visibility = 'visible';
+			 document.getElementById(prefixo+'imgExcluirLupaDocumentoBase').style.visibility = 'visible';
+			 document.getElementById(prefixo+'txtDocumentoBase').focus();
+             removerComponentesDocumentoPadrao(prefixo);
+
+			//verifica se o tipo de documento minuta tem documentos relacionados
+			var id_modelomatriz = document.getElementById('hdnIdModelo').value;
+			var ajax = infraAjaxCriarRequest();
+			ajax.open("POST", mc_contarTipoDocumentoMinutaRelacionadoDeModeloMatriz, true);
+			ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+			ajax.onreadystatechange = function()
+			{
+				if(ajax.readyState == 4) {
+					var nrelacionados = ajax.responseText;
+					if (nrelacionados > 0 && document.getElementById(prefixo+'optDocumentoBase').checked && prefixo == '') {
+						document.getElementById('btnBuscarDocsRelacionados').style.visibility = 'visible';
+					}
+				}
+			}
+			var params = "id_modelomatriz="+id_modelomatriz;
+			ajax.send(params);
+
+		} else if (document.getElementById(prefixo+'optTextoIA').checked) {
+            removerComponentesDocumentoBase(prefixo);
+            removerComponentesDocumentoPadrao(prefixo);
+        }
+
+	}
+
+}
+function retirarFormatacaoCodigoMinutaPesquisa(codMinuta, numIdAssinante, numIdMagistrado)
+{
+	var ajax = infraAjaxCriarRequest();
+	
+	ajax.open("POST", linkAjaxRetirarFormatacaoCodigoMinuta, true);
+	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function() 
+    {
+  	     if(ajax.readyState == 4) 
+	     {
+	     	var retorno = ajax.responseText;
+	     	buscarIdModeloMatriz(retorno,numIdAssinante ,'false',numIdMagistrado,'');
+    	 }
+    }
+    var params = "cod_minuta=" + codMinuta;
+    ajax.send(params);    
+}
+function buscarIdModeloMatriz(cod_modelo_padrao,id_assinante,preferencia,id_magistrado_atuante,id_tratamento)
+{
+	var ajax = infraAjaxCriarRequest();
+  //esta chamada precisa ser síncrona porque em minuta_cadastrar o retorno precisa ser validado
+	ajax.open("POST", linkAjaxModeloPadraoBuscarIdModeloMatrz, false);
+	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function() 
+    {
+  	     if(ajax.readyState == 4) 
+	     {  
+	     	var retorno = ajax.responseText;
+	     	
+	     	if (!$.isNumeric(retorno))
+	        {
+	     		retorno='';
+	        }
+	     	document.getElementById('hdnIdModelo').value=retorno;
+
+		    //se não foi selecionada preferência, busca assinante padrão
+			  if (preferencia=='false')
+			  {
+				  montarAssinante(id_assinante,id_tratamento,id_magistrado_atuante);
+			  }
+    	 }
+    }
+    var params = "cod_modelo_padrao=" + cod_modelo_padrao;
+    ajax.send(params);
+}
+
+function montarAssinante(id_assinante,id_tratamento,id_magistrado_atuante) {
+
+	if ($("#hdnExigeAssinante").val() == 'N') return;
+
+	var id_modelo = document.getElementById('hdnIdModelo').value;
+	var id_processo='';
+    var hdnIdProcesso = document.getElementById('hdnIdProcesso');
+    if(hdnIdProcesso){
+        id_processo = document.getElementById('hdnIdProcesso').value;
+    }
+
+	if (id_modelo=='') return;
+
+	var substr = '';
+
+	/* buscar se o tipo de modelo só pode ser assinado por magistrado */
+	var ajax = infraAjaxCriarRequest();
+
+	ajax.open("POST", linkAjaxModeloMatrizBuscarTipoAssinante, false);
+	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function() 
+    {
+  	   if(ajax.readyState == 4)
+	     {  
+	     	var retorno = ajax.responseText;
+	     	$("#selAssinante").html(retorno);    	    
+    	    substr = retorno.search('selected="selected"');    
+    	    if (substr == -1) 
+    	    {
+            if (id_assinante != id_magistrado_atuante && id_magistrado_atuante != '') {
+              //O assinante selecionado não é válido para o modelo matriz informado
+              //Selecionar o magistrado atuante
+              //$('#selAssinante option[value="' + id_magistrado_atuante + '"').attr('selected', 'selected');
+              $('#selAssinante option[value="' + id_magistrado_atuante + '"]').prop('selected', true);
+              id_assinante = id_magistrado_atuante;
+              id_tratamento = '';
+            }
+    	    } else {
+    	    	if(id_assinante == 'null'){
+              id_tratamento = '';
+						}
+            id_assinante = $("#selAssinante").val();
+          }
+	    	  montarTratamentoAssinante(id_assinante, id_tratamento, false);
+    	    //identificarPrecedenteRelevante(id_modelo);
+          atualizaNomeAssinante(id_assinante);
+    	 }
+    }
+    var params = "id_modelo=" + id_modelo + "&id_assinante=" + id_assinante + "&id_magistrado_atuante=" + id_magistrado_atuante + "&acao_origem=" + retVar('acao') + "&id_processo=" + id_processo;
+    ajax.send(params);
+}
+function montarAssinantePreferencia(id_assinante,id_tratamento,id_magistrado_atuante) {
+
+    if ($("#hdnExigeAssinante").val() == 'N') return;
+
+    var id_modelo = document.getElementById('hdnIdModelo').value;
+
+    var id_processo =  document.getElementById('hdnIdProcesso').value;
+
+    if (id_modelo=='') return;
+
+    var substr = '';
+
+    /* buscar se o tipo de modelo só pode ser assinado por magistrado */
+    var ajax = infraAjaxCriarRequest();
+
+    ajax.open("POST", linkAjaxModeloMatrizBuscarTipoAssinante, false);
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function()
+    {
+        if(ajax.readyState == 4)
+        {
+            var retorno = ajax.responseText;
+            $("#selAssinante").html(retorno);
+            substr = retorno.search('selected="selected"');
+            if (id_assinante == 0)
+            {
+                $("#selAssinante").prop("selectedIndex", 0);
+            }
+            id_assinante = $("#selAssinante").val();
+            montarTratamentoAssinante(id_assinante, id_tratamento, false);
+
+            atualizaNomeAssinante(id_assinante);
+        }
+    }
+    if(id_assinante==='' || id_assinante==='null' || id_assinante===null){
+        id_assinante = 0;
+    }
+    var params = "id_modelo=" + id_modelo + "&id_assinante=" + id_assinante + "&id_magistrado_atuante=" + id_magistrado_atuante + "&acao_origem=" + retVar('acao') + "&id_processo=" + id_processo;
+    ajax.send(params);
+}
+function montarRelator(codMagistradoRelator, idProcesso, seqProcesso, idJulgamento) {
+
+  if (document.getElementById('hdnIdModelo') != null) {
+    var id_modelo = document.getElementById('hdnIdModelo').value;
+  }else{
+    return;
+  }
+  if (id_modelo=='') return;
+
+  var substr = '';
+
+  /* buscar se o tipo de modelo insere relator no cabeçalho ou seja sin_inteiro_teor='S' */
+  var ajax = infraAjaxCriarRequest();
+
+  ajax.open("POST", linkAjaxJuizoMagistradoBuscarRelator, true);
+  ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  ajax.onreadystatechange = function()
+  {
+    if(ajax.readyState == 4)
+    {
+      var retorno = ajax.responseText;
+      if(retorno != '') {
+        $("#selRelator").html(retorno);
+        $("#divRelator").css("display", "block");
+        $("#divListarTodosRelatores").css("display", "block");
+      }else{
+        $("#selRelator").html('');
+        $("#divRelator").css("display", "none");
+        $("#divListarTodosRelatores").css("display", "none");
+      }
+    }
+  }
+  var params = "id_modelo=" + id_modelo + "&acao_origem=" + retVar('acao') + "&cod_magistrado_relator=" + codMagistradoRelator + "&id_processo=" + idProcesso + "&seq_processo=" + seqProcesso + "&id_julgamento=" + idJulgamento;
+  ajax.send(params);
+}
+function montarListaDeTodosRelatores() {
+
+  /* Listar todos os magistrados*/
+  var ajax = infraAjaxCriarRequest();
+
+  ajax.open("POST", LinkAjaxJuizoMagistradoListarTodosRelatores, false);
+  ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  ajax.onreadystatechange = function()
+  {
+    if(ajax.readyState == 4)
+    {
+      var retorno = ajax.responseText;
+      retorno=decodeURI(retorno);
+      $("#selRelator").html(retorno);
+
+    }
+  }
+  var params = "acao_origem=" + retVar('acao');
+  ajax.send(params);
+  atualizaNomeRelator(mc_numCodMagistradoRelator);
+}
+
+function montarTratamentoAssinante(id_usuario_assinante, id_tratamento_assinante_indicado, editor_web) 
+{
+  /* buscar se o tratamento do usuario assinante (se houver) */
+
+  if (id_tratamento_assinante_indicado==null) {
+    id_tratamento_assinante_indicado = '';
+  }
+  var sin_incluir_tratamento_vinculado = 'N';
+  if (id_usuario_assinante=='' || id_usuario_assinante=='null' || id_usuario_assinante==null || id_usuario_assinante==1) {
+    var acao = retVar('acao');
+    if (acao=='minuta_cadastrar' || acao=='minuta_cadastrar_lote' || acao=='minuta_editar_lote' || acao=='minuta_alterar_dados_lote') {
+      sin_incluir_tratamento_vinculado = 'S';
+    }
+  }
+	var ajax = infraAjaxCriarRequest();
+			
+	ajax.open("POST", linkAjaxBuscarTratamentoAssinante, true);
+	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function() 
+    {
+  	   if(ajax.readyState == 4)
+	     {  
+	     	  var retorno = ajax.responseText;
+    	    if (editor_web == 1) {
+    	    	$("#tratamento").html(retorno);
+    	    	$('#strIdTratamento').val( $('option:selected', 'select[id="tratamento"]').val() );
+    	    } else {
+    	    	$("#selTratamento").html(retorno);    	    	
+    	    }
+    	 }
+    }
+    var params = "id_usuario_assinante=" + id_usuario_assinante + "&id_tratamento_assinante_indicado=" + id_tratamento_assinante_indicado + "&sin_incluir_tratamento_vinculado=" + sin_incluir_tratamento_vinculado;
+    ajax.send(params);
+}
+
+//funções para retornar variável da na url
+function retVar( name ){
+	var regexp = new RegExp("([\\?&])("+name+"=)([^&#]*)", "i");
+	var result = regexp.exec(window.location.href);
+	if( result == null ){    
+		return "";
+	}
+	else{ 
+		return result[3];
+	}
+	
+}
+function retVarParent( name ){
+	var regexp = new RegExp("([\\?&])("+name+"=)([^&#]*)", "i");
+	var result = regexp.exec(parent.window.location.href);
+	if( result == null ){    
+		return "";
+	}
+	else{ 
+		return result[3];
+	}
+	
+} 
+//Funções relacionadas aos recursos e links (documento e proceesso)
+$( document ).on('click', 'a',  function()
+{   //
+	// Marca a linha do documento/processo visualizado e desmarca a anterior
+	//
+	if (retVar('acao')=="minuta_area_trabalho")
+	{
+		tr = $(this).parents('tr');
+		marcaLinhaAcessada(tr);
+	}
+});
+
+$( document ).on('click', '[name="imgRecursoMinutaAjax"]', function(event)
+{   //
+    //Mapeia os cliques nos ícones dos recursos que estão configurados para rodar em Ajax (name=imgRecursoMinutaAjax)
+    //
+	event.stopPropagation();
+
+	if (retVar('acao')=="minuta_area_trabalho")
+	{
+		desmarcaLinhaAcessada();
+	}
+	
+    if ($(this).attr('sin_solicitar_confirmacao')=='S')
+    {
+	   if (!confirm("Deseja " + $(this).attr('descricao') + "?")) return;
+	  }
+    var objImprimir = $(this);
+    var id_minuta = $(this).attr('id_minuta');
+    var id_julgamento = $(this).attr('id_julgamento');
+    var id_recurso_minuta = $(this).attr('id_recurso_minuta');
+    var num_processo = $(this).attr('num_processo');
+    var acao = $(this).attr('acao');
+	var urlAjax = $(this).attr('urlAjax');
+    var acao_origem = $(this).attr('acao_origem');
+
+    var imgAguardeSrc = "infra_css/imagens/aguarde.gif";
+    var imgRecurso = $(this);
+    var imgRecursoSrc = imgRecurso.attr('src');
+    
+    $(imgRecurso).attr('src',imgAguardeSrc);
+    
+    //O recurso minuta_anexar, se executado de fora da tela de movimentação, deve chamar a tela de movimentação
+    var linkMovimentacao = $(this).attr('linkMovimentacao');
+    
+    var ajax = infraAjaxCriarRequest();
+	
+    ajax.open("POST", urlAjax, true);
+        	  	      
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        	  	     
+    ajax.onreadystatechange = function() {
+  	  if(ajax.readyState == 4) {
+		   var retorno = ajax.responseText;
+		   if (retorno.indexOf('Erro:')>=0) {
+			 if ($("#infoMessage").length>0) {
+			   //substitui \n por espaço
+			   retorno = retorno.replace(/\\n/g,' ');
+			   $("#infoMessage").removeClass().addClass("msgbox error").text(" " + retorno.trim()).fadeIn(500);
+			   $(imgRecurso).attr('src', imgRecursoSrc);
+			 } else {
+			   retorno = retorno.replace(/\\n/g,' ');
+			   alert(retorno.trim());
+			 }
+			 $(imgRecurso).attr('src', imgRecursoSrc);
+		   } else {
+               var siscom_cadastrar = (/acao=siscom_mensagem/.test(retorno.trim()));
+			 //O recurso pode retornar uma mensagem a ser exibida
+			 if (retorno.trim()!='') {
+			   if ($("#infoMessage").length>0) {
+				 if (acao=='minuta_enviar_siscom' || siscom_cadastrar) {
+				   //se ação for minuta_enviar_siscom, no retorno deve ter o link para abrir o SISCOM
+				   window.open(retorno.trim());
+				 } else {
+				   $("#infoMessage").removeClass().addClass("msgbox alert").text(" " + retorno.trim()).fadeIn(500).fadeOut(10000);
+				 }
+			   } else {
+				 if (acao=='minuta_enviar_siscom' || siscom_cadastrar) {
+				   //se ação for minuta_enviar_siscom, no retorno deve ter o link para abrir o SISCOM
+				   window.open(retorno.trim());
+				 } else {
+				   alert(retorno.trim());
+									 //Se não existe audiência ou existe mais de uma para o processo, não anexa a minuta.
+									 //Exibe a mensage e permanece na capa do processo
+									 if (acao == "audiencia_minuta") {
+										 linkMovimentacao = "";
+									 }
+								 }
+			   }
+			 }
+			 //Execução do recurso minuta_anexar via Ajax
+			 //Se não está na tela de movimentação, redirecionar.
+			 if (linkMovimentacao!="" && acao_origem!="processo_movimento_consultar" &&
+				 acao_origem!="audiencia_cadastrar" &&
+         acao_origem != "montar_lista_minutas" &&
+         acao_origem != "RealizarAudiencia/inicial" &&
+				 acao_origem!="processo_intimacao_bloco" &&
+				 acao_origem!="audiencia_alterar" && acao_origem!="processo_citacao" &&
+								 acao_origem!="nomeacao_perito" &&
+								 acao_origem!="processo_solicitacoes_contadoria_alterar")
+						 {
+			   if (acao_origem == "montar_lista_minutas" || acao_origem == "RealizarAudiencia/inicial" || acao_origem=="processo_selecionar" || acao_origem=="minuta/minuta_visualizacao/buscar_estrutura_conteudo_aba_minuta" || acao_origem=="minuta/minuta_visualizacao/painel") {
+				 document.location.href = linkMovimentacao;
+			   } else {
+				 //Se não está na capa do processo, abre em janela.
+				 window.open(linkMovimentacao);
+			   }
+			 }
+			 //Se está na tela de movimentação, atualizar documentos para upload.
+			 if (linkMovimentacao!="" && $("#divDocumentosCadastradas").length>0) {
+			   var mostrar_sigilo = true;
+			   var arr_processos = num_processo;
+			   var arr_id_documentos = '';
+			   var id_processo_pendente_movimentacao = '';
+			   atualizarUploadDocumentos(acao_origem, mostrar_sigilo, arr_processos, arr_id_documentos, id_processo_pendente_movimentacao);
+			 }
+			 if(retVar('acao')=='sessao_julgamento_exibir_painel'){
+			 	$("tr.tr-ativa a.abre-painel").click();
+			 }
+         if(retVar('acao')=='sessao_julgamento_v2_buscar_painel_minuta'){
+           document.location.reload(true);
+         }
+
+			 //Se na tela existir a área de minutas (div id=conteudoMinutas) visível, atualizar seu conteúdo.
+			 //Na área de trabalho, atualiza a linha da minuta na tabela
+			 //A execução antes da chamada da função atualizarUploadDocumentos parou de atualizar a área de upload
+			 if (id_julgamento=='') {
+				 id_julgamento = '0';
+			 }
+             if($('#btnRecarregarPainelMinuta').length>0){
+                 $('#btnRecarregarPainelMinuta').trigger('click');
+             }else{
+                 if (typeof(atualizaInfoMinuta)=='function' || typeof(atualizaInfoMinuta)=='object')
+                 {
+                     atualizaInfoMinuta(id_minuta, id_julgamento);
+                 }
+             }
+		   }
+		}
+  	};
+
+  	var params = "acao_origem="+acao_origem+"&id_minuta="+id_minuta+"&id_recurso_minuta="+id_recurso_minuta;
+
+	ajax.send(params);
+
+    $(imgRecurso).attr('src', imgRecursoSrc);
+});
+
+function monta_lista_minutas(acao_origem,id_processo,lista_nome_recurso,id_julgamento, bolDesabilitarAgendador = 'N')
+{
+
+    $("#LegNovaMinuta").html('');
+
+    var alturaAnteriorMinutas = parseInt($("#divInfoMinutas").css('height'));
+
+    var param_aux = '';
+    $('[id^="hdnAbrirFechar"]').each(function(){
+       if ($(this).val() != '') {
+         param_aux += '&'+ $(this).attr('id') + '=' + $(this).val();
+       };
+    });
+
+    var ajax = infraAjaxCriarRequest();
+    ajax.open("POST", linkAjaxMontarListaMinutas, true);
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    
+    ajax.onreadystatechange = function() 
+    {
+  	     if(ajax.readyState == 4) 
+	     {  
+	     	var retorno = ajax.responseText;
+        if (id_julgamento=='' || id_julgamento == undefined) {
+          $('#conteudoMinutas').html(retorno).fadeIn();
+          $('#carregandoMinutas,#carregandoMinutasRodape').hide();
+          executarOrdenacaoMinutas('');
+        } else {
+          $('#conteudoMinutas_'+id_julgamento).html(retorno).fadeIn();
+          $('#carregandoMinutas_'+id_julgamento+',#carregandoMinutasRodape').hide();
+          executarOrdenacaoMinutas(id_julgamento);
+        }
+
+         //regula altura da 'divInfDocumentos' e 'divInfraAreaDados1'
+         var alturaMinutas = parseInt($("#divInfoMinutas").css('height'));
+         if(alturaMinutas != alturaAnteriorMinutas) {
+           $("#divInfraAreaDados1").height(parseInt($("#divInfraAreaDados1").css('height')) + alturaMinutas);
+           $("#divInfDocumentos").height(parseInt($("#divInfDocumentos").css('height')) + alturaMinutas);
+         }
+	     }
+  	};
+
+    var params = "acao_origem="+acao_origem+"&acao="+acao_origem+"&id_processo="+id_processo+"&lista_nome_recurso="+lista_nome_recurso+"&id_julgamento="+id_julgamento+param_aux+"&desabilitar_agendador="+bolDesabilitarAgendador;
+       	 
+    ajax.send(params);
+
+}
+function assinarMinutas(strContexto){
+	var arrIdMinuta=[];
+	$("#"+strContexto+" tr td input[type=checkbox]:checked").each(function() {
+		arrIdMinuta.push($( this ).val());
+	});
+	if(arrIdMinuta.toString()==''){
+		alert('Não há minuta(s) selecionada(s) para assinar!');
+	}else {
+		$("#frmAssinarMinutaLista :input[name='hdnIdMinutaLista']").val(arrIdMinuta.toString());
+		exibirSubFrm('', 1200, 700, false, document.getElementById('frmAssinarMinutaLista'));
+	}
+}
+function marcarMinutasParaAssinar(strContexto){
+	$("#"+strContexto.value+" input[type=checkbox]").each(function() {
+		$( this ).prop("checked", strContexto.checked);
+	});
+}
+function atualizarUploadDocumentos (acao_origem,mostrar_sigilo,arr_processos,arr_id_documentos,id_processo_pendente_movimentacao)
+{
+    var ajax = infraAjaxCriarRequest();
+    ajax.open("POST", linkAjaxGerarUploadDocumentos, true);
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    
+    ajax.onreadystatechange = function() 
+    {
+  	     if(ajax.readyState == 4) 
+	     {  
+	     	var retorno = ajax.responseText;
+	     	$("#divDocumentosCadastradas").html(retorno);
+		 } 
+  	};
+
+    var params = "mostrar_sigilo="+mostrar_sigilo+"&arr_processos="+arr_processos+"&arr_id_documentos="+arr_id_documentos+"&num_id_processo_pendente_movimentacao="+id_processo_pendente_movimentacao+"&acao_origem="+acao_origem+"&acao="+acao_origem;
+       	 
+    ajax.send(params);
+}
+
+function manterMinutasAberto(checkbox,nomeCookieMinutas) 
+{ 
+   try
+   { 
+     infraCriarCookie(nomeCookieMinutas, checkbox.checked, 365);
+   } 
+   catch ($e) 
+   { 
+   	 alert(nomeCookieMinutas+' '+checkbox.checked+' '+$e) 
+   }
+}
+function atualizaMinutas(acao_origem,id_processo,lista_nome_recurso, id_julgamento)
+{
+  let bolDesabilitarAgendador = 'N';
+  let parametrosUrl = new URLSearchParams(window.location.search);
+  if (parametrosUrl.get('acao') == 'RealizarAudiencia/inicial') {
+    bolDesabilitarAgendador = 'S';
+  }
+
+	var v_src = null;
+  if (id_julgamento=='') {
+    $("#carregandoMinutas,#carregandoMinutasRodape").show();
+    monta_lista_minutas(acao_origem, id_processo, lista_nome_recurso,'',bolDesabilitarAgendador);
+
+    v_src = $('#imgMinutas').attr('src');
+    $("#imgMinutas").attr('src',v_src.replace('ver_tudo.gif','ver_resumo.gif'));
+    $("#imgMinutas").attr('title','Ocultar');
+    $("#conteudoMinutas").css('display','block');
+  } else {
+    if (typeof(id_julgamento) != 'undefined') {
+      $('#hdnAbrirFechar_' + id_julgamento).val('A');
+      $("#carregandoMinutas_" + id_julgamento + ",#carregandoMinutasRodape").show();
+    }
+
+    monta_lista_minutas(acao_origem, id_processo, lista_nome_recurso,id_julgamento,bolDesabilitarAgendador);
+
+    if (typeof(id_julgamento) != 'undefined') {
+      v_src = $('#imgMinutas_' + id_julgamento).attr('src');
+      $("#imgMinutas_" + id_julgamento).attr('src', v_src.replace('ver_tudo.gif', 'ver_resumo.gif'));
+      $("#imgMinutas_" + id_julgamento).attr('title', 'Ocultar');
+      $("#conteudoMinutas_" + id_julgamento).css('display', 'block');
+    }
+  }
+}
+function exibirExcluidas(checkbox,nomeCookieExibirMinutasExcluidas,acao_origem,id_processo,lista_nome_recurso) 
+{
+	if (checkbox.checked == true) 
+	{
+		bolExibirMinutasExcluidas=true;
+	} else 
+	{
+		bolExibirMinutasExcluidas=false;
+	}
+	infraCriarCookie(nomeCookieExibirMinutasExcluidas, checkbox.checked, 365);
+	atualizaMinutas(acao_origem,id_processo,lista_nome_recurso);	
+}
+
+function exibirAnexadas(checkbox,nomeCookieExibirMinutasAnexadas,acao_origem,id_processo,lista_nome_recurso) 
+{
+	if (checkbox.checked == true) 
+	{
+		bolExibirMinutasAnexadas=true;
+	} else 
+	{
+		bolExibirMinutasAnexadas=false;
+	}
+	infraCriarCookie(nomeCookieExibirMinutasAnexadas, checkbox.checked, 365);
+	atualizaMinutas(acao_origem,id_processo,lista_nome_recurso);	
+}
+
+
+function executarOrdenacaoMinutas(id_julgamento) {
+  if (id_julgamento!='') {
+    var tabela = $('#tblMinutas_' + id_julgamento);
+    executarOrdenacaoTabela(tabela);
+  } else {
+    $('[id^="tblMinutas_"]').each(function(){
+      executarOrdenacaoTabela($(this));
+    });
+  }
+}
+function executarOrdenacaoTabela(tabela) {
+	// grava o estado normal da tabela, caso futuramente seja
+	//  necessário alternar entre os tres estados (ASC,DESC,DEFAULT)
+	//var tabela = $('#tblMinutas_'+id_julgamento);
+
+  //Lê a última ordenação gravada no cookie
+  var campo_ordenacao = infraLerCookie('ordenacao_minutas');
+  var tipo_ordenacao = infraLerCookie('tipo_ordenacao_minutas');
+
+  //Ordenação padrão: data de criação descendente
+  if (campo_ordenacao=='' || campo_ordenacao==null) {
+    campo_ordenacao = 'Inclusao';
+    tipo_ordenacao = 'DESC';
+  }
+
+  defaultTrsOrder = tabela.find('tr:not(.infraTrOrdenacao):not(:first-child)');
+	thsOrdenaveis 	= tabela.find('.infraTh:not(.infraThOrdenacao)');
+	tabela.find('.infraTdRotuloOrdenacao').css('text-align', 'center');
+
+	thsOrdenaveis
+
+	.each(function() {
+
+		var th = $(this);
+		var thIndex = th.index();
+
+    //Imagens padrão da ordenação
+    var imagemA='seta_acima.gif';
+    var imagemD='seta_abaixo.gif';
+
+    //Na coluna da ordenação atual, muda a seta do tipo de ordenação selecionada
+    if (th.attr('campoOrd')==campo_ordenacao){
+      if (tipo_ordenacao=='ASC'){
+        imagemA = 'seta_acima_selecionada.gif';
+      } else
+      {
+        imagemD = 'seta_abaixo_selecionada.gif';
+      }
+    }
+    //Adiciona as imagens ao th
+    th.prepend('<a role="button" type="button" tabindex="1010" class="infraImgOrdenacao" aria-description="Ordenar Coluna"><img aria-hidden="true" title="Alternar Ordem Ascendente/Descendente" name="imgA" src="infra_css/imagens/'+imagemA+'"><br><img aria-hidden="true" name="imgD" src="infra_css/imagens/'+imagemD+'"></a>')
+
+		// adiciona o evento click para cada um dos cabeçalhos
+		th.click(function() {
+      inverso = false;
+      //Lê as linhas da tabela clicada
+      defaultTrsOrder = tabela.find('tr:not(.infraTrOrdenacao):not(:first-child)');
+      //Lê a ordenação atual gravada no cookie
+      campo_ordenacao = infraLerCookie('ordenacao_minutas');
+
+      //Se o clique foi na coluna da ordenação atual, busca o tipo de ordenação atual
+      //caso contrário, assume DESC: coluna não selecionada, no primeiro
+      //clique será ordenada ascendente
+      if (campo_ordenacao==$(this).attr('campoOrd')) {
+        tipo_ordenacao = infraLerCookie('tipo_ordenacao_minutas');
+      } else {
+        tipo_ordenacao = 'DESC';
+      }
+
+      //Verifica se vai ordenar descentente: inverso = true
+      if ($(this).attr('campoOrd') != 'undefined')
+      {
+        if (tipo_ordenacao == 'ASC')
+        {
+          inverso = true;
+        }
+        //Grava ordenação no cookie
+        infraCriarCookie('ordenacao_minutas', $(this).attr('campoOrd'), 365);
+        var tipo_ordenacao = inverso ? 'DESC' : 'ASC';
+        infraCriarCookie('tipo_ordenacao_minutas', tipo_ordenacao, 365);
+      }
+      //Altera todas as imagens para o padrão (não selecionada)
+      tabela.find('[name="imgA"]').attr('src','infra_css/imagens/seta_acima.gif');
+      tabela.find('[name="imgD"]').attr('src','infra_css/imagens/seta_abaixo.gif');
+
+      //Altera a imagem da coluna clicada conforme o tipo de ordenação selecionado
+      var strHtml = th.html();
+      if (tipo_ordenacao=='ASC'){
+        strHtml = strHtml.replace('_acima','_acima_selecionada');
+      } else {
+        strHtml = strHtml.replace('_abaixo','_abaixo_selecionada');
+      }
+      th.html(strHtml);
+
+			// desabilita temporariamente o alert
+			window.org_alert = window.alert; // salva a função original "alert"
+			window.alert = function() {}; // sobrescreve a função "alert"
+
+      var sin_campo_data = false;
+      if ($(this).attr('campoOrd')=='DataAnexacao' || $(this).attr('campoOrd')=='Inclusao') {
+        sin_campo_data = true;
+      }
+       if (sin_campo_data) {
+        defaultTrsOrder.find('td').filter(function () {
+          if ($(this).index()===thIndex) {
+            if ($(this).text()=='') {
+              //Altera data vazia para '1901-01-01' ou '2099-12-31'
+               dataAux = inverso? '2099-12-31' : '1901-01-01';
+            } else {
+              //Altera formato da data para yyyy-mm-dd
+              dataAux = $(this).text().toFormatDate('dd/mm/aaaa','aaaa-mm-dd');
+            }
+            //Concatena cod_documento para ordenar pelo código como segundo critério
+            $(this).text(dataAux+'#'+$(this).attr('codDoc'));
+          }
+        });
+      }
+			newTrsOrder = defaultTrsOrder.find('td').filter(function() {
+				return $(this).index() === thIndex;
+			}).sort(function(a, b) {
+				var aText = $.text([a]),
+					bText = $.text([b]),
+					aNumber = $.text([a]).split(" "),
+					regexData = /\d{2}\/\d{2}\/\d{4}/i,
+					regexDias = /\d+ dia\(s\)/i,
+					regexAnos = /\d+ ano\(s\)/i,
+					regexMeses = /\d+ mes\(es\)/i,
+					regexExtrairNums = /\d+/;
+
+				var aTestNumber = aNumber[0].substr(0,1);
+
+				// verifica o tipo de dado
+				if (aText != '') {
+					if(regexData.test(aText) && !isNaN(aTestNumber)) {
+						aText = regexData.exec(aText)[0];
+						aText = aText.toFormatDate('dd/mm/aaaa','aaaa-mm-dd');
+					} else if (regexAnos.test(aText)) {
+						var aux, temp;
+
+						temp = regexAnos.exec(aText)[0];
+						aux = parseFloat(regexExtrairNums.exec(temp)[0]);
+
+						if (regexMeses.test(aText)) {
+							temp = regexMeses.exec(aText)[0];
+							aux = parseFloat(regexExtrairNums.exec(temp)[0]) / 100 + aux;
+						}
+
+						if (regexDias.test(aText)) {
+							temp = regexDias.exec(aText)[0];
+							aux = parseFloat(regexExtrairNums.exec(temp)[0]) / 10000 + aux;
+						}
+
+						aText = aux;
+					} else if (regexMeses.test(aText)) {
+						var aux, temp;
+
+						temp = regexMeses.exec(aText)[0];
+						aux = parseFloat(regexExtrairNums.exec(temp)[0]) / 100;
+
+						if (regexDias.test(aText)) {
+							temp = regexDias.exec(aText)[0];
+							aux = parseFloat(regexExtrairNums.exec(temp)[0]) / 10000 + aux;
+						}
+
+						aText = aux;
+					} else if (regexDias.test(aText)) {
+						aText = parseInt(regexExtrairNums.exec(aText));
+					}
+				}
+
+				// verifica o tipo de dado
+				if (bText != '') {
+					if(regexData.test(bText) > 0 && !isNaN(aTestNumber)) {
+						bText = regexData.exec(bText)[0];
+						bText = bText.toFormatDate('dd/mm/aaaa','aaaa-mm-dd');
+					} else if (regexAnos.test(bText)) {
+						var aux, temp;
+
+						temp = regexAnos.exec(bText)[0];
+						aux = parseFloat(regexExtrairNums.exec(temp)[0]);
+
+						if (regexMeses.test(bText)) {
+							temp = regexMeses.exec(bText)[0];
+							aux = parseFloat(regexExtrairNums.exec(temp)[0]) / 100 + aux;
+						}
+
+						if (regexDias.test(bText)) {
+							temp = regexDias.exec(bText)[0];
+							aux = parseFloat(regexExtrairNums.exec(temp)[0]) / 10000 + aux;
+						}
+
+						bText = aux;
+					} else if (regexMeses.test(bText)) {
+						var aux, temp;
+
+						temp = regexMeses.exec(bText)[0];
+						aux = parseFloat(regexExtrairNums.exec(temp)[0]) / 100;
+
+						if (regexDias.test(bText)) {
+							temp = regexDias.exec(bText)[0];
+							aux = parseFloat(regexExtrairNums.exec(temp)[0]) / 10000 + aux;
+						}
+
+						bText = aux;
+					} else if (regexDias.test(bText)) {
+						bText = parseInt(regexExtrairNums.exec(bText));
+					}
+				}
+
+				if (isNaN(aText)&&!isNaN(bText)) return inverso ? -1 : 1;
+				else if (!isNaN(aText)&&isNaN(bText)) return inverso ? 1 : -1;
+
+				return aText < bText ?
+						inverso ? -1 : 1
+						: inverso ? 1 : -1;
+			});
+
+      //Altera data de anexação para o formato dd/mm/yyy
+      if (sin_campo_data) {
+        defaultTrsOrder.find('td').filter(function () {
+          if ($(this).index()===thIndex) {
+            var arrDataAux = $(this).text().split('#');
+            var dataAux = arrDataAux[0].toFormatDate('aaaa-mm-dd','dd/mm/aaaa');
+            if (dataAux=='01/01/1901' || dataAux=='31/12/2099') {
+              $(this).text('');
+            } else {
+              $(this).text(dataAux);
+            }
+          }
+        });
+      }
+			// alterna entre ASC/DESC
+			inverso = !inverso;
+
+			// remove o conteúdo da tabela
+			tabela.find('tr:not(.infraTrOrdenacao):not(:first-child)').remove();
+
+			// adciona o novo conteúdo na tabela
+			for (var i = 0; i < newTrsOrder.length; i++) {
+				tabela.find('.infraTh:not(:has(table.infraTableOrdenacao))').parent().after($(newTrsOrder[i]).parent());
+			}
+
+			// refaz a "zebra" na tabela
+			tabela.find('tr:not(.infraTrOrdenacao):not(:first-child)').removeAttr('class');
+      tabela.find('tr:odd:not(.infraTrOrdenacao):not(:first-child)').addClass('infraTrClara');
+      tabela.find('tr:even:not(.infraTrOrdenacao):not(:first-child)').addClass('infraTrEscura');
+      if (tabela.attr("corTrClara")!='') {
+        tabela.find('tr:odd:not(.infraTrOrdenacao):not(:first-child)').css('background-color',tabela.attr("corTrClara"));
+        tabela.find('tr:even:not(.infraTrOrdenacao):not(:first-child)').css('background-color',tabela.attr("corTrEscura"));
+      }
+			// reabilita a função "alert"
+			window.alert = window.org_alert;
+		});
+	});
+
+	tabela.find('.infraImgOrdenacao').css('float', 'left');
+}
+
+//$(document).ready(function ()
+//{   
+function inicializarMinutas(bolManterMinutasAberto,acao_origem,id_processo,lista_nome_recurso, desabilitar_agendador) {
+	  //alert(bolManterMinutasAberto+','+acao_origem+','+id_processo+','+lista_nome_recurso);
+
+    //Verifica se tem área de minutas na tela...
+    if ($('#conteudoMinutas').length > 0) {
+		  $("#carregandoMinutas,#carregandoMinutasRodape").hide();
+
+      //Mapeia click no ícone +/- do agrupamento de minutas...
+	    $( "body" ).delegate( '[id^="legMinutasMaisMenos"]', "click", function() {
+         var arr = $(this).attr('id').split('_');
+         var complemento = '';
+         var id_julgamento = '';
+         if (arr.length==2) {
+           complemento = '_'+arr[1];
+           id_julgamento = arr[1];
+         }
+         //Verifica se o grupamento esta aberto...
+         var v_src = $('#imgMinutas'+complemento).attr('src');
+         var re=new RegExp("ver_resumo.gif");
+
+	       if (re.test(v_src)) {
+           $('#imgMinutas'+complemento).attr('title','Ocultar');
+           $('#hdnAbrirFechar'+complemento).val('A');
+           //Verifica se o conteúdo já foi carregado, não precisa re-carregar...
+           if ($('#conteudoMinutas'+complemento).html()=='') {
+             $('#conteudoMinutas' + complemento).html('');
+             $("#carregandoMinutas" + complemento).show();
+             $("#carregandoMinutasRodape").show();
+             monta_lista_minutas(acao_origem, id_processo, lista_nome_recurso, id_julgamento, desabilitar_agendador);
+           } else if ($('#conteudoInternoMinutas'+complemento).html()=='') {
+             $('#conteudoInternoMinutas' + complemento).html('');
+             $("#carregandoMinutas" + complemento).show();
+             $("#carregandoMinutasRodape").show();
+             monta_lista_minutas(acao_origem, id_processo, lista_nome_recurso, id_julgamento, desabilitar_agendador);
+           }
+	       } else {
+           $('#hdnAbrirFechar'+complemento).val('F');
+           $('#imgMinutas'+complemento).attr('title','Expandir');
+         }
+	    });
+
+		  if (bolManterMinutasAberto)	{
+			 $('#conteudoMinutas').html('');
+	       	 $("#carregandoMinutas,#carregandoMinutasRodape").show();
+	       	 monta_lista_minutas(acao_origem,id_processo,lista_nome_recurso,'', desabilitar_agendador);
+      }
+	  }
+}
+/* Function's utilizadas na Janela de validação Agendamento Minuta
+ * para poder abrir após ações a tela minuta_editar com os controles de
+ * atualização dos recursos da minuta */
+function visualizarMinutaProcesso(strLinkVisualizarMinuta){
+	window.open(strLinkVisualizarMinuta,'_blank');
+}
+
+function excluirAgendamentoMinutaProcesso(strLinkEcluirMinutaAgendamento){
+	window.open(strLinkEcluirMinutaAgendamento,'_blank');
+}
+function identificarPrecedenteRelevante(lista_id_modelo_matriz){
+	var ajax = infraAjaxCriarRequest();
+	ajax.open("POST", linkAjaxIdentificarPrecedenteRelevante, true);
+	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+	ajax.onreadystatechange = function()
+	{
+		if(ajax.readyState == 4)
+		{
+			var retorno = ajax.responseText;
+			$arrRetorno = retorno.split('|');
+			$strPrecedenteRelevante = $arrRetorno[0];
+			$strPrecedenteRelevantePadrao = $arrRetorno[1];
+            $strRemeterJurisprudencia = $arrRetorno[2];
+            $strMsgAvisoAnonimizacao = $arrRetorno[3];
+			if($strPrecedenteRelevante=='S'){
+				$("#divPrecedenteRelevante").css('display','block');
+				if($strPrecedenteRelevantePadrao=='S') {
+					$('#chkPrecedenteRelevante').prop('checked', true);
+				}else{
+					$('#chkPrecedenteRelevante').prop('checked', false);
+				}
+
+				//esta validação é feita, pois a marcação de precedente pode ter sido armazenada nas preferências
+				if (mc_sinPrecedenteRelevante){
+					$('#chkPrecedenteRelevante').prop('checked', true);
+				}
+
+			}else{
+				$("#divPrecedenteRelevante").css('display','none');
+				$('#chkPrecedenteRelevante').prop('checked', false);
+			}
+
+            if($strRemeterJurisprudencia == 'O'){
+                $("#divJurisprudencia").css('display','block');
+
+                $('#chkRemeterJurisprudencia').data('msgAvisoAnonimizacao', $strMsgAvisoAnonimizacao);
+                //esta validação é feita, pois a marcação de enviar para a jurisprudência pode ter sido armazenada nas preferências
+                if (mc_sinJurisprudencia){
+                    $('#chkRemeterJurisprudencia').prop('checked', true).trigger('change');
+                }
+            }
+            else{
+                $("#divJurisprudencia").css('display','none');
+                $('#chkRemeterJurisprudencia').prop('checked', false).trigger('change');
+            }
+    	 }
+    }
+    var params = "lista_id_modelo_matriz=" + lista_id_modelo_matriz;
+    ajax.send(params);
+}
+
+$(document).on('change', '#chkRemeterJurisprudencia', function() {
+    var aviso = $(this).data('msgAvisoAnonimizacao');
+
+    if (aviso) {
+        var partes = aviso.split('&').map(function(item) {
+            return item.trim();
+        });
+        var mensagem = partes[0] || '';
+        var tooltip  = partes[1] || '';
+    }
+
+    if ($(this).is(':checked') && aviso && aviso.trim() !== "") {
+        $('#spanAvisoAnonimizacao').text(mensagem);
+        $('#tooltipAvisoAnonimizacao')
+            .off('mouseover mouseout')
+            .on('mouseover', function() {
+                return infraTooltipMostrar(tooltip);
+            })
+            .on('mouseout', function() {
+                return infraTooltipOcultar();
+            });
+        $('#containerAviso').show();
+
+    } else {
+        $('#containerAviso').hide();
+    }
+});
+
+function identificarProtocoloJulgamentoPerspectivaGenero(lista_id_modelo_matriz){
+    var ajax = infraAjaxCriarRequest();
+    ajax.open("POST", linkAjaxIdentificarProtocoloJulgamentoPerspectivaGenero, true);
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function()
+    {
+        if(ajax.readyState == 4)
+        {
+            var retorno = ajax.responseText;
+            $sinProtocoloJulgamentoPerspectivaGenero = retorno;
+
+            if($sinProtocoloJulgamentoPerspectivaGenero=='S'){
+                $("#divProtocoloJulgamentoPerspectivaGenero").css('display','block');
+                $('#divProtocoloJulgamentoPerspectivaGenero').prop('checked', false);
+            }else{
+                $("#divProtocoloJulgamentoPerspectivaGenero").css('display','none');
+                $('#divProtocoloJulgamentoPerspectivaGenero').prop('checked', false);
+            }
+       }
+    }
+    var params = "lista_id_modelo_matriz=" + lista_id_modelo_matriz;
+    ajax.send(params);
+}
+
+function identificarProtocoloJulgamentoPerspectivaRacial(lista_id_modelo_matriz){
+    var ajax = infraAjaxCriarRequest();
+    ajax.open("POST", linkAjaxIdentificarProtocoloJulgamentoPerspectivaRacial, true);
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function()
+    {
+        if(ajax.readyState == 4)
+        {
+            var retorno = ajax.responseText;
+            $sinProtocoloJulgamentoPerspectivaRacial = retorno;
+
+            if($sinProtocoloJulgamentoPerspectivaRacial=='S'){
+                $("#divProtocoloJulgamentoPerspectivaRacial").css('display','block');
+                $('#divProtocoloJulgamentoPerspectivaRacial').prop('checked', false);
+            }else{
+                $("#divProtocoloJulgamentoPerspectivaRacial").css('display','none');
+                $('#divProtocoloJulgamentoPerspectivaRacial').prop('checked', false);
+            }
+        }
+    }
+    var params = "lista_id_modelo_matriz=" + lista_id_modelo_matriz;
+    ajax.send(params);
+}
+
+function configurarParadigma (prefixo) {
+    if (document.getElementById(prefixo+'chkParadigma').checked) {
+        $("#"+prefixo+"divTextoInicial").css("height","34em");
+        $("#"+prefixo+"divParadigma").show();
+		//Pedido 190904 - permitir ao advogado/procurador relacionar um ou mais temas ao recurso
+		$('#fldRecursosDoProcesso').show();
+
+        if ($("#"+prefixo+"hdnModeloPadrao").val() != '') {
+            //selecionou modelo padrão: não usa texto padrão
+            $("#"+prefixo+"chkTextoPadraoParadigma").prop("checked",false);
+            $("#"+prefixo+"divChkTextoPadraoParadigma").hide();
+            $("#"+prefixo+"divTextoPadraoParadigma").html('');
+            $("#"+prefixo+"divTextoPadraoParadigma").hide();
+            //esconder texto padrão e documento base
+            esconderTextoPadraoEBase(prefixo);
+        } else {
+            if ($("#"+prefixo+"txtTextoPadrao1").val() == '' && $("#"+prefixo+"txtTextoPadrao2").val() == '' && $("#"+prefixo+"txtTextoPadrao3").val() == '' && $("#"+prefixo+"txtDocumentoBase").val() == '') {
+                $("#" + prefixo + "chkTextoPadraoParadigma").prop("checked", true);
+            }
+            $("#"+prefixo+"divChkTextoPadraoParadigma").show();
+            $("#"+prefixo+"divTextoPadraoParadigma").html('');
+            //habilitar texto padrão e documento base
+            limparModeloPadrao(prefixo);
+        }
+    } else {
+        limparInfoParadigma(prefixo);
+    }
+    return true;
+}
+// Pedido 190904 - permitir ao advogado/procurador relacionar um ou mais temas ao recurso
+function carregarParadigmaJudicialSelect(numCodParadigmaJudicial, strParadigmaJudicial) {
+	var arrParadigmas = ($("#selParadigmaJudicial").val()).split(',');
+	// Conjunto id e texto
+	var arrParadigmasSelecionados = $('#selParadigmaJudicial').select2('data');
+
+	// Se o código do paradigma judicial não estiver selecionado então adiciona-o nos itens já selecionados.
+	if (arrParadigmas.indexOf(numCodParadigmaJudicial) === -1) {
+		arrParadigmasSelecionados.push({id: numCodParadigmaJudicial, text: strParadigmaJudicial});
+		$("#selParadigmaJudicial").select2('data', arrParadigmasSelecionados);
+	}
+}
+function limparInfoParadigma(prefixo) {
+    $("#"+prefixo+"divTextoInicial").css("height", "18em");
+    $("#"+prefixo+"selParadigmaJudicial").select2('data', null);
+    $("#"+prefixo+"selTipoProcessoParadigmaAcao").val('null');
+    $("#"+prefixo+"chkTextoPadraoParadigma").prop("checked",false);
+    $('[name="'+prefixo+'rdoTextoPadraoParadigma"]').each(function() {
+      $(this).val('');
+      $(this).prop("checked",false)
+    });
+    $("#"+prefixo+"chkParadigma").prop("checked",false);
+    $("#"+prefixo+"divParadigma").hide();
+    $("#" + prefixo + "chkTextoPadraoParadigma").prop("checked", false);
+	//Pedido 190904 - permitir ao advogado/procurador relacionar um ou mais temas ao recurso
+	$('#fldRecursosDoProcesso').hide();
+
+    if ($("#"+prefixo+"hdnModeloPadrao").val() == '') {
+        //habilita texto padrão e documento base
+        limparModeloPadrao(prefixo);
+    }
+    return true;
+}
+function configurarTextoPadraoParadigma(prefixo) {
+	  //selecionou modelo matriz: permite selecionar texto padrão paradigma
+      if (document.getElementById(prefixo+'chkTextoPadraoParadigma').checked) {
+          //esconder texto padrão e documento base
+          esconderTextoPadraoEBase(prefixo);
+
+          //montar textos padrão relacionados aos paradigmas
+          var ajax = infraAjaxCriarRequest();
+          ajax.open("POST", linkAjaxTextoPadraoParadigma, true);
+          ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          ajax.onreadystatechange = function() {
+                if(ajax.readyState == 4) {
+                    var retorno = ajax.responseText;
+                    $("#"+prefixo+"divTextoPadraoParadigma").html(retorno);
+                    $("#"+prefixo+"divTextoPadraoParadigma").show();
+                }
+          }
+          var params = "cod_paradigmas_selecionados="+$("#"+prefixo+"selParadigmaJudicial").val()+"&id_tipo_processo_paradigma_acao="+$("#"+prefixo+"selTipoProcessoParadigmaAcao").val()+"&prefixo="+prefixo;
+          ajax.send(params);
+      } else {
+          $("#"+prefixo+"divTextoPadraoParadigma").html('');
+          $("#"+prefixo+"divTextoPadraoParadigma").hide();
+
+          if ($("#"+prefixo+"hdnModeloPadrao").val() == '') {
+            //habilitar texto padrão e documento base
+            limparModeloPadrao(prefixo);
+          }
+      }
+      return true;
+}
+function exibirTextoPadraoParadigma(link, id) {
+    exibirSubFrm(link, 800, 800);
+    $("#rdoTextoPadraoParadigma"+id).prop("checked",true);
+}
+function excluirJulgamento (acao_origem,id_processo,lista_nome_recurso, id_julgamento) {
+  if (!confirm("Deseja excluir o julgamento?")) return;
+
+	var ajax = infraAjaxCriarRequest();
+	ajax.open("POST", linkAjaxExcluirJulgamento, true);
+	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function() {
+  	   if(ajax.readyState == 4) {
+	     	  var retorno = ajax.responseText;
+	     	  if(retorno!=''){
+	     		  alert(retorno);
+	     	  }
+          atualizaMinutas(acao_origem,id_processo,lista_nome_recurso, id_julgamento);
+    	 }
+    }
+    var params = "id_julgamento=" + id_julgamento;
+    ajax.send(params);
+}
+function montarDivJulgamento(id_processo, seq_processo, id_julgamento, id_modelo_matriz, sin_origem_sessao_julgamento, sin_julgamento_vinculado_sessao_julgamento, num_id_sessao_julgamento_item) {
+  var ajax = infraAjaxCriarRequest();
+
+  //Limpa div de julgamento relacionado
+  $("#divJulgamentoRelacionado").html('');
+  $("#fldJulgamentoRelacionado").css('display','none');
+
+  //opção julgamento existente
+	var sin_julgamento_existente = 'N';
+	if (id_processo==null || id_processo=='') {
+     sin_julgamento_existente = 'S';
+	}
+	var sin_novo_julgamento = 'S';
+  var sin_todos_julgamentos = 'S';
+	if (mc_id_sessao_julgamento_item != '' || mc_id_sessao_julgamento_item_destaque != '') {
+		 //mostrar somente o julgamento relacionado ao item da sessão de julgamento
+     sin_novo_julgamento = 'N';
+     if (mc_id_julgamento != '') {
+       id_julgamento = mc_id_julgamento;
+       sin_todos_julgamentos = 'N';
+     }
+	}
+  //chamada deve ser síncrona para montagem dos julgamentos relacionados
+  ajax.open("POST", mc_strLinkJulgamento, false);
+  ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  ajax.onreadystatechange = function() {
+  	   if(ajax.readyState == 4) {
+          var retorno = ajax.responseText;
+          if(retorno==''){
+            $("#divJulgamento").html(retorno);
+            $("#fldJulgamento").css('display','none');
+            return;
+          }
+          if ($.isNumeric(retorno)) {
+             //retorno = cod_tipo_julgamento_obrigatorio
+             var cod_tipo_julgamento = retorno;
+             //Monta divJulgamento com tipo de julgamento obrigatório
+             $("#divJulgamento").html('<input type="text" id="selTipoJulgamento" name="selTipoJulgamento" ' +
+                     'value="' + cod_tipo_julgamento + '" />');
+             $("#fldJulgamento").css('display','none');
+             //Monta divJulgamentoRelacionado
+             montarDivJulgamentoRelacionado(id_processo, id_julgamento, cod_tipo_julgamento);
+          } else {
+            //Atualiza a div de julgamento
+            $("#divJulgamento").html(retorno);
+            $("#fldJulgamento").css('display','block');
+
+            if (mc_numCodTipoJulgamento != '') {
+              $('#selTipoJulgamento option[value="' + mc_numCodTipoJulgamento + '"]').prop("selected", true);
+              $('#optNovoJulgamento').prop("checked", true);
+              $("#selTipoJulgamento").prop('disabled', false);
+            }
+
+            //Mapeia comportamento dos radio de seleção do julgamento
+            $('[name="rdoJulgamento"]').click(function () {
+              $("#divJulgamentoRelacionado").html('');
+              $("#fldJulgamentoRelacionado").css('display','none');
+              if ($(this).prop('id')=='optNovoJulgamento' || $(this).prop('id')=='optJulgamentoExistente') {
+                $("#selTipoJulgamento").prop('disabled', false);
+              } else {
+                $("#selTipoJulgamento").prop('disabled', true);
+                $("#selTipoJulgamento").val('');
+              }
+              numIdJulgamento = $("input[name='rdoJulgamentoRelacionado']:checked").val();
+              if(typeof(numIdJulgamento) == 'undefined'){
+                numIdJulgamento = $("input[name='rdoJulgamento']:checked").val();
+                if(typeof(numIdJulgamento) == 'undefined'){
+                  numIdJulgamento = null;
+                }
+              }
+              montarRelator('',id_processo, seq_processo, numIdJulgamento);
+              $('#lblNomeRelator').text('');
+            });
+
+            $("#fldJulgamento").css("width", "80%");
+            $(".optJulgamento").css({"position": "relative", "top": "2px"});
+            $(".lblOptJulgamento").css({"position": "relative", "left": "1%"});
+            $("#optJulgamentoExistente").css({"position": "relative", "top": "2px", "left":"5%"});
+            $("#lblOptJulgamentoExistente").css({"position": "relative", "left":"5%"});
+            $("#selTipoJulgamento").css({"position": "relative", "left": "1.5%", "top": "4px", "width":"35%"});
+          }
+       }
+  }
+  var params = "id_processo=" + id_processo + "&id_julgamento=" + id_julgamento + "&id_modelo_matriz=" + id_modelo_matriz+'&sin_julgamento_existente='+sin_julgamento_existente+'&sin_novo_julgamento='+sin_novo_julgamento+'&sin_todos_julgamentos='+sin_todos_julgamentos+'&sin_origem_sessao_julgamento='+sin_origem_sessao_julgamento+'&sin_julgamento_vinculado_sessao_julgamento='+sin_julgamento_vinculado_sessao_julgamento+'&num_id_sessao_julgamento_item='+num_id_sessao_julgamento_item;
+  ajax.send(params);
+
+}
+function montarDivJulgamentoRelacionado(id_processo, id_julgamento, cod_tipo_julgamento) {
+  var ajax = infraAjaxCriarRequest();
+  //chamada deve ser síncrona para montagem dos julgamentos relacionados
+  ajax.open("POST", mc_strLinkJulgamentoRelacionado, false);
+  ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  ajax.onreadystatechange = function() {
+  	   if(ajax.readyState == 4) {
+          var retorno = ajax.responseText;
+          if(retorno!=''){
+            $("#fldJulgamentoRelacionado").css('display','block');
+          } else {
+            $("#fldJulgamentoRelacionado").css('display','none');
+          }
+          //Atualiza a div de julgamento relacionado
+          $("#divJulgamentoRelacionado").html(retorno);
+          $("#fldJulgamentoRelacionado").css("width","80%");
+          $(".optJulgamento").css({"position": "relative", "top": "2px"});
+          $(".lblOptJulgamento").css({"position": "relative", "left": "1%"});
+          $("#selTipoJulgamento").css({"position": "relative", "left": "1.5%", "top": "4px", "width":"35%"});
+       }
+  }
+  var params = "id_processo=" + id_processo + "&id_julgamento=" + id_julgamento + "&cod_tipo_julgamento=" + cod_tipo_julgamento;
+  ajax.send(params);
+}
+function verificarPermissaoAgendamento(id_modelo_matriz){
+	if (id_modelo_matriz != '') {
+		var ajax = infraAjaxCriarRequest();
+		ajax.open("POST", linkAjaxModeloMatrizPermiteAgendamento, true);
+		ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+		ajax.onreadystatechange = function () {
+			if (ajax.readyState==4) {
+				var retorno = ajax.responseText;
+				if (retorno=='N') {
+					//$('#divEventoAgendamento').html('');
+					document.getElementById('chkEventoAgendamento').checked = false;
+					$("#fldEventoAgendamento").css('display', 'none');
+				} else {
+          let parametrosUrl = new URLSearchParams(window.location.search);
+          if (parametrosUrl.get('desabilitar_agendador') != 'S') {
+					$("#fldEventoAgendamento").css('display', 'block');
+				}
+				}
+
+			}
+		}
+		var params = "id_modelo_matriz=" + id_modelo_matriz;
+		ajax.send(params);
+	}
+}
+
+function verificarExigeAssinanteIndicado(id_modelo_matriz) {
+	if (id_modelo_matriz!='') {
+		var ajax = infraAjaxCriarRequest();
+		ajax.open("POST", linkAjaxModeloMatrizExigeAssinanteIndicado, true);
+		ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+		ajax.onreadystatechange = function () {
+			if (ajax.readyState==4) {
+				var retorno = ajax.responseText;
+				$("#hdnExigeAssinante").val(retorno);
+				if (retorno=='N') {
+					$('#selAssinante').val('');
+					$('#selTratamento').val('');
+					$("#divAssinante").css('display', 'none');
+					$("#divTratamento").css('display', 'none');
+				} else {
+					$("#divAssinante").css('display', 'block');
+					$("#divTratamento").css('display', 'block');
+				}
+			}
+		}
+		var params = "id_modelo_matriz=" + id_modelo_matriz;
+		ajax.send(params);
+	}
+}
+
+function verificarExisteModeloTextoAssociado(id_classificacao) {
+
+	if (id_classificacao!='') {
+		var ajax = infraAjaxCriarRequest();
+		ajax.open("POST", linkAjaxClassificacaoConteudoModeloTexto, false);
+		ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+		ajax.onreadystatechange = function () {
+			if (ajax.readyState==4) {
+				var retorno = ajax.responseText;
+				$("#hdnQtdModeloTexto").val(retorno);
+			}
+		}
+		var params = "id_classificacao=" + id_classificacao;
+		ajax.send(params);
+	}
+}
+
+function verificarExisteTextoPadraoAssociado(id_classificacao) {
+
+	if (id_classificacao!='') {
+		var ajax = infraAjaxCriarRequest();
+		ajax.open("POST", linkAjaxClassificacaoConteudoTextoPadrao, false);
+		ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+		ajax.onreadystatechange = function () {
+			if (ajax.readyState==4) {
+				var retorno = ajax.responseText;
+				$("#hdnQtdTextoPadrao").val(retorno);
+			}
+		}
+		var params = "id_classificacao=" + id_classificacao;
+		ajax.send(params);
+	}
+}
+
+function verificarExisteMinutaAssociada(id_classificacao) {
+
+	if (id_classificacao!='') {
+		var ajax = infraAjaxCriarRequest();
+		ajax.open("POST", linkAjaxClassificacaoConteudoMinuta, false);
+		ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+		ajax.onreadystatechange = function () {
+			if (ajax.readyState==4) {
+				var retorno = ajax.responseText;
+				$("#hdnQtdMinuta").val(retorno);
+			}
+		}
+		var params = "id_classificacao=" + id_classificacao;
+		ajax.send(params);
+	}
+}
+
+function editar_minuta_com_mensagem(msg,url,target){
+    alert(msg);
+    window.open(url,target);
+}
+
+function editar_minuta_com_mensagem_e_subform(msg,url){
+    alert(msg);
+    exibirSubFrm(url, 1200, 700);
+}
+
+function exibirSelectAtosRelacioanadoAoModeloMatriz() {
+    const numIdModeloMatriz = $('#selModeloMatriz').val();
+    const divAtos = $('#divAtos');
+
+    $.ajax({
+        type: 'POST',
+        dataType: 'text',
+        url: linkMontarSelectAtosModeloMatriz,
+        data: {
+            numIdModeloMatriz: numIdModeloMatriz,
+        },
+        success: function (html) {
+            divAtos.html(html);
+        }
+    });
+}
+
+$(document).on("change", "#selEvento", function(e) {
+    if (e.originalEvent) {
+        verificarSugestaoAgenda();
+    }
+});
+function validarSelecaoAberturaPrazoLitisconsorcio(event) {
+    const $select = $('#selAberturaPrazoLitisconsorcio');
+    const selectedText = $select.find('option:selected').text();
+
+    if (selectedText === 'Selecione') {
+        event?.preventDefault();
+        alert('Selecione um valor diferente de "Selecione" para Abertura de prazo litisconsórcio passivo. ');
+        $select.trigger('focus');
+        return false;
+    }
+
+    return true;
+}

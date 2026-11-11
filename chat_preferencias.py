@@ -5,7 +5,7 @@ import json
 import re
 import juridico as legal
 
-DEFAULT={'tema':'sistema','ocultar_historico':False,'ocultar_bolha':False,'fixar_painel':False,'largura':420,'altura':640,'estado':'automatico','som_notificacoes':False,'notificacoes_desktop':False,'recolher_auto':True,'mostrar_previas':True,'mostrar_confirmacoes':True,'mostrar_horarios':True}
+DEFAULT={'tema':'sistema','ocultar_historico':False,'ocultar_bolha':False,'fixar_painel':False,'largura':420,'altura':640,'estado':'automatico','som_notificacoes':False,'notificacoes_desktop':False,'recolher_auto':True,'mostrar_previas':True,'mostrar_confirmacoes':True,'mostrar_horarios':True,'silencio_inicio':'','silencio_fim':'','painel_x':-1,'painel_y':-1}
 STATES={'automatico','online','ausente','ocupado','reuniao','telefone','invisivel'}
 
 def schema(db):
@@ -35,6 +35,10 @@ def save(store,actor,body):
         if type(p['largura'])is not int or not 320<=p['largura']<=900:raise legal.AppError('A largura deve estar entre 320 e 900 pixels.')
         if type(p['altura'])is not int or not 320<=p['altura']<=1200:raise legal.AppError('Altura inválida.')
         if any(type(p[k])is not bool for k in ('ocultar_historico','ocultar_bolha','fixar_painel','som_notificacoes','notificacoes_desktop','recolher_auto','mostrar_previas','mostrar_confirmacoes','mostrar_horarios')):raise legal.AppError('Opção de privacidade inválida.')
+        for key in ('silencio_inicio','silencio_fim'):
+            if not isinstance(p[key],str) or (p[key] and not re.fullmatch(r'(?:[01]\d|2[0-3]):[0-5]\d',p[key])):raise legal.AppError('Horário de silêncio inválido.')
+        if bool(p['silencio_inicio'])!=bool(p['silencio_fim']):raise legal.AppError('Preencha início e fim do silêncio.')
+        if any(type(p[k])is not int or not -1<=p[k]<=20000 for k in ('painel_x','painel_y')):raise legal.AppError('Posição inválida.')
         db.execute('INSERT OR REPLACE INTO chat_preferences VALUES(?,?)',(actor['id'],legal.dumps(p)))
         store.audit(db,actor,'alterar_preferencias_chat','chat_usuario',actor['id'],after=body)
     return get(store,actor)

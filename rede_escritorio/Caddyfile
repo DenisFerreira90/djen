@@ -1,0 +1,16 @@
+# Piloto interno. Restrinja também o firewall à LAN/VPN. Sem encaminhamento público.
+https://192.168.1.147:9443 {
+    bind 192.168.1.147
+    tls internal
+    @escritorio remote_ip 192.168.1.0/24
+    handle @escritorio {
+        reverse_proxy 127.0.0.1:8765 {
+            header_up Host 192.168.1.147:9443
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto https
+        }
+    }
+    handle {
+        respond "Acesso somente pela rede do escritorio ou VPN." 403
+    }
+}

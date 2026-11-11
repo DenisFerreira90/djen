@@ -1,0 +1,6 @@
+{"data": "2026-11-04T17:14:21-03:00", "mensagem": "Abrindo a entrada do eproc. A janela permanecerá aberta para o login."}
+{"data": "2026-11-04T17:14:21-03:00", "mensagem": "HTTP 403 recebido do TJRS. A coleta será interrompida, sem novas tentativas automáticas."}
+{"data": "2026-11-04T17:14:22-03:00", "mensagem": "Faça o login na janela do eproc, sem limite de tempo. Quando chegar ao perfil ou painel, volte ao nosso sistema e clique em Continuar após login / seleção."}
+{"data": "2026-11-04T17:14:22-03:00", "mensagem": "Coleta: falha na operação (RuntimeError · linha 271). Código: ERR-97F94B222D"}
+{"data": "2026-11-04T17:14:22-03:00", "mensagem": "A coleta encontrou uma falha. A janela permanece aberta para você conferir. Clique em Cancelar para salvar os dados parciais, ou em Continuar para encerrar esta tentativa."}
+{"data": "2026-11-04T17:14:23-03:00", "mensagem": "Encerramento da tentativa: falha na operação (RuntimeError · linha 271). Código: ERR-BF124D6A1D"}

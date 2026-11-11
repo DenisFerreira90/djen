@@ -23,6 +23,8 @@ def schema(db):
     ''')
     visual.schema(db)
     office.schema(db)
+    import chat_produtividade as work
+    work.schema(db)
 
 
 def editor(actor):
@@ -86,11 +88,12 @@ def rooms(store,actor,audit=False):
             d['nao_lidas']=db.execute('SELECT COUNT(*) FROM chat_messages m WHERE m.room_id=? AND m.sender_id!=? AND '+visual.UNREAD,(r['id'],actor['id'],actor['id'],actor['id'])).fetchone()[0]
             d['membros']=[dict(u) for u in db.execute('SELECT u.id,u.nome FROM users u JOIN chat_members m ON m.user_id=u.id WHERE m.room_id=?',(r['id'],))]
             if d['tipo']=='direta':d['titulo']=' / '.join(m['nome'] for m in d['membros'])
+            d['ultima_mensagem']=db.execute('SELECT COALESCE(MAX(id),0) FROM chat_messages WHERE room_id=?',(r['id'],)).fetchone()[0]
             rows.append(d)
         import chat_preferencias as prefs
         prefs.schema(db);pins={r[0] for r in db.execute('SELECT room_id FROM chat_pins WHERE user_id=?',(actor['id'],))}
         for room in rows:room['fixada']=room['id'] in pins
-        rows.sort(key=lambda r:(not r['fixada'],-r['id']))
+        rows.sort(key=lambda r:(not r['fixada'],-r['ultima_mensagem'],-r['id']))
         if audit:store.audit(db,actor,'listar_conversas_administracao','chat')
         return rows
 
@@ -133,6 +136,8 @@ def members(store,actor,rid,ids):
         valid={r[0] for r in db.execute('SELECT id FROM users WHERE ativo=1')}
         if not ids<=valid:raise legal.AppError('Participante inexistente ou desativado.')
         reads={r['user_id']:r['last_read'] for r in db.execute('SELECT * FROM chat_members WHERE room_id=?',(rid,))}
+        import chat_produtividade as work
+        work.new_members(db,rid,reads,ids)
         db.execute('DELETE FROM chat_members WHERE room_id=?',(rid,));db.executemany('INSERT INTO chat_members(room_id,user_id,last_read) VALUES(?,?,?)',[(rid,i,reads.get(i,0)) for i in ids])
         store.audit(db,actor,'alterar_integrantes','chat',rid,after={'membros':sorted(ids)})
     return {'ok':True}
@@ -172,11 +177,16 @@ def send(store,actor,rid,body):
         room=access(store,db,actor,rid)
         if not features.can_post(db,actor['id'],room['tipo']):raise legal.AppError('Você não tem permissão para publicar neste canal.',403)
         reply,poll=features.prepare(db,actor,rid,body)
-        old=db.execute('SELECT id,room_id FROM chat_messages WHERE sender_id=? AND nonce=?',(actor['id'],nonce)).fetchone()
+        parsed=[attachment(f) for f in files]
+        old=db.execute('SELECT id,room_id,texto FROM chat_messages WHERE sender_id=? AND nonce=?',(actor['id'],nonce)).fetchone()
         if old:
             if old['room_id']!=rid:raise legal.AppError('Identificador já usado em outra conversa.')
+            stored_files=[tuple(f) for f in db.execute('SELECT nome,tipo,sha256 FROM chat_files WHERE message_id=?',(old['id'],))]
+            sent_files=[(f[1],f[3],f[5]) for f in parsed]
+            meta=db.execute('SELECT reply_id FROM chat_meta WHERE message_id=?',(old['id'],)).fetchone()
+            if stored_files!=sent_files or (meta[0] if meta else None)!=reply:raise legal.AppError('Este envio já foi confirmado com outro conteúdo.',409)
+            if old['texto']!=text:raise legal.AppError('Esta tentativa já foi enviada com outro texto. Atualize a conversa antes de editar.',409)
             return {'id':old['id']}
-        parsed=[attachment(f) for f in files]
         cur=db.execute('INSERT INTO chat_messages(room_id,sender_id,texto,criado,nonce) VALUES(?,?,?,?,?)',(rid,actor['id'],text,legal.now(),nonce));mid=cur.lastrowid
         db.execute('INSERT INTO chat_meta VALUES(?,?,?)',(mid,reply,int(body.get('_encaminhada') is True)))
         if poll:db.execute('INSERT INTO chat_polls(message_id,options) VALUES(?,?)',(mid,json.dumps([x.strip() for x in poll],ensure_ascii=False)))
@@ -188,14 +198,17 @@ def send(store,actor,rid,body):
 def messages(store,actor,rid,after=0,before=0,search='',reason=''):
     with store.lock,store.connect() as db:
         schema(db);room=access(store,db,actor,rid,reason);room.update(office.room_info(db,room,actor))
+        import chat_produtividade as work
+        room['historico_apos']=work.cutoff(db,actor['id'],rid)
         args=[rid];query='SELECT m.*,u.nome FROM chat_messages m JOIN users u ON u.id=m.sender_id WHERE m.room_id=?'
+        query+=' AND m.id>?';args.append(room['historico_apos'])
         if after:query+=' AND m.id>?';args.append(after)
         if before:query+=' AND m.id<?';args.append(before)
         if search:query+=" AND m.texto LIKE ? ESCAPE '\\'";args.append('%'+str(search).replace('\\','\\\\').replace('%','\\%').replace('_','\\_')[:200]+'%')
         rows=db.execute(query+(' ORDER BY m.id ASC' if after else ' ORDER BY m.id DESC')+' LIMIT 101',args).fetchall();more=len(rows)>100;rows=rows[:100]
         result=[]
         for r in sorted(rows,key=lambda r:r['id']):
-            d=dict(r);d.pop('nonce');d['anexos']=[dict(f) for f in db.execute('SELECT id,nome,mime,tipo,tamanho,sha256 FROM chat_files WHERE message_id=?',(r['id'],))];features.enrich(db,actor,d);notice=db.execute('SELECT tipo,titulo,escopo FROM chat_notices WHERE message_id=?',(r['id'],)).fetchone()
+            d=dict(r);d.pop('nonce');d['anexos']=[dict(f) for f in db.execute('SELECT id,nome,mime,tipo,tamanho,sha256 FROM chat_files WHERE message_id=?',(r['id'],))];features.enrich(db,actor,d);work.enrich(db,actor,d);notice=db.execute('SELECT tipo,titulo,escopo FROM chat_notices WHERE message_id=?',(r['id'],)).fetchone()
             if notice:d['aviso']=dict(notice)
             confirmation=visual.receipt_db(db,actor,r)
             if confirmation:d['confirmacao']={k:v for k,v in confirmation.items() if k!='pessoas'}
@@ -205,7 +218,7 @@ def messages(store,actor,rid,after=0,before=0,search='',reason=''):
         room['fixados']=[]
         for a in db.execute('SELECT a.* FROM chat_announcements a WHERE room_id=? ORDER BY position,message_id',(rid,)):
             r=db.execute('SELECT m.*,u.nome FROM chat_messages m JOIN users u ON u.id=m.sender_id WHERE m.id=?',(a['message_id'],)).fetchone()
-            if r:room['fixados'].append({'titulo':a['title'],'ordem':a['position'],'mensagem_id':a['message_id'],'texto':r['texto']})
+            if r and work.visible(db,actor['id'],rid,r['id']):room['fixados'].append({'titulo':a['title'],'ordem':a['position'],'mensagem_id':a['message_id'],'texto':r['texto']})
         room['membros']=[dict(r) for r in db.execute('SELECT u.id,u.nome FROM chat_members m JOIN users u ON u.id=m.user_id WHERE m.room_id=?',(rid,))]
         return {'conversa':room,'itens':result,'tem_mais':more}
 
@@ -219,5 +232,7 @@ def download(store,actor,fid,reason=''):
         schema(db);row=db.execute('SELECT f.*,m.room_id FROM chat_files f JOIN chat_messages m ON m.id=f.message_id WHERE f.id=?',(fid,)).fetchone()
         if not row:raise legal.AppError('Arquivo não encontrado.',404)
         access(store,db,actor,row['room_id'],reason,'consultar_anexo_administracao')
+        import chat_produtividade as work
+        if not work.visible(db,actor['id'],row['room_id'],row['message_id']):raise legal.AppError('Arquivo anterior à sua entrada na conversa.',403)
         store.audit(db,actor,'baixar_anexo_chat','chat',row['room_id'],after={'arquivo_id':fid})
         return dict(row)

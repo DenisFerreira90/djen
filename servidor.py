@@ -25,11 +25,13 @@ import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 ROOT = Path(__file__).resolve().parent
+APP_VERSION = '68'
+STATIC_MIME = {'.js':'text/javascript','.css':'text/css','.html':'text/html','.svg':'image/svg+xml'}
 API_URL = 'https://comunicaapi.pje.jus.br/api/v1/comunicacao'
 USER_AGENT = 'DJEN-Consulta-VSCode/1.0'
 MAX_REMOTE_BYTES = 24 * 1024 * 1024
 BATCH_SIZE = 100
-ALLOWED_STATIC = {'/js/twofa.js','/js/navegacao.js','/js/setores.js','/js/jusdown.js','/js/conectores.js', '/', '/index.html', '/css/style.css', '/js/app.js', '/js/eproc.js', '/consulta.html', '/css/juridico.css', '/js/juridico.js', '/js/continuidade.js', '/js/organizacao.js', '/js/mandados.js', '/js/mandados-relatorios.js', '/js/chat.js', '/js/chat-alertas.js', '/js/chat-visualizacao.js', '/js/chat-escritorio.js', '/img/chat-icon.svg', '/js/painel-operacional.js', '/js/calendario.js', '/js/servico-coleta.js', '/js/dados.js', '/js/rh.js', '/js/monitoramento.js', '/js/busca-lista.js'}
+ALLOWED_STATIC = {'/js/estoque.js','/vendor/jsQR.js','/js/twofa-qr.js','/js/diagnostico.js','/js/chat-produtividade.js','/js/twofa.js','/js/navegacao.js','/js/setores.js','/js/jusdown.js','/js/conectores.js', '/', '/index.html', '/css/style.css', '/js/app.js', '/js/eproc.js', '/consulta.html', '/css/juridico.css', '/js/juridico.js', '/js/continuidade.js', '/js/organizacao.js', '/js/mandados.js', '/js/mandados-relatorios.js', '/js/chat.js', '/js/chat-alertas.js', '/js/chat-visualizacao.js', '/js/chat-escritorio.js', '/img/chat-icon.svg', '/js/painel-operacional.js', '/js/calendario.js', '/js/servico-coleta.js', '/js/dados.js', '/js/rh.js', '/js/monitoramento.js', '/js/busca-lista.js'}
 FIELD_LIMITS = {
     'numeroOab': 32, 'ufOab': 2, 'nomeAdvogado': 140,
     'numeroProcesso': 32, 'nomeParte': 140, 'siglaTribunal': 12,
@@ -286,12 +288,13 @@ class Handler(BaseHTTPRequestHandler):
                 if exc.retry_after and re.fullmatch(r'\d{1,4}', exc.retry_after.strip()):
                     headers['Retry-After'] = exc.retry_after.strip()
                 self.send_json(exc.code, {'ok': False, 'erro': exc.message}, headers)
-            except Exception:
-                self.send_json(500, {'ok': False, 'erro': 'Erro interno na aplicação local.'})
-                raise
+            except Exception as exc:
+                import diagnostico
+                error=diagnostico.capture(exc,'djen','GET /api/buscar')
+                self.send_json(500, {'ok':False,'erro':'Falha na consulta. Código: '+error['codigo'],'codigo_erro':error['codigo'],'registro_tecnico':error['registrado']})
             return
         if path.path == '/api/health':
-            return self.send_json(200, {'ok': True, 'servidor': 'Python', 'api': 'CNJ', 'versao':'8.0'})
+            return self.send_json(200, {'ok': True, 'servidor': 'Python', 'api': 'CNJ', 'versao':'8.0','aplicacao':'ConectaAdv','versao_aplicacao':APP_VERSION,'estoque_arquivo_disponivel':(ROOT/'js'/'estoque.js').is_file()})
         if path.path not in ALLOWED_STATIC:
             return self.send_json(404, {'ok': False, 'erro': 'Arquivo não encontrado.'})
         item = 'index.html' if path.path == '/' else path.path.lstrip('/')
@@ -300,7 +303,7 @@ class Handler(BaseHTTPRequestHandler):
             content = filename.read_bytes()
         except OSError:
             return self.send_json(404, {'ok': False, 'erro': 'Arquivo não encontrado.'})
-        ctype = mimetypes.guess_type(str(filename))[0] or 'application/octet-stream'
+        ctype = STATIC_MIME.get(filename.suffix.lower()) or mimetypes.guess_type(str(filename))[0] or 'application/octet-stream'
         if ctype.startswith('text/') or ctype in ('application/javascript',):
             ctype += '; charset=utf-8'
         self.send_response(200)
@@ -354,8 +357,15 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
         if self.command == 'GET' and urllib.parse.urlsplit(self.path).path == '/api/eproc/status' and len(args) > 1 and str(args[1]) == '200':
             return
-        print('[DJEN] %s: %s' % (self.address_string(), fmt % args))
+        # Não imprimir URL, query, cookie, IP ou valores de formulário no console.
+        print('[DJEN] %s HTTP %s' % (self.command, str(args[1]) if len(args)>1 and str(args[1]).isdigit() else 'evento'))
 
+
+class DiagnosticHTTPServer(ThreadingHTTPServer):
+    def handle_error(self,request,client_address):
+        import sys,diagnostico
+        exc=sys.exc_info()[1]
+        if exc:diagnostico.capture(exc,'servidor','tratar_requisicao')
 
 def main():
     parser = argparse.ArgumentParser(description='Consulta DJEN local (VS Code / Python)')
@@ -368,6 +378,8 @@ def main():
     args = parser.parse_args()
     import juridico
     if args.chat_independente:
+        import diagnostico
+        diagnostico.PATH=diagnostico.BASE/'dados_diagnostico'/'chat.sqlite3'
         import chat_servico
         args.piloto_chat=True
         juridico.store=juridico.Store(chat_servico.CHAT_PATH)
@@ -385,7 +397,7 @@ def main():
     if not 1024 <= args.porta <= 65535:
         parser.error('Escolha uma porta entre 1024 e 65535.')
     try:
-        server = ThreadingHTTPServer(('127.0.0.1', args.porta), Handler)
+        server = DiagnosticHTTPServer(('127.0.0.1', args.porta), Handler)
     except OSError as exc:
         parser.error('Não foi possível abrir a porta %d: %s' % (args.porta, exc))
     server.rede_piloto=policy;server.chat_only=args.piloto_chat;server.chat_independente=args.chat_independente

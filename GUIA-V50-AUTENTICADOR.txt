@@ -1,0 +1,96 @@
+CONECTAADV V50 — AUTENTICADOR LATERAL
+
+ATUALIZAR
+1. Faça backup e aguarde qualquer coleta terminar.
+2. Na janela do servidor Python, pressione Ctrl+C. O Caddy pode continuar aberto:
+   esta atualização não altera a configuração do proxy.
+3. Copie o conteúdo da pasta djen do ZIP para C:\xampp\htdocs\djen,
+   substituindo os arquivos do programa. Não apague bancos, cofre 2FA,
+   configurações de rede, sessões ou pastas dados_*.
+4. Reinicie uma única instância do servidor, no notebook:
+   python servidor.py --porta 8765 --piloto-escritorio --rede "rede_escritorio\piloto-rede.json" --sem-navegador
+5. No notebook e no PC do colega, abra o endereço HTTPS configurado e use Ctrl+F5.
+   Enquanto o Python estiver parado, o proxy pode mostrar 502; isso é esperado
+   durante a manutenção. Não inicie outro Python na mesma porta.
+
+ONDE ENCONTRAR
+Na lateral direita, botão 2FA. Só aparece para a conta proprietária e para
+contas que ela autorizou em Configurar / Permissão 2FA. Primeiro é necessário
+entrar no ConectaAdv com a conta individual. Não é login do tribunal.
+
+CARTÃO DO AUTENTICADOR
+Acima: portal, por exemplo eproc RS · 1º Grau.
+Centro: código TOTP temporário.
+Abaixo: CPF do titular mascarado, identificação da conta, validade e Copiar código.
+Pesquisa pelo nome do portal ou pela identificação da conta.
+O CPF é identificação informada no cadastro. Não integra certificado digital
+nem comprova que o certificado pertence à pessoa identificada.
+Não há visualização do CPF completo pela interface nesta entrega.
+
+CADASTRAR E AJUSTAR
+Somente o proprietário abre a configuração e cadastra o autenticador.
+Informe portal, identificação da conta, CPF opcional, chave Base32 ou URI
+padrão otpauth://totp e o código atual do aplicativo para confirmar a chave.
+Esta entrega não importa arquivos de extensões, QR de migração do Google,
+backups criptografados nem faz leitura de QR pela câmera. Precisamos identificar
+o autenticador e o formato de exportação antes de implementar essa importação.
+Não envie chaves, QR Codes de cadastro ou arquivos com segredos pelo chat.
+
+Autenticadores existentes continuam funcionando. Use Editar portal / CPF
+para acrescentar o CPF sem recadastrar ou alterar a chave do 2FA.
+No campo CPF do editor, vazio mantém o atual; REMOVER apaga a identificação.
+CPF inválido é recusado. O CPF é opcional para outras contas que não usam CPF.
+Use o campo próprio de CPF, em vez de colocá-lo no texto da identificação.
+
+PROTEÇÃO E PERMISSÕES
+O CPF e a chave do autenticador ficam protegidos pelo Windows DPAPI no cofre
+separado já existente. Não são enviados completos nas respostas da API ou na
+auditoria desta função. A autorização geral 2FA anterior continua valendo:
+uma pessoa autorizada vê todos os autenticadores ativos; nesta entrega não há
+permissão individual por portal. Só o proprietário cadastra, edita e desativa.
+Ao fechar o painel, trocar de aba do navegador, sair da conta ou ficar sem
+interagir por 60 segundos, os códigos são retirados da tela. Eles não continuam
+visíveis o dia inteiro por padrão. Ao desativar, a chave e o CPF são apagados.
+O cofre exige a mesma conta Windows do servidor para abrir a proteção DPAPI.
+Não copie apenas o banco para outro PC esperando descriptografia automática.
+
+TESTE SEM ESPERAR NOVA ATUALIZAÇÃO DO PROGRAMA
+1. Entre como proprietário e cadastre um TOTP de teste.
+2. Confira o código com o autenticador original, usando relógios sincronizados.
+3. Edite portal/CPF de um cartão existente. Reabra o painel: o nome muda e o
+   CPF fica mascarado. A chave anterior e o código continuam os mesmos.
+4. Dê a permissão 2FA a um colega e peça que atualize/reentre. Confira o botão.
+5. Retire a permissão e reabra o painel no colega: novas consultas são recusadas.
+6. Feche o painel e troque de aba: os códigos devem sair da tela.
+Nunca use a geração de código como confirmação de acesso ao tribunal: esse
+acesso depende da conta, do 2FA, das regras e da disponibilidade do portal.
+
+AS ALTERAÇÕES SÃO EM TEMPO REAL?
+- Arquivos Python/API: exigem reiniciar o servidor Python afetado.
+- HTML, JavaScript e CSS: o navegador precisa recarregar, usando Ctrl+F5.
+- Cadastro e edição pela interface: são gravados no servidor, sem reiniciar.
+- Um painel já aberto pode levar até cerca de dez segundos para buscar mudanças;
+  recolher e reabrir faz uma nova consulta imediatamente.
+- Código TOTP: se renova no vencimento, com contador automático enquanto aberto.
+  O relógio utilizado é o do servidor, não o do computador do colega.
+Não há hot reload automático dos arquivos de programa. Não substitua arquivos
+Python enquanto o serviço estiver em execução, pois isso pode misturar versões.
+
+CHAT NO PC DE TESTE
+Há duas situações diferentes:
+1. Arquivos da interface retornando 403/502: o chat não carrega normalmente.
+   É necessário resolver o acesso HTTPS/proxy e então recarregar a página.
+2. Banco de chat independente detectado: o servidor principal esconde a bolha
+   e mostra a tela Chat independente. O endereço antigo 127.0.0.1:8766 apontava
+   para o PC de cada colega. A V50 deixa a necessidade de configurar HTTPS próprio
+   para o serviço de chat explícita, sem oferecer esse link incorreto na rede.
+Esta entrega não configura o proxy separado do chat nem mistura seus bancos.
+Se aparecer Chat independente, informe essa mensagem para seguirmos com a
+configuração do serviço na rede. Não inicie esse serviço no computador do colega.
+
+VALIDAÇÃO
+Testes de CPF válido/inválido, armazenamento protegido com codec de teste,
+ausência de CPF completo na API/auditoria, edição sem trocar TOTP e migração
+de cofre anterior. Testes de RFC TOTP e permissões anteriores preservados.
+Controles e ordem dos cartões verificados em DOM simulado. A criptografia
+DPAPI real, a aparência e o uso entre PCs precisam do teste no Windows.

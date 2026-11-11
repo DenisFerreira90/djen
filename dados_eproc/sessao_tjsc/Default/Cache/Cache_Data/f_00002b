@@ -1,0 +1,948 @@
+//OBSERVACAO: Se fizer modificacoes nesse arquivo, é necessário modificar o PaginaEproc.php,
+//incrementando o último número da constante NR_VERSAO_EPROC. Essa constante é utilizada na funcao adicionarJavascript(),
+//bem como na funcao getNumVersao(), e evita problemas que ocorrem quando o cache do navegador nao atualiza o javascript.
+
+/* arquivo js para funcoes comuns no cadastramento de sessões de julgamento */
+
+function marcarItemComoVisualizado(id_sessao_julgamento_item, link_sessao_julgamento_item_marcar_visualizado) {
+  if (confirm("Ocultar a marca de \"ALTERADO\" até nova modificação?")) {
+
+    ajax_marcarItemComoVisualizado = infraAjaxCriarRequest();
+    ajax_marcarItemComoVisualizado.open("POST", link_sessao_julgamento_item_marcar_visualizado, true);
+    ajax_marcarItemComoVisualizado.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    ajax_marcarItemComoVisualizado.onreadystatechange = function () {
+      if (ajax_marcarItemComoVisualizado.readyState==4) {
+        var retorno = ajax_marcarItemComoVisualizado.responseText;
+        if (retorno.indexOf('Erro:')>=0) {
+          alert(retorno.trim());
+        } else {
+          ajax_marcarItemComoVisualizado2 = infraAjaxCriarRequest();
+          ajax_marcarItemComoVisualizado2.open("POST", link_sessao_julgamento_item_marcar_visualizado, true);
+          ajax_marcarItemComoVisualizado2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          ajax_marcarItemComoVisualizado2.onreadystatechange = function () {
+            if (ajax_marcarItemComoVisualizado2.readyState==4) {
+              var retorno = ajax_marcarItemComoVisualizado2.responseText;
+              if (retorno.indexOf('Erro:')>=0) {
+                alert(retorno.trim());
+              } else {
+                atualizaSessaoJulgamentoItem(id_sessao_julgamento_item);
+              }
+            }
+          };
+          var params = "id_sessao_julgamento_item=" + id_sessao_julgamento_item;
+          ajax_marcarItemComoVisualizado2.send(params);
+
+        }
+      }
+    };
+    var params = "id_sessao_julgamento_item=" + id_sessao_julgamento_item;
+    ajax_marcarItemComoVisualizado.send(params);
+
+  }
+
+}
+
+//funções para retornar variável da na url
+function retVar(name) {
+  var regexp = new RegExp("([\\?&])(" + name + "=)([^&#]*)", "i");
+  var result = regexp.exec(window.location.href);
+  if (result==null) {
+    return "";
+  }
+  else {
+    return result[3];
+  }
+}
+
+function retVarParent(name) {
+  var regexp = new RegExp("([\\?&])(" + name + "=)([^&#]*)", "i");
+  var result = regexp.exec(parent.window.location.href);
+  if (result==null) {
+    return "";
+  }
+  else {
+    return result[3];
+  }
+}
+
+//Funções relacionadas aos recursos e links
+$(document).on('click', 'a', function () {
+  //
+  // Marca a linha do item da sessão de julgamento visualizado e desmarca a anterior
+  //
+  if (retVar('acao')=="sessao_julgamento_item_listar" || retVar('acao')=="sessao_julgamento_listar" ||
+      retVar('acao')=="sessao_julgamento_atualizar_resultado") {
+    tr = $(this).parents('tr');
+    marcaLinhaAcessada(tr);
+  }
+});
+
+//Execução dos Recursos do Item da Sessão de Julgamento
+$(document).on('click', '[name="imgRecursoSessaoJulgamentoItemAjax"]', function (event) {
+  //
+  // Mapeia os cliques nos ícones dos recursos que estão configurados para rodar em Ajax
+  // (name=imgRecursoSessaoJulgamentoItemAjax)
+  //
+
+  event.stopPropagation();
+
+  if ($(this).attr("src")=="imagens/sessao_julgamento_item_marcar_em_julgamento_ativo.png" || $(this).attr("src")=="imagens/sessao_julgamento_item_marcar_em_julgamento.png") {
+    $('img[src="imagens/sessao_julgamento_item_marcar_em_julgamento_ativo.png"]').attr('descricao', 'Marcar item como em julgamento');
+    $('img[src="imagens/sessao_julgamento_item_marcar_em_julgamento_ativo.png"]').attr('src', 'imagens/sessao_julgamento_item_marcar_em_julgamento.png');
+    $('iframe', parent.document).contents().find('body').find(':hidden').not("script").find('img[src="imagens/sessao_julgamento_item_marcar_em_julgamento_ativo.png"]').attr('descricao', 'Marcar item como em julgamento');
+    $('iframe', parent.document).contents().find('body').find(':hidden').not("script").find('img[src="imagens/sessao_julgamento_item_marcar_em_julgamento_ativo.png"]').attr('src', 'imagens/sessao_julgamento_item_marcar_em_julgamento.png');
+  }
+
+  if (retVar('acao')=="sessao_julgamento_item_listar") {
+    desmarcaLinhaAcessada();
+  }
+  if ($(this).attr('sin_solicitar_confirmacao')=='S') {
+    if (!confirm("Deseja " + $(this).attr('descricao') + "?")) return;
+  }
+  let lancarEvento = $(this).attr('sin_solicitar_confirmacao_lancamento_evento') && confirm('Deseja lançar o evento?');
+
+  var id_sessao_julgamento_item = $(this).attr('id_sessao_julgamento_item');
+  var id_recurso_sessao_julgamento_item = $(this).attr('id_recurso_sessao_julgamento_item');
+  //var num_processo = $(this).attr('num_processo');
+  var lista_nome_recurso = '';
+  var acao = $(this).attr('acao');
+  var urlAjax = $(this).attr('urlAjax');
+  //var id_processo = $(this).attr('id_processo');
+  var acao_origem = $(this).attr('acao_origem');
+
+  var imgAguardeSrc = "infra_css/imagens/aguarde.gif";
+  var imgRecurso = $(this);
+  var imgRecursoSrc = imgRecurso.attr('src');
+
+  $(imgRecurso).attr('src', imgAguardeSrc);
+
+  var ajax = infraAjaxCriarRequest();
+  try {
+    ajax.open("POST", urlAjax, true);
+
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4) {
+        var retorno = ajax.responseText;
+        if (retorno.indexOf('Erro:')>=0) {
+          if ($("#infoMessage").length>0) {
+            $("#infoMessage").removeClass().addClass("msgbox error").text(" " + retorno.trim()).fadeIn(500);
+          } else {
+            alert(retorno.trim());
+          }
+        } else {
+          //O recurso pode retornar uma mensagem a ser exibida
+          if (retorno.trim()!='') {
+            if ($("#infoMessage").length>0) {
+              $("#infoMessage").removeClass().addClass("msgbox alert").text(" " + retorno.trim()).fadeIn(500).fadeOut(10000);
+            } else {
+              alert(retorno.trim());
+            }
+          }
+        }
+        $(imgRecurso).attr('src', imgRecursoSrc);
+
+        //Atualiza a linha do item da sessão de julgamento tabela e seus clones
+        $('iframe', parent.document).contents().find('body').find(':hidden').not("script").find('span[id="spanAtualizaItem' + id_sessao_julgamento_item + '"]').each(function (index) {
+          $(this).click();
+        });
+        atualizaSessaoJulgamentoItem(id_sessao_julgamento_item);
+
+
+        //sincroniza linha do item com janela do item, se aberta
+        var popup = false;
+
+        if (typeof objJanelaItemSessaoJulgamento!=='undefined') {
+          popup = objJanelaItemSessaoJulgamento;
+        } else
+          if (typeof parent.objJanelaItemSessaoJulgamento!=='undefined') {
+            popup = parent.objJanelaItemSessaoJulgamento;
+          } else
+            if (typeof parent.parent.objJanelaItemSessaoJulgamento!=='undefined') {
+              popup = parent.parent.objJanelaItemSessaoJulgamento;
+            }
+        if (popup && $("#id_sessao_julgamento_item", popup.document.body).val()!=id_sessao_julgamento_item) {
+          $('tr#tr_' + id_sessao_julgamento_item).find('img[src="imagens/lupa.gif"]').click();
+        }
+
+
+      }
+      ;
+    };
+    var params = "acao_origem=" + acao_origem + "&id_sessao_julgamento_item=" + id_sessao_julgamento_item + "&id_recurso_sessao_julgamento_item=" + id_recurso_sessao_julgamento_item + '&lancarEvento='+lancarEvento;
+
+    ajax.send(params);
+  } catch (e) {
+    alert(e);
+  }
+});
+
+//Execução dos Recursos da Sessão de Julgamento
+$(document).on('click', '[name="imgRecursoSessaoJulgamentoAjax"]', function (event) {
+  //
+  // Mapeia os cliques nos ícones dos recursos que estão configurados para rodar em Ajax
+  // (name=imgRecursoSessaoJulgamentoAjax)
+  //
+  event.stopPropagation();
+  if (retVar('acao')=="sessao_julgamento_listar") {
+    desmarcaLinhaAcessada();
+  }
+  if ($(this).attr('sin_solicitar_confirmacao')=='S') {
+    if (!confirm("Deseja " + $(this).attr('descricao') + "?")) return;
+  }
+  var id_sessao_julgamento = $(this).attr('id_sessao_julgamento');
+  var id_recurso_sessao_julgamento = $(this).attr('id_recurso_sessao_julgamento');
+  var lista_nome_recurso = '';
+  var acao = $(this).attr('acao');
+  var urlAjax = $(this).attr('urlAjax');
+  var acao_origem = $(this).attr('acao_origem');
+  var imgAguardeSrc = "infra_css/imagens/aguarde.gif";
+  var imgRecurso = $(this);
+  var imgRecursoSrc = imgRecurso.attr('src');
+
+  $(imgRecurso).attr('src', imgAguardeSrc);
+
+  var ajax = infraAjaxCriarRequest();
+  try {
+    ajax.open("POST", urlAjax, true);
+
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4) {
+        var retorno = ajax.responseText;
+        if (retorno.indexOf('Erro:')>=0) {
+          if ($("#infoMessage").length>0) {
+            $("#infoMessage").removeClass().addClass("msgbox error").text(" " + retorno.trim()).fadeIn(500);
+          } else {
+            alert(retorno.trim());
+          }
+        } else {
+          //O recurso pode retornar uma mensagem a ser exibida
+          if (retorno.trim()!='') {
+            if ($("#infoMessage").length>0) {
+              $("#infoMessage").removeClass().addClass("msgbox alert").text(" " + retorno.trim()).fadeIn(500).fadeOut(10000);
+            } else {
+              alert(retorno.trim());
+            }
+          }
+        }
+        $(imgRecurso).attr('src', imgRecursoSrc);
+
+        //Atualiza a linha da sessão de julgamento tabela
+        atualizaSessaoJulgamento(id_sessao_julgamento);
+      }
+      ;
+    };
+    var params = "acao_origem=" + acao_origem + "&id_sessao_julgamento=" + id_sessao_julgamento + "&id_recurso_sessao_julgamento=" + id_recurso_sessao_julgamento;
+
+    ajax.send(params);
+  } catch (e) {
+    alert(e);
+  }
+});
+
+function listarProcuradores(sin_seleciona_parte) {
+  if ($('#selParteProcesso').val()!='null') {
+    var ajax = infraAjaxCriarRequest();
+    ajax.open("POST", linkAjaxItemPedidoBuscarProcuradorParte, true);
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4) {
+        var retorno = ajax.responseText;
+        $("#selProcurador").html(retorno);
+        $("#divProcurador").css('display', 'block');
+        if (($('#selProcurador').val())=='null') {
+          $("#divOutroProcurador").css('display', 'block');
+        }
+        $("#divOutroSolicitante").css('display', 'none');
+      }
+    }
+  } else {
+    $("#divProcurador").css('display', 'none');
+    $("#divOutroProcurador").css('display', 'none');
+    if (sin_seleciona_parte!='S') {
+      $("#divOutroSolicitante").css('display', 'block');
+    }
+  }
+
+  var params = "id_parte_processo=" + $('#selParteProcesso').val() + "&id_procurador=" + $('#selProcurador').val();
+  ajax.send(params);
+}
+
+function inicializar_abas_sessao_julgamento(perfil_dispositivo) {
+  var boolIpad = (perfil_dispositivo==1);
+
+  $("#tabs").tabs({
+    create: function (event, ui) {
+      boolTabsInicializadas = true;
+
+      if (!boolIpad) ajustaAltura();
+
+      //guarda cores originais das abas
+      cor_fundo_tab = $("#tabs ul>li a").eq(1).css('background');
+      cor_fonte_tab = $("#tabs ul>li a").eq(1).css('color');
+
+      //cores das as abas
+      $("#tabs ul>li a").each(function (index) {
+        if (index!=active) {
+          $(this).css('background', $(this).attr("data-cor"));
+          $(this).css('color', 'rgb(70, 70, 70)');
+        }
+      });
+
+      //pinta de amarelo a barra ativa
+      if (!boolIpad) {
+        var active = $('#tabs').tabs('option', 'active');
+        $("#tabs ul>li a").eq(active).css('background', 'rgb(255, 255, 102)');
+        $("#tabs ul>li a").eq(active).css('color', 'black');
+      } else {
+        $("#tabs ul>li a").each(function (index) {
+          if ($(this).attr("data-id")==id_tab_ativa) {
+            $(this).css('background', 'rgb(255, 255, 102)');
+            $(this).css('color', 'black');
+          }
+        });
+      }
+
+      if (!boolIpad) {
+        //inicializa array tick que controla o scroll dos frames
+        for (i = 0; i<$('#tabs >ul >li').length; i++) {
+          tick.push(1);
+        }
+      } else {
+        if (id_tab_ativa!='criterios_pesquisa') {
+          //esconde filtros
+          $('#divAreaDeFiltrosDePesquisaFieldsets').css('display', 'none');
+          $('#divAreaDePaginacao').css('display', 'none');
+          $('#infraAreaPaginacaoSuperior').css('display', 'none');
+          $('#fldPreferencias').css('display', 'none');
+          $('#divInfraBarraComandosSuperior').css('display', 'none');
+          redimensionarFiltros();
+        }
+      }
+
+      i = 0;
+      var intervalId = window.setInterval(function () {
+        if ($('#iframe_pesquisa_sem_filtros').contents().find('body').find('#fldCriteriosFiltros').length>0
+            && $('#iframe_pesquisa_sem_filtros').contents().find('body').find('#hdnIdSessaoJulgamento').length>0) {
+          window.clearInterval(intervalId);
+          //atualiza total das abas que dependem de filtros específicos
+          //(pauta-destaques, mesa-destaques, privados/internos, precedentes relevantes, rep de controvérsia)
+          atualizaInfoTotais();
+        } else {
+          i++;
+          if (i>100) {
+            //excedeu o limite de tentativas
+            window.clearInterval(intervalId);
+            alert('Erro inicializando aba de pesquisa');
+          }
+        }
+      }, intTIMER);
+    },
+    activate: function (event, ui) {
+      var active = $('#tabs').tabs('option', 'active');
+      var data_id = $("#tabs ul>li a").eq(active).attr("data-id");
+
+      if (!boolIpad) {
+        if (data_id!="criterios_pesquisa" && $('#iframe_' + data_id).contents().find('.infraTable').length<=0) {
+          atualizaInfo(data_id);
+        }
+      } else {
+        if (data_id!="emptystart" && data_id!="emptyend") {
+          atualizaInfo(data_id);
+        }
+      }
+      //restaura cores originais das abas
+      $("#tabs ul>li a").css('background', cor_fundo_tab);
+      $("#tabs ul>li a").css('color', cor_fonte_tab);
+
+      //cores das as abas
+      $("#tabs ul>li a").each(function (index) {
+        if (index!=active) {
+          $(this).css('background', $(this).attr("data-cor"));
+          $(this).css('color', 'rgb(70, 70, 70)');
+        }
+      });
+
+      //pinta de amarelo a barra ativa
+      $("#tabs ul>li a").eq(active).css('background', 'rgb(255, 255, 102)');
+      $("#tabs ul>li a").eq(active).css('color', 'black');
+    }
+  });
+  $("#tabs").tabs("option", "heightStyle", "fill");
+}
+
+function defineIframeETarget(data_id, bolSomenteTotais, boolIpad) {
+  var iframe = '';
+  var target = '';
+
+  if (!boolIpad) {
+    iframe = $('#iframe_' + data_id);
+    target = 'iframe_' + data_id;
+  } else {
+    if (bolSomenteTotais==true) {
+      iframe = $('#iframe_pesquisa_submit_' + data_id);
+      target = 'iframe_pesquisa_submit_' + data_id;
+    } else {
+      iframe = $('#iframe_pesquisa_submit');
+      target = '_parent';
+    }
+  }
+  var ret = [iframe, target];
+
+  return ret;
+}
+
+function inicializaIframe(iframe, bolSomenteTotais, boolIpad) {
+  var itimer = 0;
+
+  if (!bolSomenteTotais) {
+    if (boolIpad) $('#fldPreferencias').css('display', 'block');
+    fn_aguarde(boolIpad);
+  }
+  if (iframe.contents().find('body').find('#fldCriteriosFiltros').length<=0
+      || iframe.contents().find('body').find('#hdnIdSessaoJulgamento').length<=0) {
+    //iframe ainda não foi carregado
+    if (INFRA_IE>0) {
+      iframe.contents().find('body').html($('#iframe_pesquisa_sem_filtros').contents().find("body").html());
+      iframe.contents().find('#divInfraAreaDados').css('display', 'none');
+    } else {
+      iframe.attr('srcdoc', $('#iframe_pesquisa_sem_filtros').contents().find("html").html());
+    }
+    itimer = intTIMER;
+  }
+  return itimer;
+}
+
+function atualizaInfoPauta(data_id, bolSomenteTotais, perfil_dispositivo) {
+  var boolIpad = (perfil_dispositivo==1);
+  var ret = defineIframeETarget(data_id, bolSomenteTotais, boolIpad);
+  var iframe = ret[0];
+  var target = ret[1];
+  var itimer = inicializaIframe(iframe, bolSomenteTotais, boolIpad);
+
+  var i = 0;
+  var intervalId = window.setInterval(function () {
+    //verifica se o iframe foi carregado
+    if (iframe.contents().find('body').find('#fldCriteriosFiltros').length>0
+        && iframe.contents().find('body').find('#hdnIdSessaoJulgamento').length>0) {
+      window.clearInterval(intervalId);
+
+      copiaCriteriosDeExibicao(iframe);//copia criterios de exibicao da aba criterios_pesquisa para aba data_id
+
+      iframe.contents().find('body').find('#selMagistrado').val(null);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').prop("disabled", false);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').prop('checked', false);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').filter(function () {
+        return fnEhPauta(this.value);
+      }).prop('checked', true);
+      iframe.contents().find('body').find('input#tipo_pagina_sem_menu').val("true");
+      iframe.contents().find('body').find('input#tipo_pagina_simples').val("true");
+
+      if (bolSomenteTotais==true) {
+        iframe.contents().find('body').find('input#somente_totais').val("true");
+      }
+      if (bolSomenteTotais==true || !boolIpad) {
+        iframe.contents().find('body').find('input#exibir_criterios').val("false");
+      } else {
+        if (boolIpad) {
+          iframe.contents().find('body').find('input#exibir_criterios').val("true");
+          $('#divInfraAreaTabela').html('');
+        }
+      }
+      iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', target);
+      iframe.contents().find('body').find('input#tabs_data_id').val(data_id);
+      iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').submit();
+    } else {
+      i++;
+      if (i>100) {
+        //excedeu o limite de tentativas
+        window.clearInterval(intervalId);
+        alert('Erro carregando informações da aba ' + data_id);
+      }
+    }
+  }, itimer);
+}
+
+function atualizaInfoPautaDestaques(data_id, bolSomenteTotais, perfil_dispositivo) {
+  var boolIpad = (perfil_dispositivo==1);
+  var ret = defineIframeETarget(data_id, bolSomenteTotais, boolIpad);
+  var iframe = ret[0];
+  var target = ret[1];
+  var itimer = inicializaIframe(iframe, bolSomenteTotais, boolIpad);
+
+  var i = 0;
+  var intervalId = window.setInterval(function () {
+    //verifica se o iframe foi carregado
+    if (iframe.contents().find('body').find('#fldCriteriosFiltros').length>0
+        && iframe.contents().find('body').find('#hdnIdSessaoJulgamento').length>0) {
+      window.clearInterval(intervalId);
+
+      copiaCriteriosDeExibicao(iframe);//copia criterios de exibicao da aba criterios_pesquisa para aba data_id
+
+      iframe.contents().find('body').find('#selMagistrado').val(null);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').prop("disabled", false);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').prop('checked', false);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').filter(function () {
+        return fnEhPauta(this.value);
+      }).prop('checked', true);
+      iframe.contents().find('body').find('input#chkCodTipoDestaqueTodos').prop("checked", true);
+      iframe.contents().find('body').find('input#tipo_pagina_sem_menu').val("true");
+      iframe.contents().find('body').find('input#tipo_pagina_simples').val("true");
+
+      if (bolSomenteTotais==true) {
+        iframe.contents().find('body').find('input#somente_totais').val("true");
+      }
+      if (bolSomenteTotais==true || !boolIpad) {
+        iframe.contents().find('body').find('input#exibir_criterios').val("false");
+        iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', target);
+      } else {
+        if (boolIpad) {
+          iframe.contents().find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', '_parent');
+          iframe.contents().find('body').find('input#exibir_criterios').val("true");
+          $('#divInfraAreaTabela').html('');
+        }
+      }
+      iframe.contents().find('body').find('input#tabs_data_id').val(data_id);
+      iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').submit();
+    } else {
+      i++;
+      if (i>100) {
+        //excedeu o limite de tentativas
+        window.clearInterval(intervalId);
+        alert('Erro carregando informações da aba ' + data_id);
+      }
+    }
+  }, itimer);
+}
+
+function atualizaInfoMesa(data_id, bolSomenteTotais, perfil_dispositivo) {
+  var boolIpad = (perfil_dispositivo==1);
+  var ret = defineIframeETarget(data_id, bolSomenteTotais, boolIpad);
+  var iframe = ret[0];
+  var target = ret[1];
+  var itimer = inicializaIframe(iframe, bolSomenteTotais, boolIpad);
+
+  var i = 0;
+  var intervalId = window.setInterval(function () {
+    //verifica se o iframe foi carregado
+    if (iframe.contents().find('body').find('#fldCriteriosFiltros').length>0
+        && iframe.contents().find('body').find('#hdnIdSessaoJulgamento').length>0) {
+      window.clearInterval(intervalId);
+
+      copiaCriteriosDeExibicao(iframe);//copia criterios de exibicao da aba criterios_pesquisa para aba data_id
+
+      iframe.contents().find('body').find('#selMagistrado').val(null);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').prop("disabled", false);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').prop('checked', false);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').filter(function () {
+        return fnEhMesa(this.value);
+      }).prop('checked', true);
+      iframe.contents().find('body').find('input#tipo_pagina_sem_menu').val("true");
+      iframe.contents().find('body').find('input#tipo_pagina_simples').val("true");
+
+      if (bolSomenteTotais==true) {
+        iframe.contents().find('body').find('input#somente_totais').val("true");
+      } else {
+        iframe.contents().find('body').find('input#ordem_gabinete').val("true");
+        iframe.contents().find('body').find('input#hdnInfraCampoOrd').val("SeqItem");
+      }
+      if (bolSomenteTotais==true || !boolIpad) {
+        iframe.contents().find('body').find('input#exibir_criterios').val("false");
+        iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', target);
+      } else {
+        if (boolIpad) {
+          iframe.contents().find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', '_parent');
+          iframe.contents().find('body').find('input#exibir_criterios').val("true");
+          $('#divInfraAreaTabela').html('');
+        }
+      }
+      iframe.contents().find('body').find('input#tabs_data_id').val(data_id);
+      iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').submit();
+    } else {
+      i++;
+      if (i>100) {
+        //excedeu o limite de tentativas
+        window.clearInterval(intervalId);
+        alert('Erro carregando informações da aba ' + data_id);
+      }
+    }
+  }, itimer);
+}
+
+function atualizaInfoMesaDestaques(data_id, bolSomenteTotais, perfil_dispositivo) {
+  var boolIpad = (perfil_dispositivo==1);
+  var ret = defineIframeETarget(data_id, bolSomenteTotais, boolIpad);
+  var iframe = ret[0];
+  var target = ret[1];
+  var itimer = inicializaIframe(iframe, bolSomenteTotais, boolIpad);
+
+  var i = 0;
+  var intervalId = window.setInterval(function () {
+    //verifica se o iframe foi carregado
+    if (iframe.contents().find('body').find('#fldCriteriosFiltros').length>0
+        && iframe.contents().find('body').find('#hdnIdSessaoJulgamento').length>0) {
+      window.clearInterval(intervalId);
+
+      copiaCriteriosDeExibicao(iframe);//copia criterios de exibicao da aba criterios_pesquisa para aba data_id
+
+      iframe.contents().find('body').find('#selMagistrado').val(null);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').prop("disabled", false);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').prop('checked', false);
+      iframe.contents().find('body').find('input.chkCodTipoInclusaoSessaoJulgamentoItem').filter(function () {
+        return fnEhMesa(this.value);
+      }).prop('checked', true);
+      iframe.contents().find('body').find('input#chkCodTipoDestaqueTodos').prop("checked", true);
+      iframe.contents().find('body').find('input#tipo_pagina_sem_menu').val("true");
+      iframe.contents().find('body').find('input#tipo_pagina_simples').val("true");
+
+      if (bolSomenteTotais==true) {
+        iframe.contents().find('body').find('input#somente_totais').val("true");
+      } else {
+        iframe.contents().find('body').find('input#ordem_gabinete').val("true");
+        iframe.contents().find('body').find('input#hdnInfraCampoOrd').val("SeqItem");
+      }
+      if (bolSomenteTotais==true || !boolIpad) {
+        iframe.contents().find('body').find('input#exibir_criterios').val("false");
+        iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', target);
+      } else {
+        if (boolIpad) {
+          iframe.contents().find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', '_parent');
+          iframe.contents().find('body').find('input#exibir_criterios').val("true");
+          $('#divInfraAreaTabela').html('');
+        }
+      }
+      iframe.contents().find('body').find('input#tabs_data_id').val(data_id);
+      iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').submit();
+    } else {
+      i++;
+      if (i>100) {
+        //excedeu o limite de tentativas
+        window.clearInterval(intervalId);
+        alert('Erro carregando informações da aba ' + data_id);
+      }
+    }
+  }, itimer);
+}
+
+function atualizaInfoPrecedentesRelevantes(data_id, bolSomenteTotais, perfil_dispositivo) {
+  var boolIpad = (perfil_dispositivo==1);
+  var ret = defineIframeETarget(data_id, bolSomenteTotais, boolIpad);
+  var iframe = ret[0];
+  var target = ret[1];
+  var itimer = inicializaIframe(iframe, bolSomenteTotais, boolIpad);
+
+  var i = 0;
+  var intervalId = window.setInterval(function () {
+    //verifica se o iframe foi carregado
+    if (iframe.contents().find('body').find('#fldCriteriosFiltros').length>0
+        && iframe.contents().find('body').find('#hdnIdSessaoJulgamento').length>0) {
+      window.clearInterval(intervalId);
+
+      copiaCriteriosDeExibicao(iframe);//copia criterios de exibicao da aba criterios_pesquisa para aba data_id
+
+      iframe.contents().find('body').find('#selMagistrado').val(null);
+      iframe.contents().find('body').find('input#precedente_relevante').val("true");
+      iframe.contents().find('body').find('input#tipo_pagina_sem_menu').val("true");
+      iframe.contents().find('body').find('input#tipo_pagina_simples').val("true");
+
+      if (bolSomenteTotais==true) {
+        iframe.contents().find('body').find('input#somente_totais').val("true");
+      }
+      if (bolSomenteTotais==true || !boolIpad) {
+        iframe.contents().find('body').find('input#exibir_criterios').val("false");
+        iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', target);
+      } else {
+        if (boolIpad) {
+          iframe.contents().find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', '_parent');
+          iframe.contents().find('body').find('input#exibir_criterios').val("true");
+          $('#divInfraAreaTabela').html('');
+        }
+      }
+      iframe.contents().find('body').find('input#tabs_data_id').val(data_id);
+      iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').submit();
+    } else {
+      i++;
+      if (i>100) {
+        //excedeu o limite de tentativas
+        window.clearInterval(intervalId);
+        alert('Erro carregando informações da aba ' + data_id);
+      }
+    }
+  }, itimer);
+}
+
+function atualizaInfoPrivadosInternos(data_id, bolSomenteTotais, perfil_dispositivo) {
+  var boolIpad = (perfil_dispositivo==1);
+  var ret = defineIframeETarget(data_id, bolSomenteTotais, boolIpad);
+  var iframe = ret[0];
+  var target = ret[1];
+  var itimer = inicializaIframe(iframe, bolSomenteTotais, boolIpad);
+
+  var i = 0;
+  var intervalId = window.setInterval(function () {
+    //verifica se o iframe foi carregado
+    if (iframe.contents().find('body').find('#fldCriteriosFiltros').length>0
+        && iframe.contents().find('body').find('#hdnIdSessaoJulgamento').length>0) {
+      window.clearInterval(intervalId);
+
+      copiaCriteriosDeExibicao(iframe);//copia criterios de exibicao da aba criterios_pesquisa para aba data_id
+
+      iframe.contents().find('body').find('#selMagistrado').val(null);
+      iframe.contents().find('body').find('input#chkSomentePrivado').prop("disabled", false);
+      iframe.contents().find('body').find('input#chkSomentePrivado').prop('checked', true);
+      iframe.contents().find('body').find('input#tipo_pagina_sem_menu').val("true");
+      iframe.contents().find('body').find('input#tipo_pagina_simples').val("true");
+
+      if (bolSomenteTotais==true) {
+        iframe.contents().find('body').find('input#somente_totais').val("true");
+      }
+      if (bolSomenteTotais==true || !boolIpad) {
+        iframe.contents().find('body').find('input#exibir_criterios').val("false");
+        iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', target);
+      } else {
+        if (boolIpad) {
+          iframe.contents().find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', '_parent');
+          iframe.contents().find('body').find('input#exibir_criterios').val("true");
+          $('#divInfraAreaTabela').html('');
+        }
+      }
+      iframe.contents().find('body').find('input#tabs_data_id').val(data_id);
+      iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').submit();
+    } else {
+      i++;
+      if (i>100) {
+        //excedeu o limite de tentativas
+        window.clearInterval(intervalId);
+        alert('Erro carregando informações da aba ' + data_id);
+      }
+    }
+  }, itimer);
+}
+
+function atualizaInfoRepresentativos(data_id, bolSomenteTotais, perfil_dispositivo) {
+  var boolIpad = (perfil_dispositivo==1);
+  var ret = defineIframeETarget(data_id, bolSomenteTotais, boolIpad);
+  var iframe = ret[0];
+  var target = ret[1];
+  var itimer = inicializaIframe(iframe, bolSomenteTotais, boolIpad);
+
+  var i = 0;
+  var intervalId = window.setInterval(function () {
+    //verifica se o iframe foi carregado
+    if (iframe.contents().find('body').find('#fldCriteriosFiltros').length>0
+        && iframe.contents().find('body').find('#hdnIdSessaoJulgamento').length>0) {
+      window.clearInterval(intervalId);
+
+      copiaCriteriosDeExibicao(iframe);//copia criterios de exibicao da aba criterios_pesquisa para aba data_id
+
+      iframe.contents().find('body').find('#selMagistrado').val(null);
+      iframe.contents().find('body').find('#selDadoComplementar').find('option[value="42|1"]').attr("selected", true);
+      iframe.contents().find('body').find('#hdnDadoComplementar').val("42|1");
+      iframe.contents().find('body').find('input#tipo_pagina_sem_menu').val("true");
+      iframe.contents().find('body').find('input#tipo_pagina_simples').val("true");
+
+      if (bolSomenteTotais==true) {
+        iframe.contents().find('body').find('input#somente_totais').val("true");
+      }
+      if (bolSomenteTotais==true || !boolIpad) {
+        iframe.contents().find('body').find('input#exibir_criterios').val("false");
+        iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', target);
+      } else {
+        if (boolIpad) {
+          iframe.contents().find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', '_parent');
+          iframe.contents().find('body').find('input#exibir_criterios').val("true");
+          $('#divInfraAreaTabela').html('');
+        }
+      }
+      iframe.contents().find('body').find('input#tabs_data_id').val(data_id);
+      iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').submit();
+    } else {
+      i++;
+      if (i>100) {
+        //excedeu o limite de tentativas
+        window.clearInterval(intervalId);
+        alert('Erro carregando informações da aba ' + data_id);
+      }
+    }
+  }, itimer);
+}
+
+function atualizaInfoAgrupamentos(data_id, bolSomenteTotais, perfil_dispositivo, cod_agrupamento) {
+  var boolIpad = (perfil_dispositivo==1);
+  var ret = defineIframeETarget(data_id, bolSomenteTotais, boolIpad);
+  var iframe = ret[0];
+  var target = ret[1];
+  var itimer = inicializaIframe(iframe, bolSomenteTotais, boolIpad);
+
+  var i = 0;
+  var intervalId = window.setInterval(function () {
+    //verifica se o iframe foi carregado
+    if (iframe.contents().find('body').find('#fldCriteriosFiltros').length>0
+        && iframe.contents().find('body').find('#hdnIdSessaoJulgamento').length>0) {
+      window.clearInterval(intervalId);
+
+      copiaCriteriosDeExibicao(iframe);//copia criterios de exibicao da aba criterios_pesquisa para aba data_id
+
+      iframe.contents().find('body').find('#selMagistrado').val(null);
+      iframe.contents().find('body').find("input[name=rdoOrdemExibicao][value='Ordem de julgamento']").prop('checked', true);
+      iframe.contents().find('body').find('input.chkCodTipoAgrupamentoSessaoJulgamento').prop("disabled", false);
+      iframe.contents().find('body').find('input.chkCodTipoAgrupamentoSessaoJulgamento').prop('checked', false);
+      iframe.contents().find('body').find('input#ordem_sessao').val('1');
+      iframe.contents().find('body').find('input#hdnInfraCampoOrd').val('IdSessaoJulgamentoItem');
+      if (cod_agrupamento==null) {
+        iframe.contents().find('body').find("input.chkCodTipoAgrupamentoSessaoJulgamento[value!=''][descricao!='Decisões Unânimes']").prop('checked', true);
+      } else {
+        iframe.contents().find('body').find("input.chkCodTipoAgrupamentoSessaoJulgamento[value='" + cod_agrupamento + "']").prop('checked', true);
+      }
+      iframe.contents().find('body').find('input#tipo_pagina_sem_menu').val("true");
+      iframe.contents().find('body').find('input#tipo_pagina_simples').val("true");
+
+      if (bolSomenteTotais==true) {
+        iframe.contents().find('body').find('input#somente_totais').val("true");
+      }
+      if (bolSomenteTotais==true || !boolIpad) {
+        iframe.contents().find('body').find('input#exibir_criterios').val("false");
+        iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', target);
+      } else {
+        if (boolIpad) {
+          iframe.contents().find('form[id="frmSessaoJulgamentoItemLista"]').attr('target', '_parent');
+          iframe.contents().find('body').find('input#exibir_criterios').val("true");
+          $('#divInfraAreaTabela').html('');
+        }
+      }
+      iframe.contents().find('body').find('input#tabs_data_id').val(data_id);
+      iframe.contents().find('body').find('form[id="frmSessaoJulgamentoItemLista"]').submit();
+    } else {
+      i++;
+      if (i>100) {
+        //excedeu o limite de tentativas
+        window.clearInterval(intervalId);
+        alert('Erro carregando informações da aba ' + data_id);
+      }
+    }
+  }, itimer);
+}
+
+function atualizaInfoCriteriosPesquisa(data_id, perfil_dispositivo) {
+  var boolIpad = (perfil_dispositivo==1);
+
+  if (boolIpad) {
+    $("#btnSalvar").hide();
+    $("#btnAtualizar").hide();
+    //exibe filtros
+    $('#divAreaDeFiltrosDePesquisaFieldsets').css('display', '');
+    $('#divAreaDePaginacao').css('display', '');
+    $('#fldPreferencias').css('display', '');
+    $('#divInfraBarraComandosSuperior').css('display', '');
+    $('#conteudoFiltro').css('display', '');
+    $('#conteudoFiltrosAvancados').css('display', 'none');
+    $('#conteudoFiltroCriteriosAta').css('display', 'none');
+    $('#conteudoFiltroCriteriosDocumento').css('display', 'none');
+    if ($('#chkManterFiltrosFechado').prop('checked')==false) {
+      $('#conteudoFiltro').css('display', '');
+    }
+    redimensionarFiltros();
+
+    $('#tabs_data_id').val('criterios_pesquisa');
+    $('#divInfraAreaTabela').html('');
+    $('.infraAreaPaginacao').css('display', 'none');
+    limparFiltros();
+  } else {
+    document.getElementById('frmAux').target = 'iframe_' + data_id;
+    document.getElementById('frmAux').action = strLinkPesquisa;
+    document.getElementById('frmAux').submit();
+  }
+}
+
+function copiaCriteriosDeExibicao(iframe) {
+  $('#iframe_criterios_pesquisa').contents().find('body').find('#fldCriteriosExibicao').find('input.chkFiltroExibicao').each(function (index) {
+    iframe.contents().find('body').find('#' + $(this).attr('id')).prop("checked", $(this).prop("checked"));
+  });
+  iframe.contents().find('body').find('#selTipoPaginacao').val($('#iframe_criterios_pesquisa').contents().find('#selTipoPaginacao').val());
+}
+
+function fn_aguarde(boolIpad) {
+  if (!boolIpad) {
+    infraExibirAviso(false, 'Realizando consulta, aguarde...');
+  } else {
+    window.setTimeout(function () {
+      $('#aguardando').show();
+      $('#aguardando').html(gifloader);
+    }, 0);
+  }
+}
+
+function buscaFlagTipoSessaoJulgamento(tipo) {
+
+  if (tipo!='') {
+    var ajax = infraAjaxCriarRequest();
+    ajax.open("POST", linkAjaxFlagTipoSessaoJulgamento, false);
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4) {
+        var retorno = JSON.parse(ajax.responseText);
+        $('#hdnSinVirtual').val(retorno['SinVirtual']);
+        $('#hdnSinPauta').val(retorno['SinPauta']);
+        $('#hdnSinMesa').val(retorno['SinMesa']);
+        if (retorno['SinVirtual'] == 'S') {
+          $('#lblNumDiasLimiteMinuta').hide();
+          $('#txtNumDiasLimiteMinuta').hide();
+          $('#lblMaskDiasLimiteMinuta').hide();
+          $('#chkNaoInformaLimiteMinuta').hide();
+          $('#lblNaoInformaLimiteMinuta').hide();
+          $('#lblLimiteMinuta').show();
+          $('#txtLimiteMinuta').show();
+        } else {
+          $('#lblLimiteMinuta').hide();
+          $('#txtLimiteMinuta').hide();
+          $('#lblNumDiasLimiteMinuta').show();
+          $('#txtNumDiasLimiteMinuta').show();
+          $('#lblMaskDiasLimiteMinuta').show();
+          $('#chkNaoInformaLimiteMinuta').show();
+          $('#lblNaoInformaLimiteMinuta').show();
+        }
+        if (retorno['SinMesa'] == 'S') {
+          $('#lblNumDiasLimiteMesa').show();
+          $('#txtNumDiasLimiteMesa').show();
+          $('#lblMaskDiasLimiteMesa').show();
+        } else {
+          $('#lblNumDiasLimiteMesa').hide();
+          $('#txtNumDiasLimiteMesa').hide();
+          $('#lblMaskDiasLimiteMesa').hide();
+        }
+        if (retorno['SinPauta'] == 'S') {
+          $('#lblNumDiasLimitePauta').show();
+          $('#txtNumDiasLimitePauta').show();
+          $('#lblMaskDiasLimitePauta').show();
+        } else {
+          $('#lblNumDiasLimitePauta').hide();
+          $('#txtNumDiasLimitePauta').hide();
+          $('#lblMaskDiasLimitePauta').hide();
+        }
+        if (retorno['SinTelepresencial'] == 'S') {
+          $('#lblLink').show();
+          $('#txtLink').show();
+          $('#lblObservacoes').show();
+          $('#txtObservacoes').show();
+        } else {
+          $('#lblLink').hide();
+          $('#txtLink').hide();
+          $('#lblObservacoes').hide();
+          $('#txtObservacoes').hide();
+        }
+      }
+    }
+    var params = "tipo=" + tipo;
+    ajax.send(params);
+  }
+}
+
+function ocultarSubFrmEAbrirSubFrm(strUrl) {
+    ocultarSubFrm();
+    exibirSubFrm(strUrl);
+}

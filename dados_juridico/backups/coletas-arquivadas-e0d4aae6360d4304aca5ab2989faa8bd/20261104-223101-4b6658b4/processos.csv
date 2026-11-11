@@ -1,0 +1,34 @@
+﻿Exportação;Processo;Origem;Tabela;Linha;Células (JSON);Situação da leitura
+2026-11-04T22:31:01-03:00;5000315-39.2018.8.21.0005;Detalhes;;;;falha_na_leitura
+2026-11-04T22:31:01-03:00;5001406-88.2026.8.21.0069;Detalhes;;;;falha_na_leitura
+2026-11-04T22:31:01-03:00;5002544-18.2024.8.21.0148;Detalhes;;;;falha_na_leitura
+2026-11-04T22:31:01-03:00;5002572-27.2025.8.21.0026;Detalhes;;;;falha_na_leitura
+2026-11-04T22:31:01-03:00;5002749-66.2022.8.21.0132;Detalhes;;;;falha_na_leitura
+2026-11-04T22:31:01-03:00;5003084-15.2018.8.21.0039;Detalhes;;;;falha_na_leitura
+2026-11-04T22:31:01-03:00;5005378-19.2023.8.21.5001;Detalhes;;;;falha_na_leitura
+2026-11-04T22:31:01-03:00;5006315-98.2024.8.21.0052;Detalhes;;;;falha_na_leitura
+2026-11-04T22:31:01-03:00;5008363-49.2025.8.21.0002;Detalhes;;;;falha_na_leitura
+2026-11-04T22:31:01-03:00;5000315-39.2018.8.21.0005;Lista página 1;1;2;"[""5000315-39.2018.8.21.0005"", ""TIAGO SANGIOGO"", ""29/10/2026"", ""05/11/2026"", ""05/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5001406-88.2026.8.21.0069;Lista página 1;1;3;"[""5001406-88.2026.8.21.0069"", ""TIAGO SANGIOGO"", ""19/10/2026"", ""22/10/2026"", ""05/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5002544-18.2024.8.21.0148;Lista página 1;1;4;"[""5002544-18.2024.8.21.0148"", ""TIAGO SANGIOGO"", ""09/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5002572-27.2025.8.21.0026;Lista página 1;1;5;"[""5002572-27.2025.8.21.0026"", ""TIAGO SANGIOGO"", ""19/10/2026"", ""22/10/2026"", ""05/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5002749-66.2022.8.21.0132;Lista página 1;1;6;"[""5002749-66.2022.8.21.0132"", ""TIAGO SANGIOGO"", ""10/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica - Laudo""]";Linha original
+2026-11-04T22:31:01-03:00;5003084-15.2018.8.21.0039;Lista página 1;1;7;"[""5003084-15.2018.8.21.0039"", ""TIAGO SANGIOGO"", ""09/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5005378-19.2023.8.21.5001;Lista página 1;1;8;"[""5005378-19.2023.8.21.5001"", ""TIAGO SANGIOGO"", ""09/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica - Despacho/Decisão""]";Linha original
+2026-11-04T22:31:01-03:00;5006315-98.2024.8.21.0052;Lista página 1;1;9;"[""5006315-98.2024.8.21.0052"", ""TIAGO SANGIOGO"", ""08/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica - Sentença""]";Linha original
+2026-11-04T22:31:01-03:00;5008363-49.2025.8.21.0002;Lista página 1;1;10;"[""5008363-49.2025.8.21.0002"", ""TIAGO SANGIOGO"", ""08/10/2026"", ""14/10/2026"", ""05/11/2026"", ""Expedida/certificada a intimação eletrônica - Sentença""]";Linha original
+2026-11-04T22:31:01-03:00;5008428-59.2026.8.21.0018;Lista página 1;1;11;"[""5008428-59.2026.8.21.0018"", ""TIAGO SANGIOGO"", ""09/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica - Despacho/Decisão""]";Linha original
+2026-11-04T22:31:01-03:00;5009426-37.2024.8.21.0005;Lista página 1;1;12;"[""5009426-37.2024.8.21.0005"", ""TIAGO SANGIOGO"", ""27/10/2026"", ""30/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5009921-45.2024.8.21.0017;Lista página 1;1;13;"[""5009921-45.2024.8.21.0017"", ""TIAGO SANGIOGO"", ""09/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5011768-81.2025.8.21.0006;Lista página 1;1;14;"[""5011768-81.2025.8.21.0006"", ""TIAGO SANGIOGO"", ""08/10/2026"", ""14/10/2026"", ""05/11/2026"", ""Expedida/certificada a intimação eletrônica - Despacho/Decisão""]";Linha original
+2026-11-04T22:31:01-03:00;5014054-25.2025.8.21.0073;Lista página 1;1;15;"[""5014054-25.2025.8.21.0073"", ""TIAGO SANGIOGO"", ""09/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica - Despacho/Decisão""]";Linha original
+2026-11-04T22:31:01-03:00;5027500-33.2024.8.21.0008;Lista página 1;1;16;"[""5027500-33.2024.8.21.0008"", ""TIAGO SANGIOGO"", ""08/10/2026"", ""14/10/2026"", ""05/11/2026"", ""Expedida/certificada a intimação eletrônica - Despacho/Decisão""]";Linha original
+2026-11-04T22:31:01-03:00;5030940-70.2023.8.21.0073;Lista página 1;1;17;"[""5030940-70.2023.8.21.0073"", ""TIAGO SANGIOGO"", ""08/10/2026"", ""14/10/2026"", ""05/11/2026"", ""Expedida/certificada a intimação eletrônica - Despacho/Decisão""]";Linha original
+2026-11-04T22:31:01-03:00;5035217-49.2026.8.21.0001;Lista página 1;1;18;"[""5035217-49.2026.8.21.0001"", ""TIAGO SANGIOGO"", ""20/10/2026"", ""23/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5037524-73.2026.8.21.0001;Lista página 1;1;19;"[""5037524-73.2026.8.21.0001"", ""TIAGO SANGIOGO"", ""16/10/2026"", ""22/10/2026"", ""05/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5072533-96.2026.8.21.0001;Lista página 1;1;20;"[""5072533-96.2026.8.21.0001"", ""TIAGO SANGIOGO"", ""20/10/2026"", ""23/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5116089-85.2025.8.21.0001;Lista página 1;1;21;"[""5116089-85.2025.8.21.0001"", ""TIAGO SANGIOGO"", ""09/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica - Despacho/Decisão""]";Linha original
+2026-11-04T22:31:01-03:00;5210345-54.2024.8.21.0001;Lista página 1;1;22;"[""5210345-54.2024.8.21.0001"", ""TIAGO SANGIOGO"", ""09/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5233431-20.2025.8.21.0001;Lista página 1;1;23;"[""5233431-20.2025.8.21.0001"", ""TIAGO SANGIOGO"", ""19/10/2026"", ""22/10/2026"", ""05/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original
+2026-11-04T22:31:01-03:00;5253958-27.2024.8.21.0001;Lista página 1;1;24;"[""5253958-27.2024.8.21.0001"", ""TIAGO SANGIOGO"", ""08/10/2026"", ""14/10/2026"", ""05/11/2026"", ""Expedida/certificada a intimação eletrônica - Sentença""]";Linha original
+2026-11-04T22:31:01-03:00;5325810-14.2024.8.21.0001;Lista página 1;1;25;"[""5325810-14.2024.8.21.0001"", ""TIAGO SANGIOGO"", ""09/10/2026"", ""15/10/2026"", ""06/11/2026"", ""Expedida/certificada a intimação eletrônica""]";Linha original

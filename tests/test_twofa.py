@@ -17,6 +17,22 @@ class TwoFactorTests(unittest.TestCase):
   self.p=patch('twofa.crypt',side_effect=codec);self.p.start();self.clock=patch('twofa.time.time',return_value=59);self.clock.start()
  def tearDown(self):self.clock.stop();self.p.stop();self.tmp.cleanup()
  def add(self):return twofa.add(self.store,self.owner,{'nome':'Tribunal de teste','conta':'Conta de teste','chave':SECRET,'confirmacao':'287082'})['id']
+ def test_cpf_encrypted_masked_and_metadata_owner_only(self):
+  key=twofa.add(self.store,self.owner,{'nome':'eproc RS · 1º Grau','conta':'Titular teste','cpf':'529.982.247-25','chave':SECRET,'confirmacao':'287082'})['id']
+  row=twofa.codes(self.store,self.owner)['itens'][0];self.assertEqual(row['cpf_mascarado'],'•••.•••.•••-25');self.assertEqual(row['codigo'],'287082')
+  self.assertNotIn('52998224725',json.dumps(twofa.settings(self.store,self.owner)));self.assertNotIn(b'52998224725',twofa.vault_path(self.store).read_bytes())
+  with self.assertRaises(legal.AppError):twofa.metadata(self.store,self.peer,{'id':key,'nome':'X','conta':'Y','cpf':'52998224725'})
+  twofa.metadata(self.store,self.owner,{'id':key,'nome':'eproc SC','conta':'Titular','cpf':''});row=twofa.codes(self.store,self.owner)['itens'][0];self.assertEqual(row['nome'],'eproc SC');self.assertEqual(row['cpf_mascarado'],'•••.•••.•••-25');self.assertEqual(row['codigo'],'287082')
+  twofa.metadata(self.store,self.owner,{'id':key,'nome':'eproc SC','conta':'Titular','remover_cpf':True});self.assertEqual(twofa.codes(self.store,self.owner)['itens'][0]['cpf_mascarado'],'Não informado')
+  with self.store.connect() as db:audit=' '.join(str(tuple(r)) for r in db.execute('SELECT * FROM audit'))
+  self.assertNotIn('529',audit)
+ def test_bad_cpf_and_old_vault_migration(self):
+  with self.assertRaises(legal.AppError):twofa.cpf_value('111.111.111-11')
+  with self.assertRaises(legal.AppError):twofa.cpf_value('52998224726')
+  import sqlite3
+  path=twofa.vault_path(self.store);path.parent.mkdir(parents=True)
+  with sqlite3.connect(path) as db:db.execute('CREATE TABLE tokens(id INTEGER PRIMARY KEY,nome TEXT NOT NULL,conta TEXT NOT NULL,secret BLOB NOT NULL,digits INTEGER NOT NULL,period INTEGER NOT NULL,algorithm TEXT NOT NULL,ativo INTEGER NOT NULL DEFAULT 1,criado TEXT NOT NULL)')
+  self.add();self.assertEqual(twofa.codes(self.store,self.owner)['itens'][0]['cpf_mascarado'],'Não informado')
  def test_rfc_vectors(self):
   self.assertEqual(twofa.totp(b'12345678901234567890',59,8),'94287082')
   self.assertEqual(twofa.totp(b'12345678901234567890',59),'287082')

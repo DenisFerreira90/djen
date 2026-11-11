@@ -556,7 +556,9 @@ class Monitor:
                     self.tick()
                     if time.monotonic()-last_reminder>=60:
                         self.emit_reminders();last_reminder=time.monotonic()
-                except (OSError,sqlite3.Error,ValueError):pass
+                except (OSError,sqlite3.Error,ValueError) as exc:
+                    import diagnostico
+                    diagnostico.capture(exc,'jusdown','rotina_agendada')
                 self.stop_event.wait(1)
         threading.Thread(target=loop,daemon=True,name='jusdown-scheduler').start()
 

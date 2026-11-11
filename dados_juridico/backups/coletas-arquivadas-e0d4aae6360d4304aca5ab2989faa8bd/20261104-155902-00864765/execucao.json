@@ -1,0 +1,421 @@
+{
+  "id": "20261104-155902-00864765",
+  "tribunal": "TJSC",
+  "inicio": "2026-11-04T15:59:02-03:00",
+  "fim": "2026-11-04T16:05:39-03:00",
+  "estado": "parcial",
+  "lidos": 53,
+  "encontrados": 53,
+  "relatorios": [],
+  "historicos_pendentes": 19,
+  "esperados": 70,
+  "falhas": 0,
+  "ignorados": 0,
+  "modo": "incremental",
+  "registros_lista": 70,
+  "salvos_sistema": 53,
+  "mensagem": "Importação no sistema: 0 novos processos e 53 existentes; dados aguardam conferência.",
+  "log": [
+    {
+      "data": "2026-11-04T16:02:58-03:00",
+      "mensagem": "Processo 5026319-89.2026.8.24.0930: historico_parcial (24/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:01-03:00",
+      "mensagem": "5026326-81.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:01-03:00",
+      "mensagem": "Etapa: detalhes do processo 5026326-81.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:03:04-03:00",
+      "mensagem": "5026326-81.2026.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T16:03:04-03:00",
+      "mensagem": "Processo 5026326-81.2026.8.24.0930: historico_parcial (25/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:06-03:00",
+      "mensagem": "5027593-88.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:06-03:00",
+      "mensagem": "Etapa: detalhes do processo 5027593-88.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:03:09-03:00",
+      "mensagem": "Processo 5027593-88.2026.8.24.0930: pagina_lida_requer_conferencia (26/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:11-03:00",
+      "mensagem": "5028309-61.2024.8.24.0033: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:11-03:00",
+      "mensagem": "Etapa: detalhes do processo 5028309-61.2024.8.24.0033."
+    },
+    {
+      "data": "2026-11-04T16:03:15-03:00",
+      "mensagem": "Carregando próxima página de movimentações do processo."
+    },
+    {
+      "data": "2026-11-04T16:03:16-03:00",
+      "mensagem": "5028309-61.2024.8.24.0033: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T16:03:16-03:00",
+      "mensagem": "Processo 5028309-61.2024.8.24.0033: historico_parcial (27/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:18-03:00",
+      "mensagem": "5029396-14.2026.8.24.0023: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:18-03:00",
+      "mensagem": "Etapa: detalhes do processo 5029396-14.2026.8.24.0023."
+    },
+    {
+      "data": "2026-11-04T16:03:21-03:00",
+      "mensagem": "Processo 5029396-14.2026.8.24.0023: pagina_lida_requer_conferencia (28/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:23-03:00",
+      "mensagem": "5045604-73.2026.8.24.0023: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:23-03:00",
+      "mensagem": "Etapa: detalhes do processo 5045604-73.2026.8.24.0023."
+    },
+    {
+      "data": "2026-11-04T16:03:26-03:00",
+      "mensagem": "5045604-73.2026.8.24.0023: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T16:03:26-03:00",
+      "mensagem": "Processo 5045604-73.2026.8.24.0023: historico_parcial (29/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:29-03:00",
+      "mensagem": "5088957-66.2026.8.24.0023: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:29-03:00",
+      "mensagem": "Etapa: detalhes do processo 5088957-66.2026.8.24.0023."
+    },
+    {
+      "data": "2026-11-04T16:03:32-03:00",
+      "mensagem": "Processo 5088957-66.2026.8.24.0023: pagina_lida_requer_conferencia (30/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:34-03:00",
+      "mensagem": "5097405-23.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:34-03:00",
+      "mensagem": "Etapa: detalhes do processo 5097405-23.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:03:37-03:00",
+      "mensagem": "Processo 5097405-23.2026.8.24.0930: pagina_lida_requer_conferencia (31/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:39-03:00",
+      "mensagem": "5099884-23.2025.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:39-03:00",
+      "mensagem": "Etapa: detalhes do processo 5099884-23.2025.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:03:43-03:00",
+      "mensagem": "5099884-23.2025.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T16:03:43-03:00",
+      "mensagem": "Processo 5099884-23.2025.8.24.0930: historico_parcial (32/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:45-03:00",
+      "mensagem": "5104390-42.2025.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:45-03:00",
+      "mensagem": "Etapa: detalhes do processo 5104390-42.2025.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:03:49-03:00",
+      "mensagem": "5104390-42.2025.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T16:03:49-03:00",
+      "mensagem": "Processo 5104390-42.2025.8.24.0930: historico_parcial (33/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:51-03:00",
+      "mensagem": "5104391-27.2025.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:51-03:00",
+      "mensagem": "Etapa: detalhes do processo 5104391-27.2025.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:03:55-03:00",
+      "mensagem": "5104391-27.2025.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T16:03:55-03:00",
+      "mensagem": "Processo 5104391-27.2025.8.24.0930: historico_parcial (34/53)."
+    },
+    {
+      "data": "2026-11-04T16:03:57-03:00",
+      "mensagem": "5112075-03.2025.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:03:57-03:00",
+      "mensagem": "Etapa: detalhes do processo 5112075-03.2025.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:00-03:00",
+      "mensagem": "5112075-03.2025.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T16:04:00-03:00",
+      "mensagem": "Processo 5112075-03.2025.8.24.0930: historico_parcial (35/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:02-03:00",
+      "mensagem": "5114919-86.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:02-03:00",
+      "mensagem": "Etapa: detalhes do processo 5114919-86.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:06-03:00",
+      "mensagem": "Processo 5114919-86.2026.8.24.0930: pagina_lida_requer_conferencia (36/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:08-03:00",
+      "mensagem": "5118227-33.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:08-03:00",
+      "mensagem": "Etapa: detalhes do processo 5118227-33.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:11-03:00",
+      "mensagem": "Processo 5118227-33.2026.8.24.0930: pagina_lida_requer_conferencia (37/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:13-03:00",
+      "mensagem": "5127146-45.2025.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:13-03:00",
+      "mensagem": "Etapa: detalhes do processo 5127146-45.2025.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:16-03:00",
+      "mensagem": "Processo 5127146-45.2025.8.24.0930: pagina_lida_requer_conferencia (38/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:19-03:00",
+      "mensagem": "5129204-21.2025.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:19-03:00",
+      "mensagem": "Etapa: detalhes do processo 5129204-21.2025.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:22-03:00",
+      "mensagem": "5129204-21.2025.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T16:04:22-03:00",
+      "mensagem": "Processo 5129204-21.2025.8.24.0930: historico_parcial (39/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:24-03:00",
+      "mensagem": "5132216-09.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:24-03:00",
+      "mensagem": "Etapa: detalhes do processo 5132216-09.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:27-03:00",
+      "mensagem": "Processo 5132216-09.2026.8.24.0930: pagina_lida_requer_conferencia (40/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:30-03:00",
+      "mensagem": "5140350-25.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:30-03:00",
+      "mensagem": "Etapa: detalhes do processo 5140350-25.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:33-03:00",
+      "mensagem": "Processo 5140350-25.2026.8.24.0930: pagina_lida_requer_conferencia (41/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:35-03:00",
+      "mensagem": "5141004-46.2025.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:35-03:00",
+      "mensagem": "Etapa: detalhes do processo 5141004-46.2025.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:38-03:00",
+      "mensagem": "5141004-46.2025.8.24.0930: histórico não confirmado; ficará pendente de nova consulta."
+    },
+    {
+      "data": "2026-11-04T16:04:38-03:00",
+      "mensagem": "Processo 5141004-46.2025.8.24.0930: historico_parcial (42/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:40-03:00",
+      "mensagem": "5142313-68.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:40-03:00",
+      "mensagem": "Etapa: detalhes do processo 5142313-68.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:44-03:00",
+      "mensagem": "Processo 5142313-68.2026.8.24.0930: pagina_lida_requer_conferencia (43/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:46-03:00",
+      "mensagem": "5146528-87.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:46-03:00",
+      "mensagem": "Etapa: detalhes do processo 5146528-87.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:49-03:00",
+      "mensagem": "Processo 5146528-87.2026.8.24.0930: pagina_lida_requer_conferencia (44/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:51-03:00",
+      "mensagem": "5146537-49.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:51-03:00",
+      "mensagem": "Etapa: detalhes do processo 5146537-49.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:04:54-03:00",
+      "mensagem": "Processo 5146537-49.2026.8.24.0930: pagina_lida_requer_conferencia (45/53)."
+    },
+    {
+      "data": "2026-11-04T16:04:56-03:00",
+      "mensagem": "5146543-56.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:04:56-03:00",
+      "mensagem": "Etapa: detalhes do processo 5146543-56.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:05:00-03:00",
+      "mensagem": "Processo 5146543-56.2026.8.24.0930: pagina_lida_requer_conferencia (46/53)."
+    },
+    {
+      "data": "2026-11-04T16:05:02-03:00",
+      "mensagem": "5146544-41.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:05:02-03:00",
+      "mensagem": "Etapa: detalhes do processo 5146544-41.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:05:05-03:00",
+      "mensagem": "Processo 5146544-41.2026.8.24.0930: pagina_lida_requer_conferencia (47/53)."
+    },
+    {
+      "data": "2026-11-04T16:05:07-03:00",
+      "mensagem": "5146558-25.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:05:07-03:00",
+      "mensagem": "Etapa: detalhes do processo 5146558-25.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:05:10-03:00",
+      "mensagem": "Processo 5146558-25.2026.8.24.0930: pagina_lida_requer_conferencia (48/53)."
+    },
+    {
+      "data": "2026-11-04T16:05:12-03:00",
+      "mensagem": "5150451-24.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:05:12-03:00",
+      "mensagem": "Etapa: detalhes do processo 5150451-24.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:05:16-03:00",
+      "mensagem": "Processo 5150451-24.2026.8.24.0930: pagina_lida_requer_conferencia (49/53)."
+    },
+    {
+      "data": "2026-11-04T16:05:18-03:00",
+      "mensagem": "5152556-71.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:05:18-03:00",
+      "mensagem": "Etapa: detalhes do processo 5152556-71.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:05:21-03:00",
+      "mensagem": "Processo 5152556-71.2026.8.24.0930: pagina_lida_requer_conferencia (50/53)."
+    },
+    {
+      "data": "2026-11-04T16:05:23-03:00",
+      "mensagem": "5152825-13.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:05:23-03:00",
+      "mensagem": "Etapa: detalhes do processo 5152825-13.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:05:26-03:00",
+      "mensagem": "Processo 5152825-13.2026.8.24.0930: pagina_lida_requer_conferencia (51/53)."
+    },
+    {
+      "data": "2026-11-04T16:05:28-03:00",
+      "mensagem": "5152837-27.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:05:28-03:00",
+      "mensagem": "Etapa: detalhes do processo 5152837-27.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:05:32-03:00",
+      "mensagem": "Processo 5152837-27.2026.8.24.0930: pagina_lida_requer_conferencia (52/53)."
+    },
+    {
+      "data": "2026-11-04T16:05:34-03:00",
+      "mensagem": "5152851-11.2026.8.24.0930: Pendência da fila persistente.."
+    },
+    {
+      "data": "2026-11-04T16:05:34-03:00",
+      "mensagem": "Etapa: detalhes do processo 5152851-11.2026.8.24.0930."
+    },
+    {
+      "data": "2026-11-04T16:05:37-03:00",
+      "mensagem": "Processo 5152851-11.2026.8.24.0930: pagina_lida_requer_conferencia (53/53)."
+    },
+    {
+      "data": "2026-11-04T16:05:39-03:00",
+      "mensagem": "Leitura encerrada. Confira as tabelas originais; associações de partes e prazos ainda não foram validadas neste layout."
+    },
+    {
+      "data": "2026-11-04T16:05:40-03:00",
+      "mensagem": "Importação no sistema: 0 novos processos e 53 existentes; dados aguardam conferência."
+    }
+  ],
+  "validacao": "Layout interno ainda requer conferência com o eproc."
+}

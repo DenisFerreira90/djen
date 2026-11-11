@@ -62,7 +62,7 @@ def status(store,actor):
             schema(db)
             import email_resumos;email_resumos.schema(db)
             history=[dict(r) for r in db.execute('SELECT * FROM email_delivery ORDER BY id DESC LIMIT 20')]
-        return {'disponivel':available,'configurado':bool(c),'remetente':c.get('remetente',DEFAULT),'destinatario':c.get('destinatario',DEFAULT),'automatico':False,'revisao_manual':True,'formato_alertas':'tres_resumos_por_pedido','historico':history}
+        return {'disponivel':available,'configurado':bool(c),'remetente':c.get('remetente',DEFAULT),'destinatario':c.get('destinatario',DEFAULT),'automatico':False,'mandados_automaticos':c.get('mandados_automaticos') is True,'revisao_manual':True,'formato_alertas':'tres_resumos_por_pedido','historico':history}
 
 
 def save(store,actor,body):
@@ -75,15 +75,23 @@ def save(store,actor,body):
         password=str(body.get('senha_app','')).replace(' ','') or previous.get('senha','')
         if not re.fullmatch('[a-zA-Z0-9]{16}',password):raise legal.AppError('Informe a senha de app de 16 caracteres gerada pelo Google.')
         automatic=False if review_required(store) else body.get('automatico') is True
+        auto_mandates=body.get('mandados_automaticos',previous.get('mandados_automaticos')) is True
+        enable_mandates=auto_mandates and not previous.get('mandados_automaticos')
+        if enable_mandates:
+            import mandados
+            mandados.scan(store)
         with store.lock,store.connect() as db:
             import mandados;mandados.schema(db);schema(db)
             import email_resumos
+            if enable_mandates:
+                import email_mandados
+                email_mandados.seed(db)
             email_resumos.initialize(db,rearm=automatic and not previous.get('automatico'))
             floor=previous.get('inicio_alerta',0) if previous.get('automatico') and automatic else db.execute('SELECT COALESCE(MAX(id),0) FROM mandate_alerts').fetchone()[0]
-        c={'remetente':sender,'destinatario':recipient,'senha':password,'automatico':automatic,'inicio_alerta':floor}
+        c={'remetente':sender,'destinatario':recipient,'senha':password,'automatico':automatic,'mandados_automaticos':auto_mandates,'inicio_alerta':floor}
         p=config_path(store);p.parent.mkdir(parents=True,exist_ok=True)
         temp=p.with_suffix('.tmp');temp.write_bytes(crypt(json.dumps(c).encode()));os.replace(temp,p)
-        with store.lock,store.connect() as db:store.audit(db,actor,'configurar_email','email',after={'remetente':sender,'destinatario':recipient,'automatico':automatic})
+        with store.lock,store.connect() as db:store.audit(db,actor,'configurar_email','email',after={'remetente':sender,'destinatario':recipient,'automatico':automatic,'mandados_automaticos':auto_mandates})
     return status(store,actor)
 
 
@@ -94,14 +102,22 @@ def smtp_send(config,subject,text):
         if smtp.send_message(msg):raise smtplib.SMTPRecipientsRefused({})
 
 
-def deliver(store,config,subject,text,kind,ids=(),digest=None,quantity=None):
+def deliver(store,config,subject,text,kind,ids=(),digest=None,quantity=None,mandate_keys=()):
     with store.lock,store.connect() as db:
+        if mandate_keys:
+            db.execute('BEGIN IMMEDIATE')
+            import email_mandados
+            email_mandados.schema(db)
+            for key in mandate_keys:
+                if db.execute('SELECT 1 FROM email_mandate_events WHERE chave=?',(key,)).fetchone():
+                    return {'mensagem':'As novidades já foram reservadas para envio.'}
         schema(db)
         if digest:
             import email_resumos;email_resumos.schema(db)
             if db.execute('SELECT 1 FROM email_digest_parts WHERE batch_key=? AND parte=?',digest).fetchone():return {'mensagem':'Resumo já reservado; não será repetido.'}
         cur=db.execute('INSERT INTO email_delivery(criado,tipo,status,quantidade,erro) VALUES(?,?,?,?,?)',(legal.now(),kind,'enviando',len(ids) if quantity is None else quantity,''));ident=cur.lastrowid
         if digest:db.execute('INSERT INTO email_digest_parts VALUES(?,?,?)',(*digest,ident))
+        if mandate_keys:db.executemany('INSERT INTO email_mandate_events VALUES(?,?)',[(key,ident) for key in mandate_keys])
         db.executemany('INSERT INTO email_alert_items VALUES(?,?)',[(i,ident) for i in ids])
     state='aceito_smtp';error=''
     try:smtp_send(config,subject,text)
@@ -157,6 +173,23 @@ def process(store):
             try:deliver(store,c,subject,text,'resumo_'+part,digest=(batch['key'],part),quantity=count)
             except legal.AppError as exc:errors.append(str(exc))
         if errors:raise legal.AppError(' '.join(dict.fromkeys(errors)))
+
+
+def process_mandates(store):
+    import email_mandados
+    import mandados
+    with LOCK:
+        try:config=load(store)
+        except legal.AppError:return
+        if config.get('mandados_automaticos') is not True:return
+        with store.lock,store.connect() as db:
+            mandados.schema(db);schema(db);email_mandados.schema(db)
+            db.execute("UPDATE email_delivery SET status='incerto',erro='Servidor interrompido durante o envio. Confira Enviados.' WHERE tipo='mandados_novidades' AND status='enviando'")
+            items=email_mandados.pending(db)
+        if items:
+            return deliver(store,config,f'ConectaAdv | Novidades de mandados ({len(items)})',
+                           email_mandados.message(items),'mandados_novidades',quantity=len(items),
+                           mandate_keys=[key for key, _, _ in items])
 
 
 def review_required(store):

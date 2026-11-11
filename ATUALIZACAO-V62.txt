@@ -1,0 +1,40 @@
+ConectaAdv v62 — Estoques com permissão individual
+
+INSTALAR NO CONECTAADV
+Esta é uma atualização da pasta djen, não do ConectaColetor. Pare o servidor do ConectaAdv e faça uma cópia das pastas de dados. Abra o ZIP e copie o conteúdo da pasta djen para C:\xampp\htdocs\djen, substituindo os arquivos do programa. Preserve dados_juridico, dados_eproc e as demais pastas de dados. Execute INICIAR.bat e atualize o navegador com Ctrl+F5. O menu deve indicar Versão 62.
+
+ESTOQUES
+A aba Estoque fica em Administração e contém dois estoques independentes:
+- TI: materiais em geral, equipamentos, periféricos e outros itens que você cadastrar.
+- Escritório e Limpeza: materiais dessas duas áreas no mesmo estoque. A categoria de cada material pode distinguir escritório, limpeza ou outro grupo.
+
+LOCAIS
+Os dois estoques começam com: Quarto do Harry, Sótão, Arquivo da Cozinha, Sala da TI, Arquivo Puxadinho e RH. Os locais são independentes por estoque: renomear um local de TI não altera o outro estoque. Quem tem CRUD pode acrescentar, renomear ou excluir locais. Um local com materiais ativos não pode ser excluído.
+
+PERMISSÕES
+Entre com uma conta administradora. Abra Administração > Estoque > Permissões dos estoques. Para cada pessoa, escolha separadamente em TI e Escritório e Limpeza:
+- Sem acesso: a pessoa não recebe dados desse estoque.
+- Visualizar: pode consultar materiais, saldos, armazenamento e histórico.
+- Visualizar e CRUD: pode cadastrar, consultar, editar, excluir, movimentar materiais e administrar os locais desse estoque.
+
+Administradores têm acesso administrativo aos dois estoques e concedem as permissões. Contas comuns começam sem acesso. O perfil Leitor só pode receber visualização. CRUD não concede permissão para administrar acessos de outras pessoas. A pessoa deve atualizar a página após uma mudança de permissão.
+
+A aba começa oculta e só é mostrada após a consulta de permissões se houver ao menos um estoque autorizado. A lista de estoques mostra somente os permitidos. Cada chamada à API verifica as permissões novamente; tentar acessar um endereço diretamente não libera dados nem alterações. A revogação é aplicada no servidor na requisição seguinte. O módulo não está disponível no serviço independente de chat.
+
+MATERIAIS E SALDOS
+Cadastre material, categoria, código/patrimônio opcional, unidade, saldo, quantidade mínima, local e observações/prateleira. Um cadastro tem um local; o mesmo tipo de material em locais diferentes pode ser cadastrado em linhas separadas. Não há agrupamento automático desses cadastros nem soma de unidades diferentes.
+
+Entradas e saídas exigem motivo ou destinatário/referência. O saldo usa até três casas decimais, sem arredondamento de ponto flutuante no banco. Saídas acima do saldo são recusadas. Mudanças de saldo ou local pela edição também exigem motivo; alterar o local move todo o saldo desse cadastro. Não há transferência parcial automática entre dois cadastros.
+
+Para excluir um material, primeiro registre sua saída ou ajuste o saldo para zero com justificativa. A exclusão tira o cadastro da lista e preserva movimentações e auditoria. O histórico dos itens ativos mostra pessoa, data, operação, saldos e locais anteriores/posteriores. Os nomes de local são preservados no histórico mesmo quando um local é renomeado. A auditoria administrativa mantém o registro dos cadastros excluídos. Edições concorrentes usam versão; uma tela desatualizada precisa ser recarregada antes de salvar.
+
+BUSCA E REPOSIÇÃO
+Busque por nome, código, categoria ou local. Filtre por armazenamento ou por saldo mínimo/abaixo. A lista tem páginas de cem cadastros. Os indicadores são de cadastros de materiais, sem saldo e no mínimo/abaixo; o último inclui os sem saldo e não deve ser somado a esse indicador. A quantidade mínima é informada pelo usuário.
+
+VALIDAÇÃO
+368 testes Python passaram, incluindo testes HTTP e os testes existentes do sistema. 17 scripts de teste de interface com DOM simulado passaram. Os cenários novos cobrem permissões por estoque, bloqueio de CRUD para consulta, ausência de acesso, revogação, CSRF, estoque/local incompatíveis, quantidades decimais, saldo insuficiente, edição desatualizada, exclusão e histórico de armazenamento.
+
+Não foi possível executar a validação visual em navegador neste ambiente; o Chromium disponível recusou a inicialização. A navegação real e a instalação Windows ainda precisam de validação no computador do usuário. A interface reutiliza os componentes e estilos existentes e passou nos testes de montagem com DOM simulado.
+
+COLETAS
+Esta atualização não altera o ConectaColetor 1.3.2 nem os dados já coletados. A próxima categoria de coleta discutida, Movimentações preparadas, ainda precisa do HTML da própria listagem dos 22 itens. Os arquivos enviados até agora não incluem essa tabela.

@@ -25,6 +25,8 @@ FIELDS = {
  'financeiro': {'titulo','natureza','valor_centavos','vencimento','status','categoria','pessoa_id','responsavel_id','observacoes'},
  'documentos': {'titulo','categoria','referencia','status','responsavel_id','observacoes'},
 }
+for _kind in ('processos','prazos'):
+    FIELDS[_kind].update({'sistema_origem','grau','comarca','link_origem','portal_origem'})
 
 def now():
     return dt.datetime.now(dt.timezone(dt.timedelta(hours=-3))).isoformat(timespec='seconds')
@@ -238,6 +240,9 @@ class Store:
             if previous['tipo']!=kind:raise AppError('Tipo de registro incorreto.')
             data={**previous['dados'],**data}
         if not isinstance(data,dict) or set(data)-FIELDS[kind]: raise AppError('Campos de cadastro inválidos.')
+        if data.get('link_origem'):
+            import origem_registros
+            if not origem_registros.stable_link(data['link_origem']):raise AppError('Use um link HTTPS estável de um portal suportado, sem parâmetros de sessão.')
         if any(not isinstance(v,(str,int,bool,type(None))) for v in data.values()): raise AppError('Valores de cadastro inválidos.')
         if len(dumps(data))>50000: raise AppError('Registro muito longo.')
         data={k:(v.strip() if isinstance(v,str) else v) for k,v in data.items()}
@@ -332,8 +337,11 @@ class Store:
         if not isinstance(records,list) or not isinstance(pages,list): raise AppError('Estrutura de coleta inválida.')
         content=dumps({'processos':records,'paginas_da_lista':pages})
         if len(content)>128*1024*1024: raise AppError('Coleta excede o limite de importação.')
+        import prazos_tjrs_atual
+        snapshot=prazos_tjrs_atual.validate(payload)
         run=str(payload.get('execucao',{}).get('id') or 'arquivo')[:100]
-        iid=run+':'+hashlib.sha256(content.encode()).hexdigest()[:20]+':estruturado-v2'
+        signature=hashlib.sha256(content.encode()).hexdigest()
+        iid=run+':'+signature[:20]+(':lista-atual-tjrs' if snapshot else ':estruturado-v2')
         gathered={}
         for record in records:
             if not isinstance(record,dict): raise AppError('Registro de processo inválido.')
@@ -349,10 +357,22 @@ class Store:
                     if matches:
                         # First process in the original row is the source; don't infer parties/dates.
                         gathered.setdefault(matches[0],[]).append((f'lista:{pi}:{ti}:{ri}',{'celulas':row}))
-        if not gathered: raise AppError('Nenhum número CNJ foi encontrado nas linhas ou detalhes da coleta.')
+        if not gathered and not snapshot: raise AppError('Nenhum número CNJ foi encontrado nas linhas ou detalhes da coleta.')
         with self.lock,self.connect() as db:
             import gestao
             gestao.schema(db)
+            if snapshot:
+                timestamp,total=snapshot
+                prazos_tjrs_atual.schema(db)
+                current=prazos_tjrs_atual.latest(db)
+                if current:
+                    previous=dt.datetime.fromisoformat(current['capturado'])
+                    if timestamp <= previous or signature == current['assinatura']:
+                        if timestamp > previous:
+                            db.execute('UPDATE tjrs_lista_atual SET capturado=? WHERE singleton=1',(timestamp.isoformat(),))
+                        old=json.loads(current['resumo'])
+                        return {**old,'criados':0,'existentes':old['total'],'repetido':True,
+                                'desatualizado':timestamp < previous}
             prior=db.execute('SELECT resumo FROM imports WHERE id=?',(iid,)).fetchone()
             if prior:
                 old=json.loads(prior['resumo']);self.audit(db,actor,'importacao_repetida','importacoes',iid)
@@ -361,17 +381,33 @@ class Store:
             created=0;existing=0
             for number,evidence in gathered.items():
                 row=db.execute("SELECT * FROM records WHERE kind='processos' AND json_extract(data,'$.numero')=?",(number,)).fetchone()
-                if row: rid=row['id'];existing+=1
+                if row:
+                    rid=row['id'];existing+=1
+                    before=json.loads(row['data']);after={**before};execution=payload.get('execucao',{})
+                    incoming={'sistema_origem':execution.get('sistema') or 'eproc'}
+                    if incoming['sistema_origem']=='eproc' and execution.get('tribunal') in ('TJRS','TJSC','TJRJ'):
+                        incoming.update(grau='1',portal_origem='EPROC_'+execution['tribunal']+'_1G')
+                    for key,value in incoming.items():
+                        if not after.get(key):after[key]=value
+                    if after!=before:
+                        db.execute('UPDATE records SET data=?,version=version+1,atualizado=?,atualizado_por=? WHERE id=?',(dumps(after),now(),actor['id'],rid))
+                        self.audit(db,actor,'registrar_origem_importacao','processos',rid,before,after)
                 else:
                     from eproc_tribunais import from_number
                     data={'numero':number,'tribunal':from_number(number),'titulo':'Processo importado do eproc','status':'ativo','revisao':1,'observacoes':'Partes e prazos aguardam conferência dos dados de origem.'}
+                    execution=payload.get('execucao',{})
+                    data['sistema_origem']=execution.get('sistema') or 'eproc'
+                    if data['sistema_origem']=='eproc' and execution.get('tribunal') in ('TJRS','TJSC','TJRJ'):
+                        data.update(grau='1',portal_origem='EPROC_'+execution['tribunal']+'_1G')
+                    if data['sistema_origem']!='eproc':data['titulo']='Processo importado de '+str(data['sistema_origem'])
                     rid=db.execute('INSERT INTO records(kind,data,criado,atualizado,criado_por,atualizado_por) VALUES(?,?,?,?,?,?)',('processos',dumps(data),now(),now(),actor['id'],actor['id'])).lastrowid
                     created+=1
                     self.audit(db,actor,'importar_processo','processos',rid,after=data)
                 for si,(source,value) in enumerate(evidence):
                     db.execute('INSERT OR IGNORE INTO evidence(import_id,case_id,source,payload) VALUES(?,?,?,?)',(iid,rid,source+':'+str(si),dumps(value)))
             import eproc_estruturado
-            structured=eproc_estruturado.enrich(self,db,payload,actor,iid)
+            active_deadlines=[] if snapshot else None
+            structured=eproc_estruturado.enrich(self,db,payload,actor,iid,active_deadlines)
             for number in gathered:
                 case=db.execute("SELECT * FROM records WHERE kind='processos' AND json_extract(data,'$.numero')=?",(number,)).fetchone()
                 gestao.ensure_review(self,db,case,actor)
@@ -390,6 +426,8 @@ class Store:
                 if prior_sync and prior_sync['checked_at'] and prior_sync['checked_at']>check_time:continue
                 db.execute('INSERT OR REPLACE INTO sync_state VALUES(?,?,?,?,?,?,?)',(number,fingerprints.get(number,''),check_time,'lido',dumps(detail),'',run))
             summary={'id':iid,'criados':created,'existentes':existing,'total':len(gathered),'revisar':True,'estruturado':structured}
+            if snapshot:
+                prazos_tjrs_atual.save(db,timestamp,signature,active_deadlines,total,summary)
             db.execute('UPDATE imports SET resumo=? WHERE id=?',(dumps(summary),iid))
             self.audit(db,actor,'importar_coleta','importacoes',iid,after=summary)
             return summary

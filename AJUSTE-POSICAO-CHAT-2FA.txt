@@ -1,0 +1,10 @@
+AJUSTE VISUAL V50
+
+2FA no topo direito; chat no canto inferior direito. A prévia das mensagens acompanha o chat na parte inferior. A separação permanece com o chat fixado e em telas menores.
+
+PARA APLICAR SOBRE A V50
+Copie somente css/juridico.css e index.html da pasta djen deste pacote para os mesmos locais na instalação. Não apague pastas ou bancos. Não é necessário reiniciar o Python ou o Caddy para esses dois arquivos.
+
+Use Ctrl+F5 no notebook e no PC do colega. Não são posições arrastáveis novas; é uma alteração da posição padrão dos botões recolhidos. O painel do chat aberto mantém seu comportamento anterior.
+
+Este pacote também contém a base completa V50 para quem precisar instalar todos os arquivos. Se substituir arquivos Python da instalação, siga o procedimento de parar e reiniciar o serviço.

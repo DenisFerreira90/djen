@@ -4,10 +4,11 @@ let tab='planilha';
 window.Dados={open:async key=>{tab=key;await window.Juridico.go('dados');},render:async()=>{
  const {S,api,head,card,el,button,toast}=window.Juridico;
  if(S.view==='planilhas')tab='planilha';
+ if(window.Juridico.isOwner?.()!==true){if(S.view==='planilhas'&&S.user.role==='administrador'){await window.Org.render('planilhas',true);return;}throw Error('Área de dados e recuperação exclusiva do proprietário.');}
  const admin=S.user.role==='administrador';if(tab==='backup'&&!admin)tab='planilha';
  head('Central de dados','Importação, exportação e recuperação reunidas por finalidade.');
  const tabs=el('div','toolbar mandate-tabs');tabs.setAttribute('aria-label','Operações de dados');document.getElementById('content').append(tabs);
- for(const [key,title] of [['planilha','Importar planilha'],['coletas','Recuperar coleta'],['exportar','Exportar dados'],...(admin?[['backup','Backup e restauração']]:[])]){const b=button(title,()=>{tab=key;window.Juridico.render();},tab===key?'primary':'');b.setAttribute('aria-pressed',String(tab===key));tabs.append(b);}
+ for(const [key,title] of [['planilha','Importar planilha'],['coletas','Recuperar coleta'],['exportar','Exportar dados'],...(admin?[['backup','Backup e restauração']]:[])]){const b=button(title,()=>window.Dados.open(key),tab===key?'primary':'');b.setAttribute('aria-pressed',String(tab===key));tabs.append(b);}
  if(tab==='planilha'){await window.Org.render('planilhas',true);return;}
  if(tab==='exportar'){
   const c=card();c.append(el('h2','','Planilha para consulta'),el('p','','Baixe cadastros e dados relacionados em abas do Excel. Para recuperar a instalação, use Backup e restauração.'),button('Exportar Excel',()=>location.href='/api/juridico/planilha/exportar','primary'));

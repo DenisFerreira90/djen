@@ -1,0 +1,15 @@
+ConectaAdv v59 — área exclusiva do proprietário e organização da equipe
+
+A identidade do proprietário é a conta já registrada em chat_control.owner_id, a mesma governança usada pelo diagnóstico. Em instalações antigas sem esse registro, a migração usa a primeira conta que criou a instalação. Ser administrador não concede acesso técnico. Não há troca automática do dono nem novas senhas nesta versão.
+
+Sua área reúne coleta, rotinas, conectores, portais, dados e backups, recuperação de fichas e diagnóstico. As rotas correspondentes também são bloqueadas no servidor para outras contas, inclusive administradores e pessoas que tinham uma autorização antiga de diagnóstico.
+
+A equipe mantém processos, mandados, prazos, agenda, documentos, tarefas, notificações e comunicação, respeitando as permissões existentes. Configurações de e-mail de integração e evidências técnicas brutas ficam restritas ao dono. A importação de planilhas permanece disponível para administradores sem expor backup e recuperação.
+
+Ver como equipe: prévia de navegação para apresentação, com os dados reais do seu perfil. Não é impersonação, não altera permissões de servidor nem cria perfil CEO. Para voltar clique em Voltar à minha área.
+
+A abertura do sistema não inicia reprocessamento automático em lote. Use a recuperação de fichas na sua área quando necessário. Indicador e consultas periódicas de coleta só são carregados para a conta proprietária, fora da prévia.
+
+Roteiro e prioridades para apresentação: ROTEIRO-CEO.md. A alteração não resolve o 403 do TJRS nem implementa a janela de 20 dias, a coleta de pendentes de citação/intimação ou um conector PJe.
+
+Instalação: pare o servidor; faça uma cópia da pasta dados_juridico; extraia a atualização sobre a pasta djen; execute INICIAR.bat e use Ctrl+F5. Confirme Versão 59. Entre com a conta proprietária original. Os dados e contas existentes são preservados.

@@ -1,0 +1,27 @@
+ConectaAdv v63 — entrega do JavaScript e início verificado
+
+INSTALAR
+Encerre a janela do servidor do ConectaAdv com Ctrl+C. Abra o ZIP e copie o conteúdo da pasta djen para C:\xampp\htdocs\djen, substituindo os arquivos do programa. Preserve dados_juridico, dados_eproc e as demais pastas de dados. Abra INICIAR.bat dessa mesma pasta. Atualize o navegador com Ctrl+F5 quando o servidor estiver confirmado.
+
+ERRO OBSERVADO
+O navegador recusou js/estoque.js por receber Content-Type application/json. Essa mensagem, isolada, não distingue arquivo ausente, um servidor antigo ainda ativo ou configuração MIME incorreta. Não foi confirmado qual desses casos ocorre na instalação do usuário.
+
+CORREÇÃO
+O servidor define explicitamente text/javascript para .js e text/css para .css, sem depender da tabela MIME do Windows. Mantém X-Content-Type-Options: nosniff. Arquivos ausentes continuam retornando HTTP 404 e JSON; o erro não é mascarado como JavaScript.
+
+INÍCIO VERIFICADO
+INICIAR.bat passa a executar INICIAR_VERIFICADO.py, que confere os arquivos necessários e mostra a pasta utilizada. Ele identifica uma pasta djen dentro de djen, arquivos ausentes, conteúdo de estoque incorreto e arquivos Python incompletos. Essas situações são informadas antes de iniciar o servidor.
+
+Se a porta 8765 já tiver um servidor respondendo, o inicializador consulta a identificação de versão e o próprio JavaScript. Se o servidor 63 estiver correto, abre o navegador sem iniciar outro processo. Se o servidor for antigo ou entregar o arquivo incorretamente, informa o motivo e pede o encerramento da janela antiga. Nenhum processo é encerrado automaticamente. Os arquivos atualizados no disco não substituem o código já carregado por um processo antigo.
+
+COMO USAR
+1. Copie o pacote completo para a instalação e abra INICIAR.bat.
+2. Se aparecer Servidor 63 já está ativo ou Arquivos conferidos, abra/atualize a página com Ctrl+F5.
+3. Se aparecer servidor antigo, encerre a janela dele com Ctrl+C e abra INICIAR.bat de novo.
+4. Se não conseguir avançar, envie o texto ou uma foto desse terminal, incluindo Pasta desta instalação. Isso mostra o diagnóstico sem depender apenas da mensagem MIME do console do navegador.
+
+O menu deve mostrar Versão 63. As permissões e os cadastros de estoque da versão 62 são preservados. O diagnóstico público de serviço passa a identificar a versão da aplicação e a presença do arquivo de estoque, sem expor senhas, dados de estoque ou o caminho da instalação.
+
+VALIDAÇÃO
+374 testes Python passaram e 17 scripts de interface com DOM simulado passaram.
+Testes HTTP verificam JavaScript com consulta ?v=63 e MIME correto mesmo quando o sistema simulado informa application/json; arquivo ausente com 404 real; identificação de servidor antigo; instalação incompleta; pasta duplicada; rejeição de resposta JSON como script. A execução do inicializador em Windows e a navegação real continuam pendentes no computador do usuário.

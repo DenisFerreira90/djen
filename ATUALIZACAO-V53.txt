@@ -1,0 +1,6 @@
+ConectaAdv v53 — coleta em modo invisível
+
+Em Coleta eproc, selecione TJSC — Santa Catarina (teste manual) e mantenha Modo invisível marcado. Clique em Iniciar coleta. O navegador executa em segundo plano e usa o perfil salvo sessao_tjsc.
+Não há espera por Continuar após login no modo invisível. Se a sessão não permitir prosseguir ou houver mais de um perfil titular, a coleta encerra com requer_login e preserva os dados parciais. Para autenticar, desmarque Modo invisível e inicie novamente; depois retorne ao modo invisível. Login em outro navegador não transfere a sessão ao coletor. Certificado A1 instalado não garante autenticação automática.
+Teste de SC permanece restrito à execução manual selecionada, sem habilitar SC nas rotinas automáticas.
+Instale sobre a pasta atual preservando os dados locais e reinicie o servidor.

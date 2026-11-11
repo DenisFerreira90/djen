@@ -19,9 +19,9 @@ class Connector(Protocol):
 
 def catalog():
     installed=[{'id':'eproc:'+key,'tribunal':key,'sistema':'eproc',
-                'estado':'instalado' if eproc_tribunais.enabled(key) else 'desativado_temporariamente','acesso':'Depende de autenticação e permissões no tribunal',
+                'estado':'teste_manual' if key=='TJRJ' else 'instalado' if eproc_tribunais.enabled(key) else 'desativado_temporariamente','acesso':'Depende de autenticação e permissões no tribunal',
                 'capacidades':vars(Capabilities(cadastro=True,eventos=True)),
-                'observacao':'Coleta assistida existente. Documentos completos ainda não implementados.'}
+                'observacao':'TJRJ 1º grau: adaptador em teste manual; acesso e layout real ainda exigem validação.' if key=='TJRJ' else 'Coleta assistida existente. Documentos completos ainda não implementados.'}
                for key in sorted(eproc_tribunais.TRIBUNAIS)]
     planned=[{'id':key,'tribunal':'Conforme implantação futura','sistema':name,
               'estado':'planejado','acesso':'Não configurado',

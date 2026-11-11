@@ -1,0 +1,7 @@
+ConectaAdv v54 — etapas de login, 2FA e Advogado Titular
+
+Em Coleta eproc, selecione TJSC e o Autenticador 2FA desta conta, mantenha Modo invisível e clique em Iniciar coleta. A escolha do autenticador é lembrada neste navegador por usuário e tribunal.
+O coletor acompanha redirecionamentos por até 60 segundos, identifica campos TOTP conhecidos em páginas do próprio tribunal/SSO, gera o código no cofre autorizado e envia uma única vez por tentativa. Perto da expiração, aguarda um código novo. Só o autenticador explicitamente selecionado é usado.
+Quando aparece um único perfil Advogado Titular, seleciona automaticamente e tenta abrir os prazos abertos. Mais de um perfil, formulário desconhecido, falta de permissão ou sessão não confirmada exigem intervenção. Não alterna entre códigos para tentar adivinhar a conta.
+Não há configuração de login automático por A1 nesta versão: certificado instalado ou login em outro navegador não transfere sessão ao coletor. São necessários sessão válida do coletor ou usuário/senha configurados no servidor para ultrapassar a entrada, além do TOTP correto quando exigido.
+Testes locais com páginas simuladas; layout real TJSC ainda requer validação. Instale sobre a pasta atual preservando dados e reinicie o servidor.
